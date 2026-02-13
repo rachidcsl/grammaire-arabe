@@ -455,50 +455,48 @@
 <body class="bg-slate-50" style="background-color: var(--bg-main); transition: background-color 0.3s ease;">
     <div id="screen-menu" class="p-6 max-w-5xl mx-auto">
         <header class="flex justify-between items-center border-b-4 border-blue-900/10 mb-10 gap-4">
-            <div class="flex items-center gap-4 flex-1 min-w-0">
-                <svg width="70" height="80" viewBox="0 0 437 275" fill="none" xmlns="http://www.w3.org/2000/svg"
-                    class="shrink-0">
-                    <defs>
-                        <mask id="hole">
-                            <rect width="437" height="279" fill="white" />
-                            <path d="M85 189 V138 H176 V189 H85 Z" fill="black" />
-                        </mask>
-                    </defs>
+            <svg width="70" height="80" viewBox="0 0 437 275" fill="none" xmlns="http://www.w3.org/2000/svg"
+                class="shrink-0">
+                <defs>
+                    <mask id="hole">
+                        <rect width="437" height="279" fill="white" />
+                        <path d="M85 189 V138 H176 V189 H85 Z" fill="black" />
+                    </mask>
+                </defs>
+                <path
+                    d="M131 0C120 1 113 15 115 25C117 35 125 40 135 40C145 40 152 32 153 23C150 30 142 32 133 28C123 22 126 6 131 0Z"
+                    fill="#B7A12E" />
+
+                <path d="M129.5 48 Q 105 78, 73 97 V189 H189 V97 Q 155 78, 129.5 48 Z" fill="#1F9E75"
+                    mask="url(#hole)" />
+                <path d="M5 189V172.5C10 148.5 21 123.5 27.5 114V189H5Z" fill="#1F9E75" />
+                <path d="M234.5 115C245 129 251 147.5 256 170.5V189H234.5V115Z" fill="#1F9E75" />
+
+                <rect x="39" y="167" width="23" height="22" fill="#1F9E75" />
+                <rect x="200" y="167" width="23" height="22" fill="#1F9E75" />
+
+                <g fill="#B7A12E" transform="translate(0, -5)">
                     <path
-                        d="M131 0C120 1 113 15 115 25C117 35 125 40 135 40C145 40 152 32 153 23C150 30 142 32 133 28C123 22 126 6 131 0Z"
-                        fill="#B7A12E" />
+                        d="M95 158 Q 115 165, 131 170 Q 147 165, 167 158 L 162 162 Q 145 168, 131 173 Q 117 168, 100 162 Z" />
+                    <path
+                        d="M90 160 L 131 176 L 172 160 L 168 165 L 134 179 L 158 190 L 153 193 L 131 183 L 109 193 L 104 190 L 128 179 L 94 165 Z" />
+                </g>
 
-                    <path d="M129.5 48 Q 105 78, 73 97 V189 H189 V97 Q 155 78, 129.5 48 Z" fill="#1F9E75"
-                        mask="url(#hole)" />
-                    <path d="M5 189V172.5C10 148.5 21 123.5 27.5 114V189H5Z" fill="#1F9E75" />
-                    <path d="M234.5 115C245 129 251 147.5 256 170.5V189H234.5V115Z" fill="#1F9E75" />
+                <text x="430" y="185" font-family="Arial, sans-serif" font-size="44" fill="#B7A12E" text-anchor="end"
+                    font-weight="bold">
+                    <tspan>فلا</tspan>
+                    <tspan dy="11">ح</tspan>
+                    <tspan dy="-11"> دارين</tspan>
+                </text>
+                <text x="5" y="242" font-family="Arial Black, sans-serif" font-size="50" font-weight="900"
+                    fill="#B7A12E" textLength="427" lengthAdjust="spacingAndGlyphs">FALAH-E-DARAINE</text>
+                <text x="5" y="274" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#117456"
+                    textLength="427" lengthAdjust="spacing">La réussite dans les deux mondes</text>
+            </svg>
 
-                    <rect x="39" y="167" width="23" height="22" fill="#1F9E75" />
-                    <rect x="200" y="167" width="23" height="22" fill="#1F9E75" />
-
-                    <g fill="#B7A12E" transform="translate(0, -5)">
-                        <path
-                            d="M95 158 Q 115 165, 131 170 Q 147 165, 167 158 L 162 162 Q 145 168, 131 173 Q 117 168, 100 162 Z" />
-                        <path
-                            d="M90 160 L 131 176 L 172 160 L 168 165 L 134 179 L 158 190 L 153 193 L 131 183 L 109 193 L 104 190 L 128 179 L 94 165 Z" />
-                    </g>
-
-                    <text x="430" y="185" font-family="Arial, sans-serif" font-size="44" fill="#B7A12E" text-anchor="end"
-                        font-weight="bold">
-                        <tspan>فلا</tspan>
-                        <tspan dy="11">ح</tspan>
-                        <tspan dy="-11"> دارين</tspan>
-                    </text>
-                    <text x="5" y="242" font-family="Arial Black, sans-serif" font-size="50" font-weight="900"
-                        fill="#B7A12E" textLength="427" lengthAdjust="spacingAndGlyphs">FALAH-E-DARAINE</text>
-                    <text x="5" y="274" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#117456"
-                        textLength="427" lengthAdjust="spacing">La réussite dans les deux mondes</text>
-                </svg>
-
-                <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-blue-900 truncate">
-                    Grammaire Arabe
-                </h1>
-            </div>
+            <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-blue-900 flex-1 text-center">
+                Grammaire Arabe
+            </h1>
 
             <button onclick="toggleDarkMode()" class="theme-toggle" id="theme-btn">🌙</button>
         </header>
