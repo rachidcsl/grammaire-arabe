@@ -4,7 +4,7 @@
   "description": "Apprenez la grammaire arabe avec des exercices interactifs.",
   "start_url": "./index.html",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#f8fafc",
   "theme_color": "#1e40af",
   "icons": [
