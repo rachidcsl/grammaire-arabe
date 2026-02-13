@@ -277,7 +277,7 @@
 
             table {
                 width: 100% !important;
-                table-layout: fixed !important;
+                table-layout: auto !important;
                 border: 1px solid #cbd5e1;
                 border-spacing: 0;
                 border-collapse: collapse;
@@ -307,6 +307,18 @@
                 min-width: 0 !important;
             }
 
+            /* Empêcher rupture des mots arabes et français */
+            td.fit-ar, td.fit-lab, span[style*="font-family: 'Lateef'"] {
+                word-break: keep-all !important;
+                overflow-wrap: normal !important;
+                white-space: nowrap !important;
+            }
+
+            /* Réduire taille titre pour petits écrans */
+            h1 {
+                font-size: 1.875rem !important;
+            }
+
             span[style*="font-family: 'Lateef'"] {
                 font-size: 2.5rem !important;
                 word-wrap: break-word;
@@ -330,11 +342,7 @@
                 padding: 0 !important;
                 white-space: nowrap !important;
             }
-            
-            td.fit-ar {
-                padding: 0.2rem !important;
-            }
-            
+                      
             th:first-child {
                 width: 12% !important;
             }
@@ -429,20 +437,26 @@
         body.dark-mode .bg-blue-800 { background-color: var(--primary-blue) !important; }
 
         /* --- CLASSES RESPONSIVES POUR TOUS LES TABLEAUX --- */
-        .fit-ar { font-size: clamp(0.85rem, 4vw, 2rem); line-height: 1.4; font-family: 'Lateef', serif; }
-        .fit-lab { font-size: clamp(0.75rem, 2.2vw, 0.95rem); line-height: 1.4; font-family: 'Inter', sans-serif; }
+        .fit-ar {font-size: clamp(0.6rem, 3.5vw, 2rem);line-height: 1.3;font-family: 'Lateef', serif;}
+        .fit-lab {font-size: clamp(0.5rem, 1.8vw, 0.8rem);line-height: 1.2;font-family: 'Inter', sans-serif;}
+        /*.fit-ar { font-size: clamp(0.85rem, 4vw, 2rem); line-height: 1.4; font-family: 'Lateef', serif; }      
+        .fit-lab { font-size: clamp(0.75rem, 2.2vw, 0.95rem); line-height: 1.4; font-family: 'Inter', sans-serif; }*/
         .ar-fit { font-size: clamp(0.85rem, 4vw, 2rem); line-height: 1.4; font-family: 'Lateef', serif; }
         .txt-fit { font-size: clamp(0.75rem, 2.2vw, 0.95rem); line-height: 1.4; font-family: 'Inter', sans-serif; }
         .fit-pad { padding: clamp(0.15rem, 1vw, 0.5rem); }
         .fit-pad-small { padding: clamp(0.1rem, 0.8vw, 0.4rem); }
-    </style>
+
+        .sub-text {font-size: clamp(0.5rem, 1.5vw, 0.75rem); color: #666; font-family: 'Inter', sans-serif; display: block; margin-top: 2px;}
+
+
+    </style>   
 </head>
 
 <body class="bg-slate-50" style="background-color: var(--bg-main); transition: background-color 0.3s ease;">
     <div id="screen-menu" class="p-6 max-w-5xl mx-auto">
         <header class="flex justify-start gap-8 border-b-4 border-blue-900/10 mb-10 items-center">
             
-            <svg width="80" height="80" viewBox="0 0 437 275" fill="none" xmlns="http://www.w3.org/2000/svg"
+            <svg width="70" height="80" viewBox="0 0 437 275" fill="none" xmlns="http://www.w3.org/2000/svg"
                 class="shrink-0">
                 <defs>
                     <mask id="hole">
@@ -2760,16 +2774,6 @@
                             changements de terminaison :</h3>
                         <div
                             style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
-                            <style>
-                                /* Styles spécifiques à cette section */
-                                .sub-text {
-                                    font-size: clamp(0.5rem, 1.5vw, 0.75rem);
-                                    color: #666;
-                                    font-family: 'Inter', sans-serif;
-                                    display: block;
-                                    margin-top: 2px;
-                                }
-                            </style>
                             <table
                                 style="width: 100%; border-collapse: collapse; direction: ltr; text-align: center; background: white; table-layout: fixed;">
                                 <thead>
@@ -2874,16 +2878,6 @@
                             changements de terminaison :</h3>
                         <div
                             style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
-                            <style>
-                                /* Styles spécifiques à cette section */
-                                .sub-text {
-                                    font-size: clamp(0.5rem, 1.5vw, 0.75rem);
-                                    color: #666;
-                                    font-family: 'Inter', sans-serif;
-                                    display: block;
-                                    margin-top: 2px;
-                                }
-                            </style>
                             <table
                                 style="width: 100%; border-collapse: collapse; direction: ltr; text-align: center; background: white; table-layout: fixed;">
                                 <thead>
@@ -3180,28 +3174,7 @@
 
                             <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1rem; font-weight: 600;">
                                 Exemples de conjugaison :</h3>
-                            <div
-                                style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
-                                <style>
-                                    /* Ton réglage favori : visibilité totale et police adaptative */
-                                    .fit-ar {
-                                        font-size: clamp(0.6rem, 3.5vw, 2rem);
-                                        line-height: 1.3;
-                                        font-family: 'Lateef', serif;
-                                    }
-
-                                    .fit-lab {
-                                        font-size: clamp(0.5rem, 1.8vw, 0.8rem);
-                                        line-height: 1.2;
-                                        font-family: 'Inter', sans-serif;
-                                    }
-
-                                    .sub-rule {
-                                        font-size: clamp(0.45rem, 1.5vw, 0.75rem);
-                                        color: #666;
-                                        display: block;
-                                        margin-top: 2px;
-                                    }
+                            <div style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">                                     
                                 </table>
                                 <table
                                     style="width: 100%; border-collapse: collapse; direction: ltr; text-align: center; background: white; table-layout: fixed;">
@@ -3435,9 +3408,6 @@
 
                         <div
                             style="width: 100%; margin: 0.5rem 0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
-                            <style>
-                                /* Styles spécifiques à cette section */
-                            </style>
                             <table
                                 style="width: 100%; border-collapse: collapse; direction: ltr; text-align: center; background: white; table-layout: fixed;">
                                 <thead>
@@ -3491,11 +3461,7 @@
                                     style="color: #0066cc;">Fatha</strong> (ـَـ).</li>
                         </ol>
 
-                        <div
-                            style="width: 100%; margin: 0.5rem 0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
-                            <style>
-                                /* Styles spécifiques à cette section */
-                            </style>
+                        <div style="width: 100%; margin: 0.5rem 0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
                             <table
                                 style="width: 100%; border-collapse: collapse; direction: ltr; text-align: center; background: white; table-layout: fixed;">
                                 <thead>
@@ -3554,9 +3520,6 @@
 
                         <div
                             style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
-                            <style>
-                                /* Styles spécifiques à cette section */
-                            </style>
                             <table
                                 style="width: 100%; border-collapse: collapse; direction: rtl; text-align: center; background: white; table-layout: fixed;">
                                 <thead>
