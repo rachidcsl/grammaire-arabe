@@ -3934,7 +3934,6 @@
         function startDrag(e, label, originalEl) {
             if (state !== 'playing') return;
             if (originalEl.classList.contains('disabled')) return;
-            if (e.cancelable) e.preventDefault();
             const touch = e.touches ? e.touches[0] : e;
             dragGhost = document.createElement('div'); dragGhost.innerText = label; dragGhost.className = 'drag-ghost';
             dragGhost.style.width = originalEl.offsetWidth + 'px'; dragGhost.style.height = originalEl.offsetHeight + 'px';
@@ -3971,7 +3970,7 @@
             };
             moveAt(touch.clientX, touch.clientY);
             document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onEnd);
-            document.addEventListener('touchmove', onMove, { passive: false }); document.addEventListener('touchend', onEnd);
+            document.addEventListener('touchmove', onMove, { passive: true }); document.addEventListener('touchend', onEnd);
         }
         function handleAction() {
             if (state === 'playing') {
