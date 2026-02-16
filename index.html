@@ -264,6 +264,18 @@
             color: var(--text-main);
         }
 
+        @media (min-width: 901px) {
+            #game-words {
+                flex-wrap: wrap-reverse !important;
+                flex-direction: row !important;
+            }
+
+            #game-words > div {
+                flex: 1 !important;
+                width: auto !important;
+            }
+        }
+
         @media (max-width: 900px) {
             /* Responsive tables */
             div[style*="overflow-x: auto"] {
@@ -352,6 +364,19 @@
             th:nth-child(4) {
                 width: 29.33% !important;
             }
+
+            /* Fix Arabic text alignment - start from top */
+            #game-words {
+                flex-wrap: wrap-reverse !important;
+                justify-content: center !important;
+                direction: ltr !important;
+            }
+
+            #game-words > div {
+                flex: none !important;
+                width: calc(33.333% - 11px) !important;
+                max-width: 100% !important;
+            }
         }
 
         /* --- VARIABLES DE THÈME --- */
@@ -423,6 +448,7 @@
         /* Drag & Drop */
         .drop-zone { border: 2px dashed var(--text-muted); min-height: 4rem; border-radius: 1rem; display: flex; align-items: center; justify-content: center; }
         .draggable-label { background: var(--bg-card); border: 2px solid var(--primary-blue); padding: 8px 15px; border-radius: 1rem; cursor: grab; font-family: 'Lateef', serif; font-size: 1.8rem; }
+        .draggable-label.disabled { opacity: 0.4; cursor: not-allowed; }
         .slot-correct { border-color: #22c55e !important; background: #f0fdf4 !important; color: #166534 !important; }
         .slot-wrong { border-color: #ef4444 !important; background: #fef2f2 !important; color: #991b1b !important; }
 
@@ -497,7 +523,10 @@
             <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-blue-900 flex-1 text-center">
                 Grammaire Arabe
             </h1>
-
+            <div id="update-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm bg-blue-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between animate-bounce">
+                <div class="text-xs font-bold">Nouvelle version disponible !</div>
+                <button onclick="window.location.reload()" class="bg-white text-blue-900 px-3 py-1 rounded-lg text-[10px] font-black uppercase">Mettre à jour</button>
+            </div>
             <button onclick="toggleDarkMode()" class="theme-toggle" id="theme-btn">🌙</button>
         </header>
 
@@ -544,7 +573,7 @@
             <div id="game-translation"
                 class="text-center italic text-xl mb-12 p-8 rounded-[2rem] shadow-inner" style="background-color: var(--note-bg); color: var(--text-muted); border: 1px solid var(--border-color);">
             </div>
-            <div id="game-words" class="flex flex-row-reverse justify-center gap-4 mb-20"></div>
+            <div id="game-words" class="flex flex-wrap justify-center gap-4 mb-20"></div>
             <p class="text-center text-[11px] font-black text-slate-400 uppercase mb-6 tracking-widest">Glissez les
                 étiquettes sur les mots :</p>
             <div id="game-labels" class="flex flex-wrap justify-center gap-4 pb-24"></div>
@@ -1040,114 +1069,114 @@
                         </div>
                 `,
                 exercises: [
-                    {
-                        phrase: ["رَبٌّ"],
+                                        {
                         translation: "Un Seigneur/Maître",
+                        phrase: ["رَبٌّ"],
                         correct: ["رَفْعٌ"],
                         opts: ["رَفْعٌ", "نَصْبٌ", "جَرٌّ", "مَبْنِيٌّ"],
                         rule: "Le mot se termine par une Damma (ou Damma Tanwin), ce qui est le signe de l'état Raf' pour un nom singulier."
                     },
-                    {
-                        phrase: ["رَسُولًا"],
+                                        {
                         translation: "Un messager",
+                        phrase: ["رَسُولًا"],
                         correct: ["نَصْبٌ"],
                         opts: ["رَفْعٌ", "نَصْبٌ", "جَرٌّ", "مَجْزُومٌ"],
                         rule: "Le mot se termine par une Fatha (ou Fatha Tanwin), ce qui indique l'état Nasb."
                     },
-                    {
-                        phrase: ["أَرْضٍ"],
+                                        {
                         translation: "Une terre",
+                        phrase: ["أَرْضٍ"],
                         correct: ["جَرٌّ"],
                         opts: ["رَفْعٌ", "نَصْبٌ", "جَرٌّ", "مَبْنِيٌّ"],
                         rule: "Le mot se termine par une Kasra (ou Kasra Tanwin), ce qui indique l'état Jarr."
                     },
-                    {
-                        phrase: ["هَذَا"],
+                                        {
                         translation: "Ceci",
+                        phrase: ["هَذَا"],
                         correct: ["مَبْنِيٌّ"],
                         opts: ["رَفْعٌ", "نَصْبٌ", "جَرٌّ", "مَبْنِيٌّ"],
                         rule: "C'est un pronom démonstratif (Ism Ishara). Il est invariable (Mabni), sa terminaison ne change jamais."
                     },
-                    {
-                        phrase: ["جَنَّةٌ"],
+                                        {
                         translation: "Un jardin / Paradis",
+                        phrase: ["جَنَّةٌ"],
                         correct: ["مُؤَنَّثٌ"],
                         opts: ["مُذَكَّرٌ", "مُؤَنَّثٌ", "جَمْعٌ", "مُثَنَّى"],
                         rule: "C'est un féminin de signe : le mot se termine par une Ta Marbuta (ة)."
                     },
-                    {
-                        phrase: ["شَمْسٌ"],
+                                        {
                         translation: "Un soleil",
+                        phrase: ["شَمْسٌ"],
                         correct: ["مُؤَنَّثٌ"],
                         opts: ["مُذَكَّرٌ", "مُؤَنَّثٌ", "عَاقِلٌ", "غَيْرُ عَاقِلٍ"],
                         rule: "C'est un féminin par décision (conventionnel). Bien qu'il n'ait pas de signe, les Arabes le considèrent comme féminin."
                     },
-                    {
-                        phrase: ["كِتَابٌ"],
+                                        {
                         translation: "Un livre",
+                        phrase: ["كِتَابٌ"],
                         correct: ["مُذَكَّرٌ"],
                         opts: ["مُذَكَّرٌ", "مُؤَنَّثٌ", "مُضَافٌ", "مَوْصُوفٌ"],
                         rule: "C'est un mot masculin par défaut car il ne possède aucun signe du féminin et ne fait pas partie des exceptions."
                     },
-                    {
-                        phrase: ["صَفْرَاءُ"],
+                                        {
                         translation: "Jaune (fém.)",
+                        phrase: ["صَفْرَاءُ"],
                         correct: ["مُؤَنَّثٌ"],
                         opts: ["مُذَكَّرٌ", "مُؤَنَّثٌ", "مَبْنِيٌّ", "جَمْعٌ"],
                         rule: "C'est un féminin de signe : le mot se termine par un Alif Mamduda (اء)."
                     },
-                    {
-                        phrase: ["مُسْلِمَانِ"],
+                                        {
                         translation: "Deux musulmans",
+                        phrase: ["مُسْلِمَانِ"],
                         correct: ["مُثَنَّى"],
                         opts: ["وَاحِدٌ", "مُثَنَّى", "جَمْعٌ", "مُؤَنَّثٌ"],
                         rule: "Le suffixe 'Ani' (انِ) indique le Duel (2 personnes) à l'état Raf'."
                     },
-                    {
-                        phrase: ["مُسْلِمُونَ"],
+                                        {
                         translation: "Des musulmans",
+                        phrase: ["مُسْلِمُونَ"],
                         correct: ["جَمْعٌ"],
                         opts: ["وَاحِدٌ", "مُثَنَّى", "جَمْعٌ", "مَبْنِيٌّ"],
                         rule: "Le suffixe 'Una' (ون) indique le Pluriel Masculin Sain (Jam' Salim) à l'état Raf'."
                     },
-                    {
-                        phrase: ["مُسْلِمَاتٍ"],
+                                        {
                         translation: "Des musulmanes",
+                        phrase: ["مُسْلِمَاتٍ"],
                         correct: ["جَمْعٌ"],
                         opts: ["وَاحِدٌ", "مُثَنَّى", "جَمْعٌ", "مُذَكَّرٌ"],
                         rule: "Le suffixe 'Atin' (ـَاتٍ) indique le Pluriel Féminin Sain à l'état Nasb ou Jarr."
                     },
-                    {
-                        phrase: ["الْقَلَمُ"],
+                                        {
                         translation: "Le stylo",
+                        phrase: ["الْقَلَمُ"],
                         correct: ["مَعْرِفَةٌ"],
                         opts: ["نَكِرَةٌ", "مَعْرِفَةٌ", "فِعْلٌ", "حَرْفٌ"],
                         rule: "Le mot commence par 'Al' (ال), ce qui le rend défini (Ma'rifah)."
                     },
-                    {
-                        phrase: ["مُحَمَّدٌ"],
+                                        {
                         translation: "Muhammad",
+                        phrase: ["مُحَمَّدٌ"],
                         correct: ["مَعْرِفَةٌ"],
                         opts: ["نَكِرَةٌ", "مَعْرِفَةٌ", "مُضَافٌ", "جَمْعٌ"],
                         rule: "C'est un nom propre (Alam), il est donc défini par nature, même avec un tanwin."
                     },
-                    {
-                        phrase: ["بَيْتٌ"],
+                                        {
                         translation: "Une maison",
+                        phrase: ["بَيْتٌ"],
                         correct: ["نَكِرَةٌ"],
                         opts: ["نَكِرَةٌ", "مَعْرِفَةٌ", "مَبْنِيٌّ", "ضَمِيرٌ"],
                         rule: "C'est un nom commun sans 'Al' et sans annexion. Il est indéfini (Nakirah) par défaut."
                     },
-                    {
-                        phrase: ["الْعَالَمِينَ"],
+                                        {
                         translation: "Les mondes",
+                        phrase: ["الْعَالَمِينَ"],
                         correct: ["مَجْرُورٌ / جَمْعٌ"],
                         opts: ["مَرْفُوعٌ / مُفْرَدٌ", "مَجْرُورٌ / جَمْعٌ", "مَنْصُوبٌ / مُثَنَّى"],
                         rule: "Le 'Yaa' indique l'état Majrour. C'est un pluriel masculin sain."
                     },
-                    {
-                        phrase: ["رَجُلٌ"],
+                                        {
                         translation: "Un homme",
+                        phrase: ["رَجُلٌ"],
                         correct: ["مَرْفُوعٌ / نَكِرَةٌ"],
                         opts: ["مَرْفُوعٌ / نَكِرَةٌ", "مَنْصُوبٌ / مَعْرِفَةٌ", "مَجْرُورٌ / نَكِرَةٌ"],
                         rule: "Tanwin damma = Marfu'. Pas de Al = Nakira."
@@ -1597,94 +1626,94 @@
                             style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">بَعْدَ الصَّلَاةِ</span>
                         (Après la prière).</p>                `,
                 exercises: [
-                    {
-                        phrase: ["الرَّسُولُ", "الْكَرِيمُ"],
+                                        {
                         translation: "Le noble Messager",
-                        correct: ["مَوْصُوفٌ", "صِفَةٌ"],
+                        phrase: ["الْكَرِيمُ", "الرَّسُولُ"],
+                        correct: ["صِفَةٌ", "مَوْصُوفٌ"],
                         opts: ["مَوْصُوفٌ", "صِفَةٌ", "مُضَافٌ", "مُضَافٌ إِلَيْهِ"],
                         rule: "Mawsuf / Sifah : La Sifah (l'adjectif) suit le Mawsuf et le copie dans les 4 propriétés (ici : Défini, Raf', Masc, Sing)."
                     },
-                    {
-                        phrase: ["عَذَابًا", "شَدِيدًا"],
+                                        {
                         translation: "Un châtiment dur/douloureux",
-                        correct: ["مَوْصُوفٌ", "صِفَةٌ"],
+                        phrase: ["شَدِيدًا", "عَذَابًا"],
+                        correct: ["صِفَةٌ", "مَوْصُوفٌ"],
                         opts: ["مَوْصُوفٌ", "صِفَةٌ", "جَارٌّ", "مَجْرُورٌ"],
                         rule: "Les deux mots sont indéfinis (Nakirah) et à l'état Nasb (Fatha tanwin), ce qui confirme l'accord Adjectif/Nom."
                     },
-                    {
-                        phrase: ["ذَلِكَ", "الْكِتَابُ"],
+                                        {
                         translation: "Ce livre-là",
-                        correct: ["اِسْمُ إِشَارَةٍ", "مُشَارٌ إِلَيْهِ"],
+                        phrase: ["الْكِتَابُ", "ذَلِكَ"],
+                        correct: ["مُشَارٌ إِلَيْهِ", "اِسْمُ إِشَارَةٍ"],
                         opts: ["اِسْمُ إِشَارَةٍ", "مُشَارٌ إِلَيْهِ", "مُضَافٌ", "مُضَافٌ إِلَيْهِ"],
                         rule: "Le Mushar Ilayh (le mot pointé) doit obligatoirement avoir 'Al' (ال) après un pronom démonstratif."
                     },
-                    {
-                        phrase: ["هَذِهِ", "الْقَرْيَةُ"],
+                                        {
                         translation: "Cette cité-ci",
-                        correct: ["اِسْمُ إِشَارَةٍ", "مُشَارٌ إِلَيْهِ"],
+                        phrase: ["الْقَرْيَةُ", "هَذِهِ"],
+                        correct: ["مُشَارٌ إِلَيْهِ", "اِسْمُ إِشَارَةٍ"],
                         opts: ["اِسْمُ إِشَارَةٍ", "مُشَارٌ إِلَيْهِ", "جَارٌّ", "مَجْرُورٌ"],
                         rule: "Hadhihi est utilisé car 'Qaryah' est féminin (Ta Marbuta). Ils s'accordent en genre et nombre."
                     },
-                    {
-                        phrase: ["فِي", "الْمَدِينَةِ"],
+                                        {
                         translation: "Dans la ville",
-                        correct: ["جَارٌّ", "مَجْرُورٌ"],
+                        phrase: ["الْمَدِينَةِ", "فِي"],
+                        correct: ["مَجْرُورٌ", "جَارٌّ"],
                         opts: ["جَارٌّ", "مَجْرُورٌ", "مَوْصُوفٌ", "صِفَةٌ"],
                         rule: "Le Harf Jarr (Fi) rend le nom qui suit (Majrur) à l'état Jarr (marqué par la Kasra)."
                     },
-                    {
-                        phrase: ["عَلَى", "إِبْرَاهِيمَ"],
+                                        {
                         translation: "Sur Ibrahim",
-                        correct: ["جَارٌّ", "مَجْرُورٌ"],
+                        phrase: ["عَلَى", "إِبْرَاهِيمَ"],
+                        correct: ["مَجْرُورٌ", "جَارٌّ"],
                         opts: ["جَارٌّ", "مَجْرُورٌ", "مُضَافٌ", "مُضَافٌ إِلَيْهِ"],
                         rule: "Attention : Ibrahim est un nom 'Ghayr Munsarif' (diptote), son état Jarr est marqué par une Fatha et non une Kasra."
                     },
-                    {
-                        phrase: ["رَسُولُ", "اللهِ"],
+                                        {
                         translation: "Le Messager d'Allah",
-                        correct: ["مُضَافٌ", "مُضَافٌ إِلَيْهِ"],
+                        phrase: ["اللهِ", "رَسُولُ"],
+                        correct: ["مُضَافٌ إِلَيْهِ", "مُضَافٌ"],
                         opts: ["مُضَافٌ", "مُضَافٌ إِلَيْهِ", "مَوْصُوفٌ", "صِفَةٌ"],
                         rule: "Idafah : Le Mudaf n'a ni 'Al' ni Tanwin. Le Mudaf Ilayh (Allah) est à l'état Jarr (Kasra)."
                     },
-                    {
-                        phrase: ["مَالِكِ", "يَوْمِ"],
+                                        {
                         translation: "Le Maître du Jour",
-                        correct: ["مُضَافٌ", "مُضَافٌ إِلَيْهِ"],
+                        phrase: ["يَوْمِ", "مَالِكِ"],
+                        correct: ["مُضَافٌ إِلَيْهِ", "مُضَافٌ"],
                         opts: ["مُضَافٌ", "مُضَافٌ إِلَيْهِ", "اِسْمُ إِشَارَةٍ", "مُشَارٌ إِلَيْهِ"],
                         rule: "Chaîne d'Idafah : 'Maliki' est Mudaf (léger), 'Yawmi' est Mudaf Ilayh (Jarr)."
                     },
-                    {
-                        phrase: ["كِتَابُ", "هُ"],
+                                        {
                         translation: "Son livre (à lui)",
-                        correct: ["مُضَافٌ", "مُضَافٌ إِلَيْهِ"],
+                        phrase: ["هُ", "كِتَابُ"],
+                        correct: ["مُضَافٌ إِلَيْهِ", "مُضَافٌ"],
                         opts: ["مُضَافٌ", "مُضَافٌ إِلَيْهِ", "جَارٌّ", "مَجْرُورٌ"],
                         rule: "Règle d'or : Un pronom (Damir) attaché à un nom est toujours Mudaf Ilayh (considéré en état Jarr)."
                     },
-                    {
-                        phrase: ["بَعْدَ", "الصَّلَاةِ"],
+                                        {
                         translation: "Après la prière",
-                        correct: ["ظَرْفٌ", "مُضَافٌ إِلَيْهِ"],
+                        phrase: ["الصَّلَاةِ", "بَعْدَ"],
+                        correct: ["مُضَافٌ إِلَيْهِ", "ظَرْفٌ مُضَافٌ"],
                         opts: ["ظَرْفٌ", "مُضَافٌ إِلَيْهِ", "مَوْصُوفٌ", "صِفَةٌ"],
                         rule: "Les Zarf (temps/lieu) agissent comme des Mudaf spéciaux. Le mot qui suit est toujours Mudaf Ilayh (Majrur)."
                     },
-                    {
-                        phrase: ["كِتَابُ", "اللهِ"],
+                                        {
                         translation: "Le livre d'Allah",
-                        correct: ["مُضَافٌ", "مُضَافٌ إِلَيْهِ"],
+                        phrase: ["اللهِ", "كِتَابُ"],
+                        correct: ["مُضَافٌ إِلَيْهِ", "مُضَافٌ"],
                         opts: ["مُضَافٌ", "مُضَافٌ إِلَيْهِ", "جَارٌّ", "مَجْرُورٌ"],
                         rule: "Idafah : le 1er mot (Mudaf) est léger, le 2ème (Mudaf Ilayh) à l'état Jar."
                     },
-                    {
-                        phrase: ["الرَّسُولُ", "الْكَرِيمُ"],
+                                        {
                         translation: "Le noble messager",
-                        correct: ["مَوْصُوفٌ", "صِفَةٌ"],
+                        phrase: ["الْكَرِيمُ", "الرَّسُولُ"],
+                        correct: ["صِفَةٌ", "مَوْصُوفٌ"],
                         opts: ["مَوْصُوفٌ", "صِفَةٌ", "اِسْمُ إِشَارَةٍ", "مُشَارٌ إِلَيْهِ"],
                         rule: "Mawsuf wa Sifah : l'adjectif copie le nom dans ses 4 propriétés."
                     },
-                    {
-                        phrase: ["هَذَا", "الْكِتَابُ"],
+                                        {
                         translation: "Ce livre",
-                        correct: ["اِسْمُ إِشَارَةٍ", "مُشَارٌ إِلَيْهِ"],
+                        phrase: ["الْكِتَابُ", "هَذَا"],
+                        correct: ["مُشَارٌ إِلَيْهِ", "اِسْمُ إِشَارَةٍ"],
                         opts: ["مُضَافٌ", "مُضَافٌ إِلَيْهِ", "اِسْمُ إِشَارَةٍ", "مُشَارٌ إِلَيْهِ"],
                         rule: "Isharah : le démonstratif + nom avec AL."
                     }
@@ -1956,80 +1985,80 @@
                     </div>
                 `,
                 exercises: [
-                    {
-                        phrase: ["اللهُ", "أَحَدٌ"],
+                                        {
                         translation: "Allah est Unique",
-                        correct: ["مُبْتَدَأٌ", "خَبَرٌ"],
+                        phrase: ["أَحَدٌ", "اللهُ"],
+                        correct: ["خَبَرٌ", "مُبْتَدَأٌ"],
                         opts: ["مُبْتَدَأٌ", "خَبَرٌ", "فَاعِلٌ", "صِفَةٌ"],
                         rule: "Jumlah Ismiyah : La phrase commence par un Ism défini (Moubtada) à l'état Raf', suivi d'une information indéfinie (Khabar) à l'état Raf'."
                     },
-                    {
-                        phrase: ["الْبَيْتُ", "كَبِيرٌ"],
+                                        {
                         translation: "La maison est grande",
-                        correct: ["مُبْتَدَأٌ", "خَبَرٌ"],
+                        phrase: [, "كَبِيرٌ", "الْبَيْتُ"],
+                        correct: ["خَبَرٌ", "مُبْتَدَأٌ"],
                         opts: ["مُبْتَدَأٌ", "خَبَرٌ", "مُضَافٌ", "مُضَافٌ إِلَيْهِ"],
                         rule: "Le Moubtada (Le sujet) et le Khabar (L'information) s'accordent en genre et en nombre. Ici, les deux sont au singulier masculin."
                     },
-                    {
-                        phrase: ["الْقُرْآنُ", "مُبَارَكٌ"],
+                                        {
                         translation: "Le Qur'an est béni",
-                        correct: ["مُبْتَدَأٌ", "خَبَرٌ"],
+                        phrase: ["مُبَارَكٌ", "الْقُرْآنُ"],
+                        correct: ["خَبَرٌ", "مُبْتَدَأٌ"],
                         opts: ["مُبْتَدَأٌ", "خَبَرٌ", "جَارٌّ", "مَجْرُورٌ"],
                         rule: "Le Moubtada est 'Al-Qur'anu' (Défini par Al, Raf') et le Khabar est 'Mubarakun' (Indéfini, Raf')."
                     },
-                    {
-                        phrase: ["الْعِلْمُ", "نُورٌ"],
+                                        {
                         translation: "La science est une lumière",
-                        correct: ["مُبْتَدَأٌ", "خَبَرٌ"],
+                        phrase: ["نُورٌ", "الْعِلْمُ"],
+                        correct: ["خَبَرٌ", "مُبْتَدَأٌ"],
                         opts: ["مُبْتَدَأٌ", "خَبَرٌ", "مَوْصُوفٌ", "صِفَةٌ"],
                         rule: "C'est une phrase nominale simple. Si c'était Mawsuf/Sifah (adjectif), 'Nur' aurait pris 'Al' (Al-Ilmu An-Nuru = La science lumineuse)."
                     },
-                    {
-                        phrase: ["هَذَا", "مَسْجِدٌ"],
+                                        {
                         translation: "Ceci est une mosquée",
-                        correct: ["مُبْتَدَأٌ", "خَبَرٌ"],
+                        phrase: ["مَسْجِدٌ", "هَذَا"],
+                        correct: ["خَبَرٌ", "مُبْتَدَأٌ"],
                         opts: ["مُبْتَدَأٌ", "خَبَرٌ", "اِسْمُ إِشَارَةٍ", "مُشَارٌ إِلَيْهِ"],
                         rule: "Ici, 'Hadha' (Pronom démonstratif) joue le rôle du Moubtada. 'Masjidun' est indéfini, c'est donc le Khabar (C'est une phrase). Si c'était 'Hadha Al-Masjidu', ce serait un fragment (Cette mosquée)."
                     },
-                    {
-                        phrase: ["الرَّسُولُ", "رَحْمَةٌ", "لِلنَّاسِ"],
+                                        {
                         translation: "Le Messager est une miséricorde pour les gens",
-                        correct: ["مُبْتَدَأٌ", "خَبَرٌ", "مُتَعَلِّقٌ بِالْخَبَرِ"],
+                        phrase: ["لِلنَّاسِ", "رَحْمَةٌ", "الرَّسُولُ"],
+                        correct: ["مُتَعَلِّقٌ بِالْخَبَرِ", "خَبَرٌ", "مُبْتَدَأٌ"],
                         opts: ["مُبْتَدَأٌ", "خَبَرٌ", "مُتَعَلِّقٌ بِالْخَبَرِ", "صِفَةٌ"],
                         rule: "Structure : Moubtada (Sujet) + Khabar (Info) + Mouta'aliq (Complément introduit par une préposition 'Li')."
                     },
-                    {
-                        phrase: ["الرَّجُلُ", "جَالِسٌ", "عَلَى الْكُرْسِيِّ"],
+                                        {
                         translation: "L'homme est assis sur la chaise",
-                        correct: ["مُبْتَدَأٌ", "خَبَرٌ", "مُتَعَلِّقٌ بِالْخَبَرِ"],
+                        phrase: ["عَلَى الْكُرْسِيِّ", "جَالِسٌ", "الرَّجُلُ"],
+                        correct: ["مُتَعَلِّقٌ بِالْخَبَرِ", "خَبَرٌ", "مُبْتَدَأٌ"],
                         opts: ["مُبْتَدَأٌ", "خَبَرٌ", "مُتَعَلِّقٌ بِالْخَبَرِ", "مَفْعُولٌ بِهِ"],
                         rule: "'Ala al-kursiyyi' est un Jar/Majrur qui agit comme Mouta'aliq (complément lié au Khabar 'Jalisun')."
                     },
-                    {
-                        phrase: ["الْوَلَدُ", "ذَاهِبٌ", "إِلَى الْمَدْرَسَةِ"],
+                                        {
                         translation: "L'enfant est partant (va) vers l'école",
-                        correct: ["مُبْتَدَأٌ", "خَبَرٌ", "مُتَعَلِّقٌ بِالْخَبَرِ"],
+                        phrase: ["إِلَى الْمَدْرَسَةِ", "ذَاهِبٌ", "الْوَلَدُ"],
+                        correct: ["مُتَعَلِّقٌ بِالْخَبَرِ", "خَبَرٌ", "مُبْتَدَأٌ"],
                         opts: ["مُبْتَدَأٌ", "خَبَرٌ", "مُتَعَلِّقٌ بِالْخَبَرِ", "فَاعِلٌ"],
                         rule: "Le Moubtada est 'Al-Waladu'. Le Khabar est 'Dhahibun'. Le reste est le Mouta'aliq bil Khabar."
                     },
-                    {
-                        phrase: ["الْمُعَلِّمُ", "قَائِمٌ", "فِي الْفَصْلِ"],
+                                        {
                         translation: "L'enseignant est debout dans la classe",
-                        correct: ["مُبْتَدَأٌ", "خَبَرٌ", "مُتَعَلِّقٌ بِالْخَبَرِ"],
+                        phrase: ["فِي الْفَصْلِ", "قَائِمٌ", "الْمُعَلِّمُ"],
+                        correct: ["مُتَعَلِّقٌ بِالْخَبَرِ", "خَبَرٌ", "مُبْتَدَأٌ"],
                         opts: ["مُبْتَدَأٌ", "خَبَرٌ", "مُتَعَلِّقٌ بِالْخَبَرِ", "مُضَافٌ إِلَيْهِ"],
                         rule: "'Fi al-fasli' est un assemblage Jar/Majrur servant de complément (Mouta'aliq) à l'information principale."
                     },
-                    {
-                        phrase: ["إِنَّ", "اللهَ", "غَفُورٌ"],
+                                        {
                         translation: "Certes, Allah est Pardonneur",
-                        correct: ["حَرْفُ نَصْبٍ", "اِسْمُ إِنَّ", "خَبَرُ إِنَّ"],
+                        phrase: ["غَفُورٌ", "اللهَ", "إِنَّ"],
+                        correct: ["خَبَرُ إِنَّ", "اِسْمُ إِنَّ", "حَرْفُ نَصْبٍ"],
                         opts: ["حَرْفُ نَصْبٍ", "اِسْمُ إِنَّ", "خَبَرُ إِنَّ", "مُبْتَدَأٌ"],
                         rule: "La particule 'Inna' transforme le Moubtada en 'Ism Inna' à l'état Nasb (Fatha), tandis que le Khabar reste Raf'."
                     },
-                    {
-                        phrase: ["إِنَّ", "اللهَ", "عَلِيمٌ"],
+                                        {
                         translation: "Certes Allah est Savant",
-                        correct: ["حَرْفُ تَوْكِيدٍ", "اِسْمُ إِنَّ", "خَبَرُ إِنَّ"],
+                        phrase: ["عَلِيمٌ", "اللهَ", "إِنَّ"],
+                        correct: ["خَبَرُ إِنَّ", "اِسْمُ إِنَّ", "حَرْفُ تَوْكِيدٍ"],
                         opts: ["حَرْفُ تَوْكِيدٍ", "اِسْمُ إِنَّ", "خَبَرُ إِنَّ", "فِعْلٌ نَاقِصٌ"],
                         rule: "Inna met son Ism au Nasb."
                     }
@@ -2159,66 +2188,66 @@
                     </div>
                 `,
                 exercises: [
-                    {
-                        phrase: ["خَلَقْ", "نَا"],
+                                        {
                         translation: "Nous avons créé",
-                        correct: ["فِعْلٌ مَاضٍ", "فَاعِلٌ"],
+                        phrase: ["نَا", "خَلَقْ"],
+                        correct: ["فَاعِلٌ", "فِعْلٌ مَاضٍ"],
                         opts: ["فِعْلٌ مَاضٍ", "فَاعِلٌ", "مَفْعُولٌ بِهِ", "مُبْتَدَأٌ"],
                         rule: "Le suffixe 'Na' (نَا) attaché au verbe passé indique la 1ère personne du pluriel (Nous), c'est le sujet (Fa'il)."
                     },
-                    {
-                        phrase: ["ظَلَمْ", "تُمْ"],
+                                        {
                         translation: "Vous avez commis une injustice",
-                        correct: ["فِعْلٌ مَاضٍ", "فَاعِلٌ"],
+                        phrase: ["تُمْ", "ظَلَمْ"],
+                        correct: ["فَاعِلٌ", "فِعْلٌ مَاضٍ"],
                         opts: ["فِعْلٌ مَاضٍ", "فَاعِلٌ", "مُضَافٌ إِلَيْهِ", "خَبَرٌ"],
                         rule: "Le suffixe 'Tum' (تُمْ) indique la 2ème personne du pluriel masculin (Antum/Vous), c'est le sujet (Fa'il)."
                     },
-                    {
-                        phrase: ["قَالَ", "الرَّسُولُ"],
+                                        {
                         translation: "Le Messager a dit",
-                        correct: ["فِعْلٌ مَاضٍ", "فَاعِلٌ"],
+                        phrase: ["الرَّسُولُ", "قَالَ"],
+                        correct: ["فَاعِلٌ", "فِعْلٌ مَاضٍ"],
                         opts: ["فِعْلٌ مَاضٍ", "فَاعِلٌ", "مُبْتَدَأٌ", "مَفْعُولٌ بِهِ"],
                         rule: "Le verbe est à la 3ème pers. sg. (Huwa). Le nom qui suit (Ar-Rasulu) est à l'état Raf' (Damma), c'est donc le Sujet Externe."
                     },
-                    {
-                        phrase: ["صَدَقَ", "الْمُرْسَلُونَ"],
+                                        {
                         translation: "Les messagers ont dit la vérité",
-                        correct: ["فِعْلٌ مَاضٍ", "فَاعِلٌ"],
+                        phrase: ["الْمُرْسَلُونَ", "صَدَقَ"],
+                        correct: ["فَاعِلٌ", "فِعْلٌ مَاضٍ"],
                         opts: ["فِعْلٌ مَاضٍ", "فَاعِلٌ", "مُضَافٌ", "مُضَافٌ إِلَيْهِ"],
                         rule: "Le sujet 'Al-Mursaluna' est au pluriel (marqué par le Waw/Raf'). Le verbe reste au singulier car le sujet est externe."
                     },
-                    {
-                        phrase: ["أَخَذْنَا", "كُمْ"],
+                                        {
                         translation: "Nous vous avons saisis/pris",
-                        correct: ["فِعْلٌ وَفَاعِلٌ", "مَفْعُولٌ بِهِ"],
+                        phrase: ["كُمْ", "أَخَذْنَا"],
+                        correct: ["مَفْعُولٌ بِهِ", "فِعْلٌ وَفَاعِلٌ"],
                         opts: ["فِعْلٌ وَفَاعِلٌ", "مَفْعُولٌ بِهِ", "مُضَافٌ إِلَيْهِ", "صِفَةٌ"],
                         rule: "Le 'Kum' est un pronom (Damir) attaché à un verbe. Il est donc Maf'ul Bihi (Objet qui subit l'action)."
                     },
-                    {
-                        phrase: ["رَزَقَ", "هُ", "اللهُ"],
+                                        {
                         translation: "Allah lui a accordé la subsistance",
-                        correct: ["فِعْلٌ", "مَفْعُولٌ بِهِ", "فَاعِلٌ"],
+                        phrase: ["اللهُ", "هُ", "رَزَقَ"],
+                        correct: ["فَاعِلٌ", "مَفْعُولٌ بِهِ", "فِعْلٌ"],
                         opts: ["فِعْلٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ", "مُبْتَدَأٌ"],
                         rule: "Le pronom 'Hu' attaché au verbe est l'objet (Maf'ul Bihi). Le nom 'Allahu' est Raf', c'est le sujet (Fa'il) qui vient après."
                     },
-                    {
-                        phrase: ["جَاءَ", "الْحَقُّ"],
+                                        {
                         translation: "La vérité est venue",
-                        correct: ["فِعْلٌ مَاضٍ", "فَاعِلٌ"],
+                        phrase: ["الْحَقُّ", "جَاءَ"],
+                        correct: ["فَاعِلٌ", "فِعْلٌ مَاضٍ"],
                         opts: ["فِعْلٌ مَاضٍ", "فَاعِلٌ", "مُبْتَدَأٌ", "خَبَرٌ"],
                         rule: "C'est une phrase verbale simple : Verbe passé + Sujet apparent (Raf')."
                     },
-                    {
-                        phrase: ["وَعَدَ", "اللهُ", "الْمُؤْمِنِينَ"],
+                                        {
                         translation: "Allah a promis aux croyants",
-                        correct: ["فِعْلٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ"],
+                        phrase: ["الْمُؤْمِنِينَ", "اللهُ", "وَعَدَ"],
+                        correct: ["مَفْعُولٌ بِهِ", "فَاعِلٌ", "فِعْلٌ"],
                         opts: ["فِعْلٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ", "مُضَافٌ إِلَيْهِ"],
                         rule: "Wa'ada (Verbe) + Allahu (Sujet Raf') + Al-Mu'minina (Objet Nasb, marqué par le Ya)."
                     },
                     {
-                        phrase: ["كَتَبَ", "الْمُسْلِمُ", "الدَّرْسَ"],
                         translation: "Le musulman a écrit la leçon",
-                        correct: ["فِعْلٌ مَاضٍ", "فَاعِلٌ", "مَفْعُولٌ بِهِ"],
+                        phrase: ["الدَّرْسَ", "الْمُسْلِمُ", "كَتَبَ"],
+                        correct: ["مَفْعُولٌ بِهِ", "فَاعِلٌ", "فِعْلٌ مَاضٍ"],
                         opts: ["فِعْلٌ مَاضٍ", "فَاعِلٌ", "مَفْعُولٌ بِهِ", "مَفْعُولٌ مُطْلَقٌ"],
                         rule: "Ordre standard : Verbe + Sujet + Objet."
                     }
@@ -2360,66 +2389,66 @@
                     </div>
                 `,
                 exercises: [
-                    {
-                        phrase: ["يَتَذَكَّرُ", "ونَ"],
+                                        {
                         translation: "Ils se rappellent",
-                        correct: ["فِعْلٌ مُضَارِعٌ", "فَاعِلٌ"],
+                        phrase: ["ونَ", "يَتَذَكَّرُ"],
+                        correct: ["فَاعِلٌ", "فِعْلٌ مُضَارِعٌ"],
                         opts: ["فِعْلٌ مُضَارِعٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ", "مُبْتَدَأٌ"],
                         rule: "Le 'Waw' (و) à la fin du verbe présent indique le pluriel masculin (Hum/Ils), c'est le sujet (Fa'il)."
                     },
-                    {
-                        phrase: ["تَكْتُبِ", "ينَ"],
+                                        {
                         translation: "Tu écris (féminin)",
-                        correct: ["فِعْلٌ مُضَارِعٌ", "فَاعِلٌ"],
+                        phrase: ["ينَ", "تَكْتُبِ"],
+                        correct: ["فَاعِلٌ", "فِعْلٌ مُضَارِعٌ"],
                         opts: ["فِعْلٌ مُضَارِعٌ", "فَاعِلٌ", "مُضَافٌ", "خَبَرٌ"],
                         rule: "Le 'Ya' (ي) à la fin indique la 2ème personne du singulier féminin (Anti/Tu), c'est le sujet (Fa'il)."
                     },
-                    {
-                        phrase: ["يَنْصُرُ", "هُ"],
+                                        {
                         translation: "Il le secourt/aide",
-                        correct: ["فِعْلٌ", "مَفْعُولٌ بِهِ"],
+                        phrase: ["هُ", "يَنْصُرُ"],
+                        correct: ["مَفْعُولٌ بِهِ", "فِعْلٌ"],
                         opts: ["فِعْلٌ", "مَفْعُولٌ بِهِ", "فَاعِلٌ", "مُضَافٌ إِلَيْهِ"],
                         rule: "Le pronom 'Hu' attaché à un verbe est toujours Maf'ul Bihi (l'objet qui subit l'action). Le sujet est 'Huwa' caché."
                     },
-                    {
-                        phrase: ["يُعَلِّمُ", "نِي"],
+                                        {
                         translation: "Il m'enseigne",
-                        correct: ["فِعْلٌ", "مَفْعُولٌ بِهِ"],
+                        phrase: ["نِي", "يُعَلِّمُ"],
+                        correct: ["مَفْعُولٌ بِهِ", "فِعْلٌ"],
                         opts: ["فِعْلٌ", "مَفْعُولٌ بِهِ", "فَاعِلٌ", "صِفَةٌ"],
                         rule: "Le 'Ni' (Nun de protection + Ya) est le pronom objet (Moi). Le verbe reste intact."
                     },
-                    {
-                        phrase: ["يُرِيدُ", "الشَّيْطَانُ"],
+                                        {
                         translation: "Le Diable veut",
-                        correct: ["فِعْلٌ مُضَارِعٌ", "فَاعِلٌ"],
+                        phrase: ["الشَّيْطَانُ", "يُرِيدُ"],
+                        correct: ["فَاعِلٌ", "فِعْلٌ مُضَارِعٌ"],
                         opts: ["فِعْلٌ مُضَارِعٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ", "مُبْتَدَأٌ"],
                         rule: "Le verbe est à la 3ème pers. sg. (Huwa). Le nom qui suit (Ash-Shaytanu) est Raf', c'est donc le Sujet Externe."
                     },
-                    {
-                        phrase: ["يَبْعَثُ", "هُمُ", "اللهُ"],
+                                        {
                         translation: "Allah les ressuscitera",
-                        correct: ["فِعْلٌ", "مَفْعُولٌ بِهِ", "فَاعِلٌ"],
+                        phrase: ["اللهُ", "هُمُ", "يَبْعَثُ"],
+                        correct: ["فَاعِلٌ", "مَفْعُولٌ بِهِ", "فِعْلٌ"],
                         opts: ["فِعْلٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ", "مُضَافٌ"],
                         rule: "Ordre fréquent : Verbe + Pronom Objet (Hum) + Sujet Nommé (Allahu, état Raf')."
                     },
-                    {
-                        phrase: ["يَضْرِبُ", "اللهُ", "الْأَمْثَالَ"],
+                                        {
                         translation: "Allah cite (frappe) les exemples",
-                        correct: ["فِعْلٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ"],
+                        phrase: ["الْأَمْثَالَ", "اللهُ", "يَضْرِبُ"],
+                        correct: ["مَفْعُولٌ بِهِ", "فَاعِلٌ", "فِعْلٌ"],
                         opts: ["فِعْلٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ", "مُضَافٌ إِلَيْهِ"],
                         rule: "Structure standard : Yadribu (Verbe) + Allahu (Sujet Raf') + Al-Amthala (Objet Nasb)."
                     },
-                    {
-                        phrase: ["يَهْدِي", "اللهُ", "مَنْ"],
+                                        {
                         translation: "Allah guide qui...",
-                        correct: ["فِعْلٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ"],
+                        phrase: ["مَنْ", "اللهُ", "يَهْدِي"],
+                        correct: ["مَفْعُولٌ بِهِ", "فَاعِلٌ", "فِعْلٌ"],
                         opts: ["فِعْلٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ", "حَرْفُ جَرٍّ"],
                         rule: "Le mot 'Man' (Qui/Celui qui) joue ici le rôle de l'objet (Maf'ul Bihi) car c'est la personne guidée."
                     },
-                    {
-                        phrase: ["يَكْتُبُ", "الْمُسْلِمُ", "الدَّرْسَ"],
+                                        {
                         translation: "Le musulman écrit la leçon",
-                        correct: ["فِعْلٌ مُضَارِعٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ"],
+                        phrase: ["الدَّرْسَ", "الْمُسْلِمُ", "يَكْتُبُ"],
+                        correct: ["مَفْعُولٌ بِهِ", "فَاعِلٌ", "فِعْلٌ مُضَارِعٌ"],
                         opts: ["فِعْلٌ مُضَارِعٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ", "فِعْلٌ مَاضٍ"],
                         rule: "Ordre standard au présent : Verbe + Sujet + Objet."
                     }
@@ -2612,66 +2641,66 @@
 </div>
                 `,
                 exercises: [
-                    {
-                        phrase: ["مُحَمَّدٌ", "هُوَ", "الرَّسُولُ"],
+                                        {
                         translation: "Muhammad, c'est lui le Messager",
-                        correct: ["مُبْتَدَأٌ", "ضَمِيرُ فَصْلٍ", "خَبَرٌ"],
+                        phrase: ["الرَّسُولُ", "هُوَ", "مُحَمَّدٌ"],
+                        correct: ["خَبَرٌ", "ضَمِيرُ فَصْلٍ", "مُبْتَدَأٌ"],
                         opts: ["مُبْتَدَأٌ", "ضَمِيرُ فَصْلٍ", "خَبَرٌ", "صِفَةٌ"],
                         rule: "L'ajout du pronom 'Huwa' (Damir Fasl) entre le sujet and l'information rend le Khabar défini (avec Alif-Lam)."
                     },
-                    {
-                        phrase: ["أَنْتَ", "الرَّسُولُ"],
+                                        {
                         translation: "Tu es le Messager",
-                        correct: ["مُبْتَدَأٌ", "خَبَرٌ"],
+                        phrase: ["الرَّسُولُ", "أَنْتَ"],
+                        correct: ["خَبَرٌ", "مُبْتَدَأٌ"],
                         opts: ["مُبْتَدَأٌ", "خَبَرٌ", "مُضَافٌ", "مُضَافٌ إِلَيْهِ"],
                         rule: "Ici, le Khabar est défini, ce qui implique une restriction ('C'est toi le messager')."
                     },
-                    {
-                        phrase: ["لَـ", "مُحَمَّدٌ", "رَسُولٌ"],
+                                        {
                         translation: "Muhammad est vraiment un messager",
-                        correct: ["لَامُ الِابْتِدَاءِ", "مُبْتَدَأٌ", "خَبَرٌ"],
+                        phrase: ["رَسُولٌ", "مُحَمَّدٌ", "لَـ"],
+                        correct: ["خَبَرٌ", "مُبْتَدَأٌ", "لَامُ الِابْتِدَاءِ"],
                         opts: ["لَامُ الِابْتِدَاءِ", "مُبْتَدَأٌ", "خَبَرٌ", "حَرْفُ جَرٍّ"],
                         rule: "Le 'Lam' ouvert (La) au début du Moubtada sert à insister (Vraiment). Il n'affecte pas l'état grammatical (reste Raf')."
                     },
-                    {
-                        phrase: ["إِنَّ", "مُحَمَّدًا", "لَـ", "رَسُولٌ"],
+                                        {
                         translation: "Certes, Muhammad est vraiment un messager",
-                        correct: ["حَرْفُ نَصْبٍ", "اِسْمُ إِنَّ", "اللَّامُ الْمُزَحْلَقَةُ", "خَبَرُ إِنَّ"],
+                        phrase: ["رَسُولٌ", "لَـ", "مُحَمَّدًا", "إِنَّ"],
+                        correct: ["خَبَرُ إِنَّ", "اللَّامُ الْمُزَحْلَقَةُ", "اِسْمُ إِنَّ", "حَرْفُ نَصْبٍ"],
                         opts: ["حَرْفُ نَصْبٍ", "اِسْمُ إِنَّ", "اللَّامُ الْمُزَحْلَقَةُ", "خَبَرُ إِنَّ"],
                         rule: "Quand 'Inna' commence la phrase, le 'Lam' glisse vers le Khabar (Lam Muzahlaqa). Le mot 'Muhammadan' est Nasb à cause de 'Inna'."
                     },
-                    {
-                        phrase: ["فِي", "الْمَسْجِدِ", "مُسْلِمٌ"],
+                                        {
                         translation: "Dans la mosquée, il y a un musulman",
-                        correct: ["جَارٌّ", "مَجْرُورٌ / خَبَرٌ مُقَدَّمٌ", "مُبْتَدَأٌ مُؤَخَّرٌ"],
+                        phrase: ["مُسْلِمٌ", "الْمَسْجِدِ", "فِي"],
+                        correct: ["مُبْتَدَأٌ مُؤَخَّرٌ", "مَجْرُورٌ / خَبَرٌ مُقَدَّمٌ", "جَارٌّ"],
                         opts: ["خَبَرٌ مُقَدَّمٌ", "مُبْتَدَأٌ مُؤَخَّرٌ", "مُضَافٌ", "صِفَةٌ"],
                         rule: "Le Khabar (Jar/Majrur) est avancé et le Moubtada est reculé et indéfini. Cela change le sens de 'être' à 'il y a'."
                     },
-                    {
-                        phrase: ["لَـ", "هُ", "بَيْتٌ"],
+                                        {
                         translation: "À lui appartient une maison / Il a une maison",
-                        correct: ["جَارٌّ", "مَجْرُورٌ / خَبَرٌ مُقَدَّمٌ", "مُبْتَدَأٌ مُؤَخَّرٌ"],
+                        phrase: ["بَيْتٌ",  "هُ", "لَـ"],
+                        correct: ["مُبْتَدَأٌ مُؤَخَّرٌ", "مَجْرُورٌ / خَبَرٌ مُقَدَّمٌ", "جَارٌّ"],
                         opts: ["خَبَرٌ مُقَدَّمٌ", "مُبْتَدَأٌ مُؤَخَّرٌ", "اِسْمُ إِنَّ", "فَاعِلٌ"],
                         rule: "L'inversion exprime ici la possession ou l'existence. 'Baytun' est le sujet retardé (Moubtada Mu'akkhar)."
                     },
-                    {
-                        phrase: ["كَانَ", "الْمُسْلِمُ", "كَبِيرًا"],
+                                        {
                         translation: "Le musulman était grand",
-                        correct: ["فِعْلٌ نَاقِصٌ", "اِسْمُ كَانَ", "خَبَرُ كَانَ"],
+                        phrase: ["كَبِيرًا", "الْمُسْلِمُ", "كَانَ"],
+                        correct: ["خَبَرُ كَانَ", "اِسْمُ كَانَ", "فِعْلٌ نَاقِصٌ"],
                         opts: ["فِعْلٌ نَاقِصٌ", "اِسْمُ كَانَ", "خَبَرُ كَانَ", "فَاعِلٌ"],
                         rule: "Kana lève le Moubtada (Raf') et installe le Khabar à l'état Nasb (Fatha/Tanwin)."
                     },
-                    {
-                        phrase: ["كُنْ", "تُمْ", "كَبِيرِينَ"],
+                                        {
                         translation: "Vous étiez grands",
-                        correct: ["فِعْلٌ نَاقِصٌ", "اِسْمُ كَانَ", "خَبَرُ كَانَ"],
+                        phrase: ["كَبِيرِينَ", "تُمْ", "كُنْ"],
+                        correct: ["خَبَرُ كَانَ", "اِسْمُ كَانَ", "فِعْلٌ نَاقِصٌ"],
                         opts: ["فِعْلٌ نَاقِصٌ", "اِسْمُ كَانَ", "خَبَرُ كَانَ", "مَفْعُولٌ بِهِ"],
                         rule: "Le pronom attaché 'Tum' est le Ism Kana. 'Kabirina' est le Khabar Kana à l'état Nasb (marqué par le Ya du pluriel)."
                     },
-                    {
-                        phrase: ["كَانَ", "اللهُ", "غَفُورًا"],
+                                        {
                         translation: "Allah était Pardonneur",
-                        correct: ["فِعْلٌ نَاقِصٌ", "اِسْمُ كَانَ", "خَبَرُ كَانَ"],
+                        phrase: ["غَفُورًا", "اللهُ", "كَانَ"],
+                        correct: ["خَبَرُ كَانَ", "اِسْمُ كَانَ", "فِعْلٌ نَاقِصٌ"],
                         opts: ["فِعْلٌ نَاقِصٌ", "اِسْمُ كَانَ", "خَبَرُ كَانَ", "فِعْلٌ تَامٌّ"],
                         rule: "Kana change l'état du Khabar en Nasb."
                     }
@@ -2973,61 +3002,54 @@
                     </div>
                 `,
                 exercises: [
-                    {
-                        phrase: ["سَـ", "يَقُولُ", "السُّفَهَاءُ"],
+                                        {
                         translation: "Les faibles d'esprit diront (bientôt)",
-                        correct: ["حَرْفُ اِسْتِقْبَالٍ", "فِعْلٌ مُضَارِعٌ", "فَاعِلٌ"],
+                        phrase: ["السُّفَهَاءُ", "يَقُولُ", "سَـ"],
+                        correct: ["فَاعِلٌ", "فِعْلٌ مُضَارِعٌ", "حَرْفُ اِسْتِقْبَالٍ"],
                         opts: ["حَرْفُ اِسْتِقْبَالٍ", "فِعْلٌ مُضَارِعٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ"],
                         rule: "Le préfixe 'Sa-' (سَـ) indique le futur proche. Le verbe reste Marfou' (Damma) et le sujet (Sufaha'u) est externe."
                     },
-                    {
-                        phrase: ["سَوْفَ", "يَعْلَمُونَ"],
+                                        {
                         translation: "Ils sauront (bientôt/plus tard)",
-                        correct: ["حَرْفُ اِسْتِقْبَالٍ", "فِعْلٌ مُضَارِعٌ"],
+                        phrase: ["يَعْلَمُونَ", "سَوْفَ"],
+                        correct: ["فِعْلٌ مُضَارِعٌ", "حَرْفُ اِسْتِقْبَالٍ"],
                         opts: ["حَرْفُ اِسْتِقْبَالٍ", "فِعْلٌ مُضَارِعٌ", "فِعْلٌ مَاضٍ", "مُبْتَدَأٌ"],
                         rule: "La particule 'Sawfa' indique un futur plus lointain. Elle précède le verbe au présent."
                     },
-                    {
-                        phrase: ["كَانُوا", "يَكْذِبُونَ"],
+                                        {
                         translation: "Ils mentaient (avaient l'habitude de mentir)",
-                        correct: ["فِعْلٌ مَاضٍ نَاقِصٌ", "فِعْلٌ مُضَارِعٌ"],
+                        phrase: ["يَكْذِبُونَ", "كَانُوا"],
+                        correct: ["فِعْلٌ مُضَارِعٌ", "فِعْلٌ مَاضٍ نَاقِصٌ"],
                         opts: ["فِعْلٌ مَاضٍ نَاقِصٌ", "فِعْلٌ مُضَارِعٌ", "فَاعِلٌ", "مَفْعُولٌ بِهِ"],
                         rule: "La combinaison de 'Kana' (au passé) et d'un verbe au Moudari' (présent) donne le sens de l'imparfait (action continue passée)."
                     },
-                    {
-                        phrase: ["لَنْ", "تَنَالُوا", "الْبِرَّ"],
+                                        {
                         translation: "Vous n'atteindrez jamais la piété",
-                        correct: ["حَرْفُ نَصْبٍ", "فِعْلٌ مُضَارِعٌ مَنْصُوبٌ", "مَفْعُولٌ بِهِ"],
+                        phrase: ["الْبِرَّ", "تَنَالُوا", "لَنْ"],
+                        correct: ["مَفْعُولٌ بِهِ", "فِعْلٌ مُضَارِعٌ مَنْصُوبٌ", "حَرْفُ نَصْبٍ"],
                         opts: ["حَرْفُ نَصْبٍ", "فِعْلٌ مُضَارِعٌ مَنْصُوبٌ", "فِعْلٌ مُضَارِعٌ مَرْفُوعٌ", "فَاعِلٌ"],
                         rule: "La particule 'Lan' (Jamais futur) rend le verbe Mansoub. Le signe est la suppression du 'Nun' final (au lieu de Tanalu-na)."
                     },
-                    {
-                        phrase: ["أُرِيدُ", "أَنْ", "أَكُونَ"],
+                                        {
                         translation: "Je veux que je sois (Je veux être)",
-                        correct: ["فِعْلٌ مُضَارِعٌ", "حَرْفُ نَصْبٍ", "فِعْلٌ مُضَارِعٌ مَنْصُوبٌ"],
+                        phrase: ["أَكُونَ", "أَنْ", "أُرِيدُ"],
+                        correct: ["فِعْلٌ مُضَارِعٌ مَنْصُوبٌ", "حَرْفُ نَصْبٍ", "فِعْلٌ مُضَارِعٌ"],
                         opts: ["فِعْلٌ مُضَارِعٌ", "حَرْفُ نَصْبٍ", "فِعْلٌ مُضَارِعٌ مَنْصُوبٌ", "مُضَافٌ إِلَيْهِ"],
                         rule: "'An' (que/de) est un Harf Nasb. Le verbe 'Akuna' prend une Fatha à la fin (signe du Mansoub singulier)."
                     },
-                    {
-                        phrase: ["لَمْ", "يَلِدْ"],
-                        translation: "Il n'a pas engendré",
-                        correct: ["حَرْفُ جَزْمٍ", "فِعْلٌ مُضَارِعٌ مَجْزُومٌ"],
-                        opts: ["حَرْفُ جَزْمٍ", "فِعْلٌ مُضَارِعٌ مَجْزُومٌ", "فِعْلٌ مُضَارِعٌ مَنْصُوبٌ", "فَاعِلٌ"],
-                        rule: "'Lam' (Négation passé) rend le verbe Majzoum. Le signe est le Soukoun (°) sur la dernière lettre."
-                    },
-                    {
-                        phrase: ["فَلْـ", "يَتَّقُوا", "اللهَ"],
+                                        {
                         translation: "Qu'ils craignent donc Allah",
-                        correct: ["لَامُ الْأَمْرِ (جَازِمَةٌ)", "فِعْلٌ مُضَارِعٌ مَجْزُومٌ", "لَفْظُ الْجَلَالَةِ (مَفْعُولٌ بِهِ)"],
+                        phrase: ["اللهَ",  "يَتَّقُوا", "فَلْـ"],
+                        correct: ["لَفْظُ الْجَلَالَةِ (مَفْعُولٌ بِهِ)", "فِعْلٌ مُضَارِعٌ مَجْزُومٌ", "لَامُ الْأَمْرِ (جَازِمَةٌ)"],
                         opts: ["لَامُ الْأَمْرِ", "فِعْلٌ مُضَارِعٌ مَجْزُومٌ", "فِعْلٌ مُضَارِعٌ مَرْفُوعٌ", "مُضَافٌ إِلَيْهِ"],
                         rule: "Le 'Lam' de l'ordre (Li/Fal) force le verbe à l'état Majzoum. Ici, le 'Nun' du pluriel est supprimé (Yattaqu-na -> Yattaqu)."
                     },
-                    {
-                        phrase: ["لَمْ", "يَلِدْ"],
+                                        {
                         translation: "Il n'a pas enfanté",
-                        correct: ["حَرْفُ جَزْمٍ", "فِعْلٌ مَجْزُومٌ"],
+                        phrase: ["يَلِدْ", "لَمْ"],
+                        correct: ["فِعْلٌ مَجْزُومٌ", "حَرْفُ جَزْمٍ"],
                         opts: ["حَرْفُ جَزْمٍ", "فِعْلٌ مَجْزُومٌ", "حَرْفُ نَصْبٍ", "فِعْلٌ مَنْصُوبٌ"],
-                        rule: "Lam impose le Jazm."
+                        rule: "'Lam' (Négation passé) rend le verbe Majzoum. Le signe est le Soukoun (°) sur la dernière lettre."
                     }
                 ]
             },
@@ -3257,66 +3279,66 @@
                         </div>
                 `,
                 exercises: [
-                    {
-                        phrase: ["لَا", "تَحْزَنْ"],
+                                        {
                         translation: "Ne sois pas triste",
-                        correct: ["حَرْف نَهْي", "فِعْل مُضَارِع مَجْزُوم"],
+                        phrase: ["تَحْزَنْ", "لَا"],
+                        correct: ["فِعْل مُضَارِع مَجْزُوم", "حَرْف نَهْي"],
                         opts: ["حَرْف نَهْي", "فِعْل مُضَارِع مَجْزُوم", "حَرْف نَفْي", "فِعْل مُضَارِع مَرْفُوع"],
                         rule: "Le 'La' de l'interdiction (Nahiya) force le verbe au présent à l'état Majzoum. Ici, le signe est le Soukoun sur la dernière lettre."
                     },
-                    {
-                        phrase: ["لَا", "تُشْرِكْ", "بِاللهِ"],
+                                        {
                         translation: "N'associe rien à Allah",
-                        correct: ["حَرْف نَهْي", "فِعْل مُضَارِع مَجْزُوم", "جَار وَ مَجْرُور"],
+                        phrase: ["بِاللهِ", "تُشْرِكْ", "لَا"],
+                        correct: ["جَار وَ مَجْرُور", "فِعْل مُضَارِع مَجْزُوم", "حَرْف نَهْي"],
                         opts: ["حَرْف نَهْي", "فِعْل مُضَارِع مَجْزُوم", "فِعْل مَاض", "مُبْتَدَأ"],
                         rule: "C'est une interdiction formelle. Le verbe 'Tushrik' est Majzoum (apocopé) à cause de la particule 'La'."
                     },
-                    {
-                        phrase: ["لَا", "يَعْلَمُونَ"],
+                                        {
                         translation: "Ils ne savent pas",
-                        correct: ["حَرْف نَفْي", "فِعْل مُضَارِع مَرْفُوع"],
+                        phrase: ["يَعْلَمُونَ", "لَا"],
+                        correct: ["فِعْل مُضَارِع مَرْفُوع", "حَرْف نَفْي"],
                         opts: ["حَرْف نَهْي", "فِعْل مُضَارِع مَجْزُوم", "حَرْف نَفْي", "فِعْل مُضَارِع مَرْفُوع"],
                         rule: "C'est une simple information négative (Nafiya). Le verbe reste 'Marfou'' (le Nun du pluriel est maintenu)."
                     },
-                    {
-                        phrase: ["اُخْرُجْ"],
+                                        {
                         translation: "Sors !",
+                        phrase: ["اُخْرُجْ"],
                         correct: ["فِعْل أَمْر"],
                         opts: ["فِعْل أَمْر", "فِعْل مَاض", "فِعْل مُضَارِع", "فَاعِل"],
                         rule: "Au présent 'Takhruju', la 2ème lettre racine (Ra) porte une Damma. Donc la Hamza de l'impératif prend une Damma."
                     },
-                    {
-                        phrase: ["اِضْرِبْ", "بِعَصَاكَ"],
+                                        {
                         translation: "Frappe avec ton bâton",
-                        correct: ["فِعْل أَمْر", "جَار وَ مَجْرُور"],
+                        phrase: ["بِعَصَاكَ", "اِضْرِبْ"],
+                        correct: ["جَار وَ مَجْرُور", "فِعْل أَمْر"],
                         opts: ["فِعْل أَمْر", "فِعْل مَاض", "مُبْتَدَأ", "خَبَر"],
                         rule: "Au présent 'Tadribu', la 2ème lettre racine (Ra) porte une Kasra. Donc la Hamza de l'impératif prend une Kasra."
                     },
-                    {
-                        phrase: ["قُولَا", "لَهُ"],
+                                        {
                         translation: "Dites-lui (vous deux)",
-                        correct: ["فِعْل أَمْر", "فَاعِل (أَلِفُ الاِثْنَيْنِ)"],
+                        phrase: ["لَهُ", "قُولَا"],
+                        correct: ["فَاعِل (أَلِفُ الاِثْنَيْنِ)", "فِعْل أَمْر"],
                         opts: ["فِعْل أَمْر", "فِعْل مُضَارِع", "مُضَاف", "صِفَة"],
                         rule: "C'est un impératif duel. Le signe du Majzoum (base de l'impératif) est la suppression du 'Nun' (origine : Taqulani -> Qula)."
                     },
-                    {
-                        phrase: ["رَبَّنَا", "اغْفِرْ", "لَنَا"],
+                                        {
                         translation: "Notre Seigneur, pardonne-nous",
-                        correct: ["مُنَادَى", "فِعْل طَلَب / دُعَاء", "جَار وَ مَجْرُور"],
+                        phrase: ["لَنَا", "اغْفِرْ", "رَبَّنَا"],
+                        correct: ["جَار وَ مَجْرُور", "فِعْل طَلَب / دُعَاء", "مُنَادَى"],
                         opts: ["فِعْل طَلَب", "فِعْل مَاض", "مُضَاف", "مُبْتَدَأ"],
                         rule: "Grammaticalement, c'est un impératif (Amr). Mais par respect pour Allah, on qualifie cette forme de 'Talab' (Requête) ou 'Du'a'."
                     },
-                    {
-                        phrase: ["اهْدِنَا", "الصِّرَاطَ"],
+                                        {
                         translation: "Guide-nous (sur) le chemin",
-                        correct: ["فِعْل طَلَب", "مَفْعُول بِهِ 1 (نَا)", "مَفْعُول بِهِ 2"],
+                        phrase: ["الصِّرَاطَ", "اهْدِنَا"],
+                        correct: ["مَفْعُول بِهِ 2", "مَفْعُول بِهِ 1 (نَا)", "فِعْل طَلَب"],
                         opts: ["فِعْل طَلَب", "فَاعِل", "مُضَاف إِلَيْهِ", "حَرْف جَرّ"],
                         rule: "La forme est un impératif construit sur la suppression de la voyelle longue finale (Ahdi -> Ahdi), utilisé comme invocation."
                     },
-                    {
-                        phrase: ["اِجْلِسْ", "هُنَا"],
+                                        {
                         translation: "Assieds-toi ici",
-                        correct: ["فِعْل أَمْر", "ظَرْف مَكَان"],
+                        phrase: ["هُنَا", "اِجْلِسْ"],
+                        correct: ["ظَرْف مَكَان", "فِعْل أَمْر"],
                         opts: ["فِعْل أَمْر", "ظَرْف مَكَان", "فِعْل مَجْزُوم", "مَفْعُول بِهِ"],
                         rule: "Impératif + complément de lieu au Nasb."
                     }
@@ -3637,68 +3659,61 @@
                         ],
                         "rule": "La phrase débute par un impératif (قُلْ). La particule 'Innamā' (إِنَّمَا) restreint l'action qui suit. 'Umirtu' (أُمِرْتُ) est un verbe au passé passif dont le suffixe 'Tu' (تُ) est le Na'ib Fa'il. La structure 'An A'buda' (أَنْ أَعْبُدَ) complète le sens de l'ordre reçu. 'Allāha' (اللَّهَ) est au cas Mansūb car il est l'objet (Maf'ūl Bihī) de l'adoration. Enfin, 'Ushrika' (أُشْرِكَ) est lié par coordination (Atf) au verbe précédent."
                     },
-                    {
-                        phrase: ["خُلِقَ", "الْإِنسَانُ"],
+                                        {
                         translation: "L'homme a été créé",
-                        correct: ["فِعْل َمْجُهول", "نَائِب فَاعِل"],
+                        phrase: ["الْإِنسَانُ", "خُلِقَ"],
+                        correct: ["نَائِب فَاعِل", "فِعْل َمْجُهول"],
                         opts: ["فِعْل َمْجُهول", "نَائِب فَاعِل", "فِعْل َمْعُلوم", "فَاعِل"],
                         rule: "Le verbe 'Khuliqa' a une Damma au début et une Kasra à l'avant-dernière lettre (Passé Passif). Le mot qui suit devient Na'ib Fa'il (Raf')."
                     },
-                    {
-                        phrase: ["يُسْأَلُ", "عَنْ"],
-                        translation: "Il est interrogé sur...",
+                                        {
+                        translation: "Il est interrogé ...",
+                        phrase: ["يُسْأَلُ"],
                         correct: ["فِعْل َمْجُهول"],
                         opts: ["فِعْل َمْجُهول", "فِعْل َمْعُلوم", "مُبْتَدَأ", "خَبَر"],
                         rule: "Le verbe présent (Moudari') passif commence par une Damma et l'avant-dernière lettre porte une Fatha (Yus'alu)."
                     },
-                    {
-                        phrase: ["ضُرِبَ", "زَيْدٌ"],
+                                        {
                         translation: "Zayd a été frappé",
-                        correct: ["فِعْل َمْجُهول", "نَائِب فَاعِل"],
-                        opts: ["نَائِب فَاعِل", "فَاعِل", "مَفْعُول بِهِ", "مُضَاف إِلَيْهِ"],
+                        phrase: ["زَيْدٌ", "ضُرِبَ"],
+                        correct: ["نَائِب فَاعِل", "فِعْل َمْجُهول"],
+                        opts: ["نَائِب فَاعِل", "فَاعِل", "مَفْعُول بِهِ", "مُضَاف إِلَيْهِ", "فِعْل َمْجُهول"],
                         rule: "Dans la forme passive, l'objet (Zayd) prend la place du sujet. Il s'appelle 'Na'ib Fa'il' et prend l'état Raf' (Damma)."
                     },
-                    {
-                        phrase: ["تُحْشَرُ", "ونَ"],
+                                        {
                         translation: "Vous serez rassemblés",
-                        correct: ["فِعْل َمْجُهول", "نَائِب فَاعِل"],
+                        phrase: ["ونَ", "تُحْشَرُ"],
+                        correct: ["نَائِب فَاعِل", "فِعْل َمْجُهول"],
                         opts: ["فِعْل َمْجُهول", "نَائِب فَاعِل", "فَاعِل", "مَفْعُول بِهِ"],
                         rule: "Le 'Waw' du pluriel est ici le Na'ib Fa'il (le sujet qui subit l'action) car le verbe est passif (Tuhsharuna)."
                     },
-                    {
-                        phrase: ["الَّذِينَ", "آمَنُوا"],
+                                        {
                         translation: "Ceux qui ont cru",
-                        correct: ["اِسْم َمْوُصول", "صِلَةُ الْمَوْصُول"],
+                        phrase: ["آمَنُوا", "الَّذِينَ"],
+                        correct: ["صِلَةُ الْمَوْصُول", "اِسْم َمْوُصول"],
                         opts: ["اِسْم َمْوُصول", "صِلَةُ الْمَوْصُول", "اِسْم إِشَارَة", "مُشَار إِلَيْهِ"],
                         rule: "'Alladhina' est le relatif pluriel masculin. La phrase verbale qui suit est appelée 'Silat al-Mawsul' (la connexion)."
                     },
-                    {
-                        phrase: ["الَّتِي", "تُجَادِلُ", "كَ"],
+                                        {
                         translation: "Celle qui discute avec toi",
-                        correct: ["اِسْم َمْوُصول", "فِعْل مُضَارِع", "مَفْعُول بِهِ"],
+                        phrase: ["كَ", "تُجَادِلُ", "الَّتِي"],
+                        correct: ["مَفْعُول بِهِ", "فِعْل مُضَارِع", "اِسْم َمْوُصول"],
                         opts: ["اِسْم َمْوُصول", "حَرْف جَرّ", "مُبْتَدَأ", "فَاعِل"],
                         rule: "'Allati' est le relatif singulier féminin. Il s'accorde avec le mot qu'il remplace (ici une femme)."
                     },
-                    {
-                        phrase: ["يَهْدِي", "مَنْ", "يَشَاءُ"],
+                                        {
                         translation: "Il guide qui Il veut",
-                        correct: ["فِعْل", "اِسْم َمْوُصول (لِلْعَاقِل)", "صِلَةُ الْمَوْصُول"],
-                        opts: ["اِسْم َمْوُصول", "حَرْف شَرْط", "حَرْف جَرّ", "اِسْم إِشَارَة"],
+                        phrase: ["يَشَاءُ", "مَنْ", "يَهْدِي"],
+                        correct: ["فِعْل", "اِسْم َمْوُصول", "صِلَةُ الْمَوْصُول"],
+                        opts: ["اِسْم َمْوُصول", "حَرْف شَرْط", "حَرْف فِعْل", "اِسْم الْمَوْصُول"],
                         rule: "'Man' est utilisé pour les êtres doués de raison (humains, anges...). Il joue ici le rôle de l'objet (celui qu'Il guide)."
                     },
-                    {
-                        phrase: ["يَخْلُقُ", "مَا", "يَشَاءُ"],
+                                        {
                         translation: "Il crée ce qu'Il veut",
-                        correct: ["فِعْل", "اِسْم َمْوُصول (لِغَيْرِ الْعَاقِل)", "صِلَةُ الْمَوْصُول"],
-                        opts: ["اِسْم َمْوُصول", "حَرْف نَفْي", "اِسْم اِسْتِفْهَام", "مُبْتَدَأ"],
+                        phrase: ["يَشَاءُ", "مَا", "يَخْلُقُ"],
+                        correct: ["صِلَةُ الْمَوْصُول", "اِسْم َمْوُصول", "فِعْل"],
+                        opts: ["اِسْم َمْوُصول", "حَرْف نَفْي", "صِلَةُ الْمَوْصُول", "فِعْل"],
                         rule: "'Ma' est utilisé pour ce qui est non-doué de raison (les choses, les événements). Ici, c'est 'Ce que'."
-                    },
-                    {
-                        phrase: ["خُلِقَ", "الْإِنْسَانُ"],
-                        translation: "L'homme a été créé",
-                        correct: ["فِعْل مَجْهُول", "نَائِب فَاعِل"],
-                        opts: ["فِعْل مَجْهُول", "نَائِب فَاعِل", "فَاعِل", "مَفْعُول بِهِ"],
-                        rule: "Passif + sujet substitut au Raf'."
                     }
                 ]
             }
@@ -3768,6 +3783,7 @@
         }
         function startDrag(e, label, originalEl) {
             if (state !== 'playing') return;
+            if (originalEl.classList.contains('disabled')) return;
             if (e.cancelable) e.preventDefault();
             const touch = e.touches ? e.touches[0] : e;
             dragGhost = document.createElement('div'); dragGhost.innerText = label; dragGhost.className = 'drag-ghost';
@@ -3789,10 +3805,13 @@
                 const elUnder = document.elementFromPoint(endTouch.clientX, endTouch.clientY);
                 if (elUnder && elUnder.classList.contains('drop-zone')) {
                     const slotIdx = parseInt(elUnder.id.split('-')[1]);
+                    const prevLabel = userAnswers[slotIdx];
                     userAnswers[slotIdx] = label;
                     const slot = document.getElementById(`slot-${slotIdx}`);
                     slot.innerText = label; slot.className = "drop-zone w-full slot-filled";
-                    slot.onclick = () => { if (state === 'playing') { userAnswers[slotIdx] = null; slot.innerText = "Placer ici"; slot.className = "drop-zone w-full"; document.getElementById('btn-action').disabled = true; } };
+                    slot.onclick = () => { if (state === 'playing') { userAnswers[slotIdx] = null; slot.innerText = "Placer ici"; slot.className = "drop-zone w-full"; document.querySelectorAll('.draggable-label').forEach(l => { if (l.innerText === label) l.classList.remove('disabled'); }); document.getElementById('btn-action').disabled = true; } };
+                    originalEl.classList.add('disabled');
+                    if (prevLabel) document.querySelectorAll('.draggable-label').forEach(l => { if (l.innerText === prevLabel) l.classList.remove('disabled'); });
                 }
                 document.querySelectorAll('.drop-zone').forEach(dz => dz.classList.remove('drag-over'));
                 if (dragGhost) { dragGhost.remove(); dragGhost = null; }
@@ -3834,9 +3853,21 @@
             });
         };
         if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-      .then(() => console.log("Application prête pour le mode hors-ligne !"))
-      .catch((err) => console.log("Erreur Service Worker :", err));
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').then(reg => {
+                    // On surveille les mises à jour
+                    reg.addEventListener('updatefound', () => {
+                        const newWorker = reg.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            // Si le nouveau script est installé et prêt
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // On affiche la notification
+                                document.getElementById('update-toast').classList.remove('hidden');
+                            }
+                        });
+                    });
+                });
+            });
         }
         // --- LOGIQUE MODE NUIT ---
         function applyDarkModeStyles() {
