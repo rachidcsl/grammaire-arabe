@@ -1221,7 +1221,7 @@
                         <div
                             style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
                             <h3 style="margin: 0 0 0.8rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.1rem; font-weight: 700;">
-                                Qu'est-ce qu'un مُرَكَّبٌ (Mourrakab) ?</h3>
+                                Qu'est-ce qu'un مُرَكَّبٌ ?</h3>
                             <p style="margin: 0.5rem 0; font-size: 0.95rem; line-height: 1.6;"><strong>Définition :</strong> Un <span
                                     style="font-family: 'Lateef'; font-size: 2rem;">مُرَكَّبٌ</span> est un groupe de noms (<span
                                     style="font-family: 'Lateef'; font-size: 2rem;">اِسْمٌ</span>) qui ne forme pas une phrase complète.
@@ -3740,6 +3740,8 @@
         };
         let currentModId = null, currentIdx = 0, userAnswers = [], score = 0, state = 'playing';
         let dragGhost = null;
+        let gameState = null; // Sauvegarde l'état du jeu
+        let loadedExerciseIdx = -1; // Track quel exercice est actuellement chargé
         function initializeAccordion() {
             const courseBody = document.getElementById('course-body');
             if (!courseBody) return;
@@ -3792,6 +3794,16 @@
         }
         function showMenu() { document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-menu').classList.remove('hidden'); window.scrollTo(0, 0); }
         function showCourse(id) {
+            // Sauvegarder l'état du jeu s'il y a une partie en cours
+            if (currentModId === id && state === 'playing') {
+                gameState = {
+                    modId: currentModId,
+                    currentIdx: currentIdx,
+                    score: score,
+                    userAnswers: JSON.parse(JSON.stringify(userAnswers))
+                };
+            }
+            
             currentModId = id;
             const mod = modulesData[id];
             const keys = Object.keys(modulesData);
@@ -3800,7 +3812,7 @@
             document.getElementById('course-header-title').innerText = mod.name;
             document.getElementById('course-main-title').innerText = mod.title;
             document.getElementById('course-body').innerHTML = mod.course;
-            document.getElementById('btn-to-practice').onclick = () => startGame(id);
+            document.getElementById('btn-to-practice').onclick = () => gameState && gameState.modId === id ? resumeGame(id) : startGame(id);
 
             // Gestion des chevrons
             const prevBtn = document.getElementById('btn-prev-mod');
@@ -3826,11 +3838,17 @@
             initializeAccordion();
             window.scrollTo(0, 0);
         }
-        function startGame(id) { currentModId = id; currentIdx = 0; score = 0; document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-game').classList.remove('hidden'); loadExercise(); }
+        function startGame(id) { currentModId = id; currentIdx = 0; score = 0; userAnswers = []; gameState = null; loadedExerciseIdx = -1; document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-game').classList.remove('hidden'); loadExercise(); }
+        function resumeGame(id) { if (gameState && gameState.modId === id) { currentModId = gameState.modId; currentIdx = gameState.currentIdx; score = gameState.score; userAnswers = JSON.parse(JSON.stringify(gameState.userAnswers)); loadedExerciseIdx = currentIdx; } document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-game').classList.remove('hidden'); loadExercise(); }
         function showCourseFromGame() { if (currentModId) showCourse(currentModId); }
         function loadExercise() {
             const mod = modulesData[currentModId], ex = mod.exercises[currentIdx];
-            state = 'playing'; userAnswers = new Array(ex.phrase.length).fill(null);
+            state = 'playing';
+            // Réinitialiser userAnswers si c'est un nouvel exercice
+            if (loadedExerciseIdx !== currentIdx) {
+                userAnswers = new Array(ex.phrase.length).fill(null);
+                loadedExerciseIdx = currentIdx;
+            }
             document.getElementById('game-mod-title').innerText = mod.title;
             document.getElementById('game-progress').innerText = `DÉFI ${currentIdx + 1} / ${mod.exercises.length}`;
             document.getElementById('game-translation').innerText = ex.translation;
@@ -3850,6 +3868,23 @@
                 el.onmousedown = (e) => startDrag(e, o, el); el.ontouchstart = (e) => startDrag(e, o, el);
                 labelCont.appendChild(el);
             });
+            
+            // Restaurer l'état visuel des réponses précédentes
+            userAnswers.forEach((answer, i) => {
+                if (answer) {
+                    const slot = document.getElementById(`slot-${i}`);
+                    slot.innerText = answer;
+                    slot.className = "drop-zone w-full slot-filled";
+                    slot.onclick = () => { if (state === 'playing') { userAnswers[i] = null; slot.innerText = "Placer ici"; slot.className = "drop-zone w-full"; document.querySelectorAll('.draggable-label').forEach(l => { if (l.innerText === answer) l.classList.remove('disabled'); }); document.getElementById('btn-action').disabled = true; } };
+                    // Désactiver le label correspondant
+                    document.querySelectorAll('.draggable-label').forEach(label => {
+                        if (label.innerText === answer) label.classList.add('disabled');
+                    });
+                    // Activer le bouton si tous les slots sont remplis
+                    document.getElementById('btn-action').disabled = false;
+                }
+            });
+            
             applyDarkModeStyles();
         }
         function startDrag(e, label, originalEl) {

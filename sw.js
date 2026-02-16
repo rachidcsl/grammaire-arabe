@@ -1,4 +1,4 @@
-const CACHE_NAME = 'arabe-v3'; // Passez à v3, v4, etc., à chaque mise à jour
+const CACHE_NAME = 'arabe-v5'; // Passez à v3, v4, etc., à chaque mise à jour
 const ASSETS = [
   './index.html',
   './manifest.json',
@@ -17,7 +17,17 @@ self.addEventListener('install', (event) => {
 
 // Activation : on nettoie les anciens caches si besoin
 self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
 });
 
 // Fetch : priorité au cache pour une vitesse maximale (Offline First)
