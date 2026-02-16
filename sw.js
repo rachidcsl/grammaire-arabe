@@ -17,17 +17,7 @@ self.addEventListener('install', (event) => {
 
 // Activation : on nettoie les anciens caches si besoin
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
-  );
+  event.waitUntil(self.clients.claim());
 });
 
 // Fetch : priorité au cache pour une vitesse maximale (Offline First)
