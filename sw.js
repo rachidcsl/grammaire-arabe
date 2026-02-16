@@ -1,4 +1,4 @@
-const CACHE_NAME = 'arabe-v2';
+const CACHE_NAME = 'arabe-v3'; // Passez à v3, v4, etc., à chaque mise à jour
 const ASSETS = [
   './index.html',
   './manifest.json',

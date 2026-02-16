@@ -377,6 +377,40 @@
                 width: calc(33.333% - 11px) !important;
                 max-width: 100% !important;
             }
+
+            #course-main-title {
+                font-size: 1.25rem !important;
+            }
+        }
+
+        /* Styles pour accordéon des cours */
+        #course-body h2, #course-body h3 {
+            cursor: pointer;
+            user-select: none;
+            padding: 0.5rem 0 !important;
+        }
+
+        #course-body h2::before, #course-body h3::before {
+            content: "▼ ";
+            display: inline-block;
+            margin-right: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        #course-body h2.collapsed::before, #course-body h3.collapsed::before {
+            content: "▶ ";
+            transform: rotate(0deg);
+        }
+
+        .course-section {
+            display: block;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            overflow: hidden;
+        }
+
+        .course-section.collapsed {
+            max-height: 0;
+            opacity: 0;
         }
 
         /* --- VARIABLES DE THÈME --- */
@@ -549,8 +583,7 @@
             </div>
         </div>
         <div class="flex-1 p-6 md:p-12 max-w-6xl mx-auto w-full overflow-y-auto">
-            <h2 id="course-main-title" class="text-4xl font-black mb-10 border-b-8 border-blue-50 pb-6">Contenu du cours
-            </h2>
+            <h2 id="course-main-title" class="text-4xl md:text-4xl font-black mb-10 border-b-8 border-blue-50 pb-6">Contenu du cours</h2>
             <div id="course-body" class="pb-32"></div>
         </div>
     </div>
@@ -646,8 +679,6 @@
                             module se concentre uniquement sur l'étude du <span
                                 style="font-family: 'Lateef'; font-size: 2rem;">اِسْم</span>.</p>
                     </div>
-
-                    <hr style="border: none; border-top: 2px solid #ddd; margin: 2rem 0;">
 
                     <div style="margin-bottom: 2rem;">
                         <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">
@@ -1197,20 +1228,9 @@
                                 C'est un fragment de phrase.</p>
                             <p style="margin: 0.5rem 0; font-size: 0.95rem; line-height: 1.6;"><em>Ex. :</em> Une belle voiture, Cette
                                 maison-là, Le stylo de Mohamed, dans la mosquée.</p>
+                            <p style="margin: 1rem 0; font-size: 0.95rem; line-height: 1.6; font-weight: 600;">Il existe 4 types principaux de
+                            Mourrakabaat en arabe.</p>    
                         </div>
-
-                        <p style="margin: 1rem 0; font-size: 0.95rem; line-height: 1.6; font-weight: 600;">Il existe 4 types principaux de
-                            Mourrakabaat en arabe :</p>
-                        <ol style="margin: 1rem 0; padding-left: 1.5rem; font-size: 0.95rem; line-height: 1.7;">
-                            <li style="margin: 0.5rem 0;"><strong style="color: #0066cc;">Mawsuf / Sifah</strong> (L'adjectif)</li>
-                            <li style="margin: 0.5rem 0;"><strong style="color: #0066cc;">Ism al-Ishara / Mushar Ilayh</strong> (La
-                                désignation)</li>
-                            <li style="margin: 0.5rem 0;"><strong style="color: #0066cc;">Harf Jarr / Majrur</strong> (La préposition)</li>
-                            <li style="margin: 0.5rem 0;"><strong style="color: #0066cc;">Idafah</strong> (L'annexion / La possession)</li>
-                        </ol>
-                    </div>
-
-                    <hr style="border: none; border-top: 2px solid #ddd; margin: 2rem 0;">
 
                     <h2 style="margin: 2rem 0 1rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.25rem; font-weight: 700;">1.
                         Mawsuf wa Sifah (مَوْصُوفٌ وَصِفَةٌ)</h2>
@@ -3720,6 +3740,56 @@
         };
         let currentModId = null, currentIdx = 0, userAnswers = [], score = 0, state = 'playing';
         let dragGhost = null;
+        function initializeAccordion() {
+            const courseBody = document.getElementById('course-body');
+            if (!courseBody) return;
+            
+            // Créer les sections pour les H2
+            const h2Headings = courseBody.querySelectorAll('h2');
+            h2Headings.forEach(heading => {
+                heading.classList.add('collapsed');
+                heading.style.cursor = 'pointer';
+                
+                const section = document.createElement('div');
+                section.className = 'course-section collapsed';
+                
+                let nextElement = heading.nextElementSibling;
+                while (nextElement && nextElement.tagName !== 'H2') {
+                    const elementToMove = nextElement;
+                    nextElement = nextElement.nextElementSibling;
+                    section.appendChild(elementToMove);
+                }
+                heading.parentElement.insertBefore(section, heading.nextElementSibling);
+                
+                heading.addEventListener('click', () => {
+                    heading.classList.toggle('collapsed');
+                    section.classList.toggle('collapsed');
+                });
+            });
+            
+            // Créer les sections pour les H3 (après que les H2 sections soient créées)
+            const h3Headings = courseBody.querySelectorAll('h3');
+            h3Headings.forEach(heading => {
+                heading.classList.add('collapsed');
+                heading.style.cursor = 'pointer';
+                
+                const section = document.createElement('div');
+                section.className = 'course-section collapsed';
+                
+                let nextElement = heading.nextElementSibling;
+                while (nextElement && nextElement.tagName !== 'H2' && nextElement.tagName !== 'H3') {
+                    const elementToMove = nextElement;
+                    nextElement = nextElement.nextElementSibling;
+                    section.appendChild(elementToMove);
+                }
+                heading.parentElement.insertBefore(section, heading.nextElementSibling);
+                
+                heading.addEventListener('click', () => {
+                    heading.classList.toggle('collapsed');
+                    section.classList.toggle('collapsed');
+                });
+            });
+        }
         function showMenu() { document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-menu').classList.remove('hidden'); window.scrollTo(0, 0); }
         function showCourse(id) {
             currentModId = id;
@@ -3753,6 +3823,7 @@
             document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden'));
             document.getElementById('screen-course').classList.remove('hidden');
             applyDarkModeStyles();
+            initializeAccordion();
             window.scrollTo(0, 0);
         }
         function startGame(id) { currentModId = id; currentIdx = 0; score = 0; document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-game').classList.remove('hidden'); loadExercise(); }
