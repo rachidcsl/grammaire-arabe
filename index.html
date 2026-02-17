@@ -3938,6 +3938,7 @@
             dragGhost = document.createElement('div'); dragGhost.innerText = label; dragGhost.className = 'drag-ghost';
             dragGhost.style.width = originalEl.offsetWidth + 'px'; dragGhost.style.height = originalEl.offsetHeight + 'px';
             document.body.appendChild(dragGhost);
+            let scrollInterval = null;
             const moveAt = (clientX, clientY) => {
                 dragGhost.style.left = clientX - dragGhost.offsetWidth / 2 + 'px';
                 dragGhost.style.top = clientY - dragGhost.offsetHeight / 2 + 'px';
@@ -3948,8 +3949,18 @@
                 const elUnder = document.elementFromPoint(moveTouch.clientX, moveTouch.clientY);
                 document.querySelectorAll('.drop-zone').forEach(dz => dz.classList.remove('drag-over'));
                 if (elUnder && elUnder.classList.contains('drop-zone')) elUnder.classList.add('drag-over');
+                
+                // Auto-scroll à proximité des bords
+                const scrollThreshold = 80;
+                const scrollSpeed = 5;
+                if (moveTouch.clientY < scrollThreshold) {
+                    window.scrollBy(0, -scrollSpeed);
+                } else if (window.innerHeight - moveTouch.clientY < scrollThreshold) {
+                    window.scrollBy(0, scrollSpeed);
+                }
             };
             const onEnd = (event) => {
+                clearInterval(scrollInterval);
                 const endTouch = event.changedTouches ? event.changedTouches[0] : (event.touches ? event.touches[0] : event);
                 const elUnder = document.elementFromPoint(endTouch.clientX, endTouch.clientY);
                 if (elUnder && elUnder.classList.contains('drop-zone')) {
