@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
@@ -264,6 +263,11 @@
             color: var(--text-main);
         }
 
+        #course-main-title {
+            text-align: center !important;
+            direction: rtl;
+        }
+
         @media (min-width: 901px) {
             #game-words {
                 flex-wrap: wrap-reverse !important;
@@ -380,6 +384,8 @@
 
             #course-main-title {
                 font-size: 1.25rem !important;
+                text-align: center !important;
+                direction: rtl;
             }
 
             #course-body h2 {
@@ -626,22 +632,20 @@
                 <div id="game-rule"
                     class="hidden mb-4 p-6 bg-blue-50 text-blue-900 text-[14px] rounded-2xl border-2 border-blue-100 leading-relaxed italic">
                 </div>
-                <button id="btn-action" onclick="handleAction()"
-                    class="btn-action active:scale-95 transition-all">VÉRIFIER</button>
+                <button id="btn-action" onclick="handleAction()" class="btn-action active:scale-95 transition-all">VÉRIFIER</button>
             </div>
         </div>
     </div>
-    <div id="screen-result"
-        class="hidden fixed inset-0 bg-slate-900 flex flex-col items-center justify-center p-8 text-white text-center z-50">
+    <div id="screen-result" class="hidden fixed inset-0 bg-slate-900 flex flex-col items-center justify-center p-8 text-white text-center z-50">
         <h1 class="text-3xl font-black mb-8 border-b-2 border-white pb-4 uppercase tracking-[0.2em]">Module Terminé</h1>
         <p id="result-title" class="text-xl font-bold mb-8"></p>
         <div class="bg-white/10 p-16 rounded-[5rem] w-full max-w-sm border border-white/20 mb-12 shadow-2xl">
             <p id="result-score" class="text-[5rem] font-black leading-none"></p>
         </div>
         <button onclick="showMenu()"
-            class="w-full max-w-sm py-8 bg-blue-600 text-white rounded-[3rem] font-black text-lg shadow-2xl active:scale-95 transition-all uppercase">Retour
-            au menu</button>
+            class="w-full max-w-sm py-8 bg-blue-600 text-white rounded-[3rem] font-black text-lg shadow-2xl active:scale-95 transition-all uppercase">Retour au menu</button>
     </div>
+
     <script>
         const modulesData = {
             'm1': {
@@ -658,22 +662,22 @@
                         <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0;">
                             <div
                                 style="flex: 1; min-width: 180px; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem;">
-                                <h3 style="margin: 0 0 0.8rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;">1. <span
-                                        style="font-family: 'Lateef'; font-size: 2rem;">اِسْمٌ</span></h3>
+                                <h4 style="margin: 0 0 0.8rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;">1. <span
+                                        style="font-family: 'Lateef'; font-size: 2rem;">اِسْمٌ</span></h4>
                                 <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">Mot intemporel. Désigne une personne, un lieu, un
                                     être vivant, une chose (palpable), une idée (impalpable), un adjectif ou un adverbe.</p>
                             </div>
                             <div
                                 style="flex: 1; min-width: 180px; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem;">
-                                <h3 style="margin: 0 0 0.8rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;">2. <span
-                                        style="font-family: 'Lateef'; font-size: 2rem;">فِعْلٌ</span></h3>
+                                <h4 style="margin: 0 0 0.8rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;">2. <span
+                                        style="font-family: 'Lateef'; font-size: 2rem;">فِعْلٌ</span></h4>
                                 <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">Mot qui exprime une action liée au temps (passé,
                                     présent ou futur). C'est l'équivalent du verbe.</p>
                             </div>
                             <div
                                 style="flex: 1; min-width: 180px; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem;">
-                                <h3 style="margin: 0 0 0.8rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;">3. <span
-                                        style="font-family: 'Lateef'; font-size: 2rem;">حَرْفٌ</span></h3>
+                                <h4 style="margin: 0 0 0.8rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;">3. <span
+                                        style="font-family: 'Lateef'; font-size: 2rem;">حَرْفٌ</span></h4>
                                 <p style="margin: 0; font-size: 0.9rem; line-height: 1.6;">Mot qui n'a aucun sens complet sans être
                                     accompagné d'un <span style="font-family: 'Lateef'; font-size: 2rem;">اِسْم</span> ou d'un <span
                                         style="font-family: 'Lateef'; font-size: 2rem;">فِعْل</span> (ex: dans, à, pour, avec...).</p>
@@ -699,7 +703,7 @@
                                 la phrase.</p>
                         </div>
 
-                        <ul style="margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.8;">
+                        <ul style="list-style-type: disc; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.8;">
                             <li style="margin: 0.6rem 0;"><strong style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">رَفْعٌ
                                     :</strong> Le cas du sujet (celui qui fait l'action).</li>
                             <li style="margin: 0.6rem 0;"><strong style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">نَصْبٌ
@@ -836,12 +840,12 @@
 
                         <h4 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1rem; font-weight: 600;">Les 3
                             catégories du Féminin :</h4>
-                        <ol style="margin: 1rem 0; padding-left: 1.5rem; font-size: 0.95rem; line-height: 1.8;">
+                        <ol style="list-style-type: disc; margin-left: 1.5rem; line-height: 1.8;">
                             <li style="margin: 0.6rem 0;"><strong style="color: #0066cc;">Féminin Réel :</strong> Biologiquement féminin
                                 (ex: <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">أُمٌّ</span> Mère).</li>
                             <li style="margin: 0.6rem 0;"><strong style="color: #0066cc;">Féminin de Signe :</strong> Termine par un
                                 marqueur spécifique
-                                <ul style="margin: 0.5rem 0 0 1.2rem; padding-left: 1.2rem; font-size: 0.95rem;">
+                                <ul style="list-style-type: square; margin: 0.5rem 0 0 1.2rem; padding-left: 1.2rem; font-size: 0.95rem;">
                                     <li style="margin: 0.3rem 0;">Ta Marbuta (<span
                                             style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">ة</span>). Ex: <span
                                             style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">جَنَّةٌ</span></li>
@@ -854,7 +858,7 @@
                                 </ul>
                             </li>
                             <li style="margin: 0.6rem 0;"><strong style="color: #0066cc;">Féminin par Décision :</strong>
-                                <ul style="margin: 0.5rem 0 0 1.2rem; padding-left: 1.2rem; font-size: 0.95rem;">
+                                <ul style="list-style-type: square; margin: 0.5rem 0 0 1.2rem; padding-left: 1.2rem; font-size: 0.95rem;">
                                     <li style="margin: 0.3rem 0;">Noms des vents, du feu, des villes/pays.</li>
                                     <li style="margin: 0.3rem 0;">Parties du corps par paires (main, œil...).</li>
                                     <li style="margin: 0.3rem 0;">Mots spécifiques : <span
@@ -893,7 +897,7 @@
 
                         <h4 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1rem; font-weight: 600;">Règles
                             de construction :</h4>
-                        <ul style="margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.8;">
+                        <ul style="list-style-type: disc; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.8;">
                             <li style="margin: 0.6rem 0;"><strong style="color: #0066cc;">Duel :</strong> Ajout de <span
                                     style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">ـَانِ</span> (ani) pour le Raf', ou
                                 <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">ـَيْنِ</span> (ayni) pour Nasb/Jarr.
@@ -922,7 +926,7 @@
                             Le Type - <span style="font-family: 'Lateef'; font-size: 2rem;">الْقِسْمُ</span></h3>
                         <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">Indique si le mot est défini (connu) ou indéfini
                             (inconnu).</p>
-                        <ul style="margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.8;">
+                        <ul style="list-style-type: square; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.8;">
                             <li style="margin: 0.6rem 0;">Indéfini - <strong
                                     style="font-family: 'Lateef'; font-size: 1.8rem; color: #0066cc; vertical-align: middle; line-height: 0;">نَكِرَةٌ</strong>
                                 : C'est le cas par défaut.</li>
@@ -935,7 +939,7 @@
                             <h4 style="margin: 0 0 0.8rem 0; color: #555; font-size: 1rem; font-weight: 600;">
                                 Les 7 catégories de Défini :
                             </h4>
-                            <ol style="margin: 0; padding-left: 1.5rem; font-size: 0.95rem; line-height: 1.4;">
+                            <ol style="list-style-type: disc; margin: 0; padding-left: 1.5rem; font-size: 0.95rem; line-height: 1.4;">
                                 <li style="margin-bottom: 0.4rem;">
                                     Commence par <em
                                         style="font-family: 'Lateef'; font-size: 1.8rem; color: #0066cc; vertical-align: middle; line-height: 0;">ال</em>.
@@ -1239,11 +1243,10 @@
                     <h2 style="margin: 2rem 0 1rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.25rem; font-weight: 700;">1. مَوْصُوفٌ وَصِفَةٌ</h2>
                     <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">C'est l'association d'un nom et de son adjectif
                         qualificatif.</p>
-                    <ul style="margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.7;">
-                        <li style="margin: 0.5rem 0;"><strong>Al-Mawsuf (الْمَوْصُوفُ) :</strong> Le nom décrit (celui qu'on qualifie).</li>
-                        <li style="margin: 0.5rem 0;"><strong>As-Sifah (الصِّفَةُ) :</strong> L'adjectif (celui qui qualifie).</li>
+                    <ul style="list-style-type: disc; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.7;">
+                        <li style="margin: 0.5rem 0;"><strong style="font-family: 'Lateef'; font-size: 2rem;">الْمَوْصُوفُ</strong> : Le nom décrit (celui qu'on qualifie).</li>
+                        <li style="margin: 0.5rem 0;"><strong style="font-family: 'Lateef'; font-size: 2rem;">الصِّفَةُ</strong> : L'adjectif (celui qui qualifie).</li>
                     </ul>
-
                     <div
                         style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
                         <strong style="color: #e67e22; font-size: 1rem; display: block; margin-bottom: 0.8rem;">Règles de construction
@@ -1271,11 +1274,9 @@
 
                     <div
                         style="background: #fff305; background: linear-gradient(135deg, #fff305 0%, #ffeb3b 100%); border-left: 4px solid #fbc02d; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem; opacity: 0.95;">
-                        <strong style="font-size: 1rem; display: block; margin-bottom: 0.8rem;">⚠️ Cas Particulier : Le Pluriel non-doué de
-                            raison</strong>
+                        <strong style="font-size: 1rem; display: block; margin-bottom: 0.8rem;">⚠️ Cas Particulier : Le Pluriel non-doué de raison</strong>
                         <p style="margin: 0.5rem 0; font-size: 0.95rem; line-height: 1.6;">Si le <em>Mawsuf</em> est un pluriel brisé
-                            désignant quelque chose de non-doué de raison (objets, animaux, concepts), la <em>Sifah</em> sera
-                            obligatoirement :</p>
+                            désignant quelque chose de non-doué de raison (objets, animaux, concepts), la <em>Sifah</em> sera obligatoirement :</p>
                         <ul style="margin: 0.8rem 0; padding-left: 1.5rem; font-size: 0.95rem;">
                             <li style="margin: 0.3rem 0;">Singulier (Wahid)</li>
                             <li style="margin: 0.3rem 0;">Féminin (Mu'annath)</li>
@@ -1290,10 +1291,11 @@
                     <h2 style="margin: 2rem 0 1rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.25rem; font-weight: 700;">2. اِسْمُ الْإِشَارَةِ وَالْمُشَارُ إِلَيْهِ</h2>
                     <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">Correspond à la démonstration (ce, cet, cette,
                         ces...).</p>
-                    <ul style="margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.7;">
-                        <li style="margin: 0.5rem 0;"><strong>Ism al-Ishara :</strong> Le pronom démonstratif (celui qui montre).</li>
-                        <li style="margin: 0.5rem 0;"><strong>Mushar Ilayh :</strong> Le nom indiqué (celui qu'on montre).</li>
-                    </ul>
+
+                    <ul style="list-style-type: disc; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.7;">
+                        <li style="margin: 0.5rem 0;"><strong style="font-family: 'Lateef'; font-size: 2rem;">اِسْمُ الْإِشَارَةِ</strong> : Le pronom démonstratif (celui qui montre).</li>
+                        <li style="margin: 0.5rem 0;"><strong style="font-family: 'Lateef'; font-size: 2rem;">الْمُشَارُ إِلَيْهِ</strong> : Le nom indiqué (celui qu'on montre).</li>
+                    </ul>     
 
                     <div
                         style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
@@ -1310,158 +1312,158 @@
                     <h3 style="margin: 1.5rem 0 1rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.1rem; font-weight: 700;">
                         Tableau des Pronoms Démonstratifs</h3>
 
-<div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1.5rem 0; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-    <table style="width: auto; min-width: 100%; border-collapse: collapse; border: 1px solid #cbd5e1; font-family: 'Inter', sans-serif; text-align: center; direction: rtl;">
-        <thead>
-            <tr>
-                <th rowspan="2" style="padding: 1rem; border: 1px solid #cbd5e1; background: #f1f5f9;">
-                </th>
-                <th colspan="2" style="padding: 1rem; border: 1px solid #cbd5e1; background: #dbeafe;">
-                    <span style="font-family: 'Lateef'; font-size: 2rem; color: #000; line-height: 1;">لِلْقَرِيبِ</span><br>
-                    <span style="font-size: 0.9rem; font-weight: 700; color: #1d4ed8;">Proximité</span>
-                </th>
-                <th colspan="2" style="padding: 1rem; border: 1px solid #cbd5e1; background: #dcfce7;">
-                    <span style="font-family: 'Lateef'; font-size: 2rem; color: #000; line-height: 1;">لِلْبَعِيدِ</span><br>
-                    <span style="font-size: 0.9rem; font-weight: 700; color: #15803d;">Éloignement</span>
-                </th>
-            </tr>
-            <tr>
-                <th style="padding: 0.6rem; border: 1px solid #cbd5e1; background: #dbeafe;">
-                    <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مُذَكَّر</span><br>
-                </th>
-                <th style="padding: 0.6rem; border: 1px solid #cbd5e1; background: #dbeafe;">
-                    <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مُؤَنَّث</span><br>
-                </th>
-                <th style="padding: 0.6rem; border: 1px solid #cbd5e1; background: #dcfce7;">
-                    <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مُذَكَّر</span><br>
-                </th>
-                <th style="padding: 0.6rem; border: 1px solid #cbd5e1; background: #dcfce7;">
-                    <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مُؤَنَّث</span><br>
-                </th>
-            </tr>
-        </thead>
-        <tbody style="background: white;">
-            <tr>
-                <td style="padding: 1rem; border: 1px solid #cbd5e1; background: #f8fafc;">
-                    <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">وَاحِد</span><br>
-                </td>
-                <td style="padding: 1rem; border: 1px solid #cbd5e1; background: #eff6ff;">
-                    <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">هَذَا</span><br>
-                    <span style="font-size: 0.9rem; color: #64748b;">Ceci</span>
-                </td>
-                <td style="padding: 1rem; border: 1px solid #cbd5e1; background: #fee7f0;">
-                    <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">هَذِهِ</span><br>
-                    <span style="font-size: 0.9rem; color: #64748b;">Celle-ci</span>
-                </td>
-                <td style="padding: 1rem; border: 1px solid #cbd5e1; background: #eff6ff;">
-                    <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">ذَلِكَ</span><br>
-                    <span style="font-size: 0.9rem; color: #64748b;">Cela</span>
-                </td>
-                <td style="padding: 1rem; border: 1px solid #cbd5e1; background: #fee7f0;">
-                    <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">تِلْكَ</span><br>
-                    <span style="font-size: 0.9rem; color: #64748b;">Celle-là</span>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding: 1rem; border: 1px solid #cbd5e1; background: #f8fafc;">
-                    <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">جَمْع</span><br>
-                </td>
-                <td colspan="2" style="padding: 1rem; border: 1px solid #cbd5e1;">
-                    <span style="font-family: 'Lateef'; font-size: 2.2rem; color: #000;">هَؤُلَاءِ</span><br>
-                    <span style="font-size: 0.9rem; color: #64748b;">Ceux-ci / Celles-ci</span>
-                </td>
-                <td colspan="2" style="padding: 1rem; border: 1px solid #cbd5e1;">
-                    <span style="font-family: 'Lateef'; font-size: 2.2rem; color: #000;">أُولَئِكَ</span><br>
-                    <span style="font-size: 0.9rem; color: #64748b;">Ceux-là / Celles-là</span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1.5rem 0; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                        <table style="width: auto; min-width: 100%; border-collapse: collapse; border: 1px solid #cbd5e1; font-family: 'Inter', sans-serif; text-align: center; direction: rtl;">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="padding: 1rem; border: 1px solid #cbd5e1; background: #f1f5f9;">
+                                    </th>
+                                    <th colspan="2" style="padding: 1rem; border: 1px solid #cbd5e1; background: #dbeafe;">
+                                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #000; line-height: 1;">لِلْقَرِيبِ</span><br>
+                                        <span style="font-size: 0.9rem; font-weight: 700; color: #1d4ed8;">Proximité</span>
+                                    </th>
+                                    <th colspan="2" style="padding: 1rem; border: 1px solid #cbd5e1; background: #dcfce7;">
+                                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #000; line-height: 1;">لِلْبَعِيدِ</span><br>
+                                        <span style="font-size: 0.9rem; font-weight: 700; color: #15803d;">Éloignement</span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="padding: 0.6rem; border: 1px solid #cbd5e1; background: #dbeafe;">
+                                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مُذَكَّر</span><br>
+                                    </th>
+                                    <th style="padding: 0.6rem; border: 1px solid #cbd5e1; background: #dbeafe;">
+                                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مُؤَنَّث</span><br>
+                                    </th>
+                                    <th style="padding: 0.6rem; border: 1px solid #cbd5e1; background: #dcfce7;">
+                                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مُذَكَّر</span><br>
+                                    </th>
+                                    <th style="padding: 0.6rem; border: 1px solid #cbd5e1; background: #dcfce7;">
+                                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مُؤَنَّث</span><br>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody style="background: white;">
+                                <tr>
+                                    <td style="padding: 1rem; border: 1px solid #cbd5e1; background: #f8fafc;">
+                                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">وَاحِد</span><br>
+                                    </td>
+                                    <td style="padding: 1rem; border: 1px solid #cbd5e1; background: #eff6ff;">
+                                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">هَذَا</span><br>
+                                        <span style="font-size: 0.9rem; color: #64748b;">Ceci</span>
+                                    </td>
+                                    <td style="padding: 1rem; border: 1px solid #cbd5e1; background: #fee7f0;">
+                                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">هَذِهِ</span><br>
+                                        <span style="font-size: 0.9rem; color: #64748b;">Celle-ci</span>
+                                    </td>
+                                    <td style="padding: 1rem; border: 1px solid #cbd5e1; background: #eff6ff;">
+                                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">ذَلِكَ</span><br>
+                                        <span style="font-size: 0.9rem; color: #64748b;">Cela</span>
+                                    </td>
+                                    <td style="padding: 1rem; border: 1px solid #cbd5e1; background: #fee7f0;">
+                                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">تِلْكَ</span><br>
+                                        <span style="font-size: 0.9rem; color: #64748b;">Celle-là</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 1rem; border: 1px solid #cbd5e1; background: #f8fafc;">
+                                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">جَمْع</span><br>
+                                    </td>
+                                    <td colspan="2" style="padding: 1rem; border: 1px solid #cbd5e1;">
+                                        <span style="font-family: 'Lateef'; font-size: 2.2rem; color: #000;">هَؤُلَاءِ</span><br>
+                                        <span style="font-size: 0.9rem; color: #64748b;">Ceux-ci / Celles-ci</span>
+                                    </td>
+                                    <td colspan="2" style="padding: 1rem; border: 1px solid #cbd5e1;">
+                                        <span style="font-family: 'Lateef'; font-size: 2.2rem; color: #000;">أُولَئِكَ</span><br>
+                                        <span style="font-size: 0.9rem; color: #64748b;">Ceux-là / Celles-là</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <hr style="border: none; border-top: 2px solid #ddd; margin: 2rem 0;">
 
                     <h2 style="margin: 2rem 0 1rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.25rem; font-weight: 700;">3. الْجَارُّ وَالْمَجْرُورُ</h2>
                     <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">Les prépositions qui affectent l'état du nom qui
                         suit.</p>
-                    <ul style="margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.7;">
+                    <ul style="list-style-type: disc; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.7;">
                         <li style="margin: 0.5rem 0;"><strong style="font-family: 'Lateef'; font-size: 2rem;">الْجَارُّ</strong> : La
                             particule (lettre ou mot).</li>
                         <li style="margin: 0.5rem 0;"><strong style="font-family: 'Lateef'; font-size: 2rem;">الْمَجْرُورُ</strong> : Le nom
                             qui suit, qui est mis à l'état <em style="font-family: 'Lateef'; font-size: 2rem;">جَرٌّ</em>.</li>
                     </ul>
 
-<div style="margin: 2rem 0;">
-    <div style="background: #004d99; color: white; padding: 0.8rem 1.5rem; border-radius: 12px 12px 0 0; display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
-        <span style="font-family: 'Lateef'; font-size: 1.8rem; line-height: 1;">حُرُوفُ الْجَرِّ</span>
-        <span>• Les principales prépositions</span>
-    </div>
+                    <div style="margin: 2rem 0;">
+                        <div style="background: #004d99; color: white; padding: 0.8rem 1.5rem; border-radius: 12px 12px 0 0; display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                            <span style="font-family: 'Lateef'; font-size: 1.8rem; line-height: 1;">حُرُوفُ الْجَرِّ</span>
+                            <span>• Les principales prépositions</span>
+                        </div>
 
-    <div style="
-        display: grid; 
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
-        direction: rtl; 
-        background: white; 
-        border-radius: 0 12px 12px 12px; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-        border: 1px solid #004d99; 
-        overflow: hidden;
-    ">
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">كَـ</span><br>
-            <span style="font-size: 0.8rem; color: #64748b;">Comme</span>
-        </div>
+                        <div style="
+                            display: grid; 
+                            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+                            direction: rtl; 
+                            background: white; 
+                            border-radius: 0 12px 12px 12px; 
+                            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+                            border: 1px solid #004d99; 
+                            overflow: hidden;
+                        ">
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">كَـ</span><br>
+                                <span style="font-size: 0.8rem; color: #64748b;">Comme</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">تَـ</span><br>
-            <span style="font-size: 0.75rem; color: #64748b;">Par - serment</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">تَـ</span><br>
+                                <span style="font-size: 0.75rem; color: #64748b;">Par - serment</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">بِـ</span><br>
-            <span style="font-size: 0.75rem; color: #64748b;">Par/Avec/À cause</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">بِـ</span><br>
+                                <span style="font-size: 0.75rem; color: #64748b;">Par/Avec/À cause</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">لِـ</span><br>
-            <span style="font-size: 0.8rem; color: #64748b;">Pour / À</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">لِـ</span><br>
+                                <span style="font-size: 0.8rem; color: #64748b;">Pour / À</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">وَ</span><br>
-            <span style="font-size: 0.75rem; color: #64748b;">Par - serment</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">وَ</span><br>
+                                <span style="font-size: 0.75rem; color: #64748b;">Par - serment</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مِنْ</span><br>
-            <span style="font-size: 0.8rem; color: #64748b;">De / Parmi</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مِنْ</span><br>
+                                <span style="font-size: 0.8rem; color: #64748b;">De / Parmi</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">فِي</span><br>
-            <span style="font-size: 0.8rem; color: #64748b;">Dans</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">فِي</span><br>
+                                <span style="font-size: 0.8rem; color: #64748b;">Dans</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">عَنْ</span><br>
-            <span style="font-size: 0.75rem; color: #64748b;">Au sujet de / D'après</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">عَنْ</span><br>
+                                <span style="font-size: 0.75rem; color: #64748b;">Au sujet de / D'après</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">عَلَى</span><br>
-            <span style="font-size: 0.8rem; color: #64748b;">Sur</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">عَلَى</span><br>
+                                <span style="font-size: 0.8rem; color: #64748b;">Sur</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">حَتَّى</span><br>
-            <span style="font-size: 0.8rem; color: #64748b;">Jusqu'à</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">حَتَّى</span><br>
+                                <span style="font-size: 0.8rem; color: #64748b;">Jusqu'à</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">إِلَى</span><br>
-            <span style="font-size: 0.8rem; color: #64748b;">Vers</span>
-        </div>
-    </div>
-</div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">إِلَى</span><br>
+                                <span style="font-size: 0.8rem; color: #64748b;">Vers</span>
+                            </div>
+                        </div>
+                    </div>
                     
 
                     <p style="margin: 1.5rem 0 0.8rem 0; font-size: 0.95rem; line-height: 1.6;"><em>Exemple :</em> <span
@@ -1472,9 +1474,10 @@
 
                     <h2 style="margin: 2rem 0 1rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.25rem; font-weight: 700;">4. الْإِضَافَةُ</h2>
                     <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">Indique la possession ou l'annexion (Le X de Y).</p>
-                    <ul style="margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.7;">
-                        <li style="margin: 0.5rem 0;"><strong>Mudaf (مُضَافٌ) :</strong> Le "possédé" (1er mot).</li>
-                        <li style="margin: 0.5rem 0;"><strong>Mudaf Ilayh (مُضَافٌ إِلَيْهِ) :</strong> Le "possesseur" (2ème mot).</li>
+                    
+                    <ul style="list-style-type: disc; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.7;">
+                        <li style="margin: 0.5rem 0;"><strong style="font-family: 'Lateef'; font-size: 2rem;">مُضَافٌ</strong> : Le "possédé" (1er mot).</li>
+                        <li style="margin: 0.5rem 0;"><strong style="font-family: 'Lateef'; font-size: 2rem;">مُضَافٌ إِلَيْهِ</strong> : Le "possesseur" (2ème mot).</li>
                     </ul>
 
                     <div
@@ -1524,126 +1527,126 @@
                         Sous-catégorie : Les Adverbes (الظُّرُوفُ)</h3>
                     <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">Les adverbes de temps et de lieu fonctionnent comme
                         des Mudaf "spéciaux". Le mot qui les suit est toujours <em>Mudaf Ilayh</em> (donc Majrur).</p>
-<div style="overflow-x: auto; margin: 2rem 0;">
-    <div style="background: #004d99; color: white; padding: 0.8rem 1.5rem; border-radius: 12px 12px 0 0; display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
-        <span style="font-family: 'Lateef'; font-size: 1.8rem; line-height: 1;">الظُّرُوفُ وَحُرُوفُ الْجَرِّ</span>
-        <span>• Prépositions et Adverbes</span>
-    </div>
+                    <div style="overflow-x: auto; margin: 2rem 0;">
+                        <div style="background: #004d99; color: white; padding: 0.8rem 1.5rem; border-radius: 12px 12px 0 0; display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                            <span style="font-family: 'Lateef'; font-size: 1.8rem; line-height: 1;">الظُّرُوفُ وَحُرُوفُ الْجَرِّ</span>
+                            <span>• Prépositions et Adverbes</span>
+                        </div>
 
-    <div style="
-        display: grid; 
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
-        direction: rtl; 
-        background: white; 
-        border-radius: 0 12px 12px 12px; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-        border: 1px solid #004d99; 
-        overflow: hidden;
-    ">
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #008000;">قَبْلَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Avant</span>
-        </div>
+                        <div style="
+                            display: grid; 
+                            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); 
+                            direction: rtl; 
+                            background: white; 
+                            border-radius: 0 12px 12px 12px; 
+                            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+                            border: 1px solid #004d99; 
+                            overflow: hidden;
+                        ">
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #008000;">قَبْلَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Avant</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #008000;">بَعْدَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Après</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #008000;">بَعْدَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Après</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #0000FF;">مَعَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Avec</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">مَعَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Avec</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #0000FF;">بَيْنَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Entre</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">بَيْنَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Entre</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #0000FF;">خَلْفَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Derrière</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">خَلْفَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Derrière</span>
+                            </div>
 
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #0000FF;">فَوْقَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Au-dessus de</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">فَوْقَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Au-dessus de</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #0000FF;">تَحْتَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">En dessous de</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">تَحْتَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">En dessous de</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #0000FF;">أَمَامَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">En face de</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">أَمَامَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">En face de</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #0000FF;">عِنْدَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Auprès de, Chez</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">عِنْدَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Auprès de, Chez</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #0000FF;">حَوْلَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Autour</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">حَوْلَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Autour</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #0000FF;">قُدَّامَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Juste devant</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">قُدَّامَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Juste devant</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #0000FF;">وَرَاءَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">De derrière</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">وَرَاءَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">De derrière</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مِنْ لَدُنْ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Spécialement de la part de</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مِنْ لَدُنْ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Spécialement de la part de</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">أَيُّ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Lequel</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">أَيُّ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Lequel</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">كُلُّ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Chaque, tout</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">كُلُّ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Chaque, tout</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">بَعْضُ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Quelques, Certains</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">بَعْضُ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Quelques, Certains</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مِثْلُ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">comme pour comparer</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">مِثْلُ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">comme pour comparer</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">غَيْرُ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Autre que, sans</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">غَيْرُ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Autre que, sans</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">نَفْسُ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">Le même que</span>
-        </div>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">نَفْسُ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">Le même que</span>
+                            </div>
 
-        <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
-            <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">دُونَ</span><br>
-            <span style="font-size: 0.85rem; color: #64748b;">En dehors de</span>
-        </div>
-    </div>
-</div>
-                    <p style="text-align: center; margin-top: 1rem; font-size: 0.95rem; line-height: 1.6;"><em>Exemple :</em> <span
-                            style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">بَعْدَ الصَّلَاةِ</span>
+                            <div style="border: 0.5px solid #cbd5e1; text-align: center; direction: ltr;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: #000;">دُونَ</span><br>
+                                <span style="font-size: 0.85rem; color: #64748b;">En dehors de</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: 1rem; font-size: 0.95rem; line-height: 1.6;"><em>Exemple :</em> 
+                        <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">بَعْدَ الصَّلَاةِ</span>
                         (Après la prière).</p>                `,
                 exercises: [
                                         {
@@ -1760,93 +1763,93 @@
                     </div>
 
                     <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1rem; font-weight: 600;">Les caractéristiques grammaticales :</h3>
-<div style="margin: 2rem 0;">
-    <div style="background: #004d99; color: white; padding: 0.8rem 1.5rem; border-radius: 12px 12px 0 0; display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
-        <span style="font-family: 'Lateef'; font-size: 1.8rem; line-height: 1;">أَرْكَانُ الْجُمْلَةِ الاِسْمِيَّةِ</span>
-        <span>• Les piliers de la phrase nominale</span>
-    </div>
+                    <div style="margin: 2rem 0;">
+                        <div style="background: #004d99; color: white; padding: 0.8rem 1.5rem; border-radius: 12px 12px 0 0; display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                            <span style="font-family: 'Lateef'; font-size: 1.8rem; line-height: 1;">أَرْكَانُ الْجُمْلَةِ الاِسْمِيَّةِ</span>
+                            <span>• Les piliers de la phrase nominale</span>
+                        </div>
 
-    <div style="
-        display: grid; 
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        direction: rtl;
-        gap: 1px;
-        background: #cbd5e1; 
-        border-radius: 0 12px 12px 12px; 
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-        border: 1px solid #004d99; 
-        overflow: hidden;
-    ">
-        <div style="background: white; padding: 1.2rem; display: flex; flex-direction: column; gap: 10px; direction: ltr;">
-            <div style="text-align: center; border-bottom: 2px solid #e8f4f8; padding-bottom: 10px; margin-bottom: 5px;">
-                <span style="font-family: 'Lateef'; font-size: 2.2rem; color: #000; font-weight: 700;">مُبْتَدَأٌ</span><br>
-                <span style="font-size: 0.85rem; color: #004d99; font-weight: 800; text-transform: uppercase;">Le Sujet</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
-                <span style="color: #64748b;">Occurrence</span>
-                <span style="font-weight: 700; color: #000;">= 1</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
-                <span style="color: #64748b;">Composition</span>
-                <span style="text-align: right; font-family: 'Lateef'; font-size: 1.6rem; color: #000;">مُرَكَّبٌ / اِسْمٌ</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
-                <span style="color: #64748b;">État</span>
-                <span style="text-align: right; font-family: 'Lateef'; font-size: 1.8rem; color: #000;">رَفْعٌ</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0;">
-                <span style="color: #64748b;">Type</span>
-                <span style="text-align: right; font-family: 'Lateef'; font-size: 1.8rem; color: #000;">مَعْرِفَةٌ</span>
-            </div>
-        </div>
+                        <div style="
+                            display: grid; 
+                            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                            direction: rtl;
+                            gap: 1px;
+                            background: #cbd5e1; 
+                            border-radius: 0 12px 12px 12px; 
+                            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+                            border: 1px solid #004d99; 
+                            overflow: hidden;
+                        ">
+                            <div style="background: white; padding: 1.2rem; display: flex; flex-direction: column; gap: 10px; direction: ltr;">
+                                <div style="text-align: center; border-bottom: 2px solid #e8f4f8; padding-bottom: 10px; margin-bottom: 5px;">
+                                    <span style="font-family: 'Lateef'; font-size: 2.2rem; color: #000; font-weight: 700;">مُبْتَدَأٌ</span><br>
+                                    <span style="font-size: 0.85rem; color: #004d99; font-weight: 800; text-transform: uppercase;">Le Sujet</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
+                                    <span style="color: #64748b;">Occurrence</span>
+                                    <span style="font-weight: 700; color: #000;">= 1</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
+                                    <span style="color: #64748b;">Composition</span>
+                                    <span style="text-align: right; font-family: 'Lateef'; font-size: 1.6rem; color: #000;">مُرَكَّبٌ / اِسْمٌ</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
+                                    <span style="color: #64748b;">État</span>
+                                    <span style="text-align: right; font-family: 'Lateef'; font-size: 1.8rem; color: #000;">رَفْعٌ</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0;">
+                                    <span style="color: #64748b;">Type</span>
+                                    <span style="text-align: right; font-family: 'Lateef'; font-size: 1.8rem; color: #000;">مَعْرِفَةٌ</span>
+                                </div>
+                            </div>
 
-        <div style="background: #f0f9ff; padding: 1.2rem; display: flex; flex-direction: column; gap: 10px; direction: ltr;">
-            <div style="text-align: center; border-bottom: 2px solid #dbeafe; padding-bottom: 10px; margin-bottom: 5px;">
-                <span style="font-family: 'Lateef'; font-size: 2.2rem; color: #000; font-weight: 700;">خَبَرٌ</span><br>
-                <span style="font-size: 0.85rem; color: #004d99; font-weight: 800; text-transform: uppercase;">L'Information</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; border-bottom: 1px solid #e0f2fe; padding: 4px 0;">
-                <span style="color: #64748b;">Occurrence</span>
-                <span style="font-weight: 700; color: #000;">≥ 1</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0f2fe; padding: 4px 0;">
-                <span style="color: #64748b;">Composition</span>
-                <span style="text-align: right; font-family: 'Lateef'; font-size: 1.6rem; color: #000;">مُرَكَّبٌ / اِسْمٌ</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0f2fe; padding: 4px 0;">
-                <span style="color: #64748b;">État</span>
-                <span style="text-align: right; font-family: 'Lateef'; font-size: 1.8rem; color: #000;">رَفْعٌ</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0;">
-                <span style="color: #64748b;">Type</span>
-                <span style="text-align: right; font-family: 'Lateef'; font-size: 1.8rem; color: #000;">نَكِرَةٌ</span>
-            </div>
-        </div>
+                            <div style="background: #f0f9ff; padding: 1.2rem; display: flex; flex-direction: column; gap: 10px; direction: ltr;">
+                                <div style="text-align: center; border-bottom: 2px solid #dbeafe; padding-bottom: 10px; margin-bottom: 5px;">
+                                    <span style="font-family: 'Lateef'; font-size: 2.2rem; color: #000; font-weight: 700;">خَبَرٌ</span><br>
+                                    <span style="font-size: 0.85rem; color: #004d99; font-weight: 800; text-transform: uppercase;">L'Information</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; border-bottom: 1px solid #e0f2fe; padding: 4px 0;">
+                                    <span style="color: #64748b;">Occurrence</span>
+                                    <span style="font-weight: 700; color: #000;">≥ 1</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0f2fe; padding: 4px 0;">
+                                    <span style="color: #64748b;">Composition</span>
+                                    <span style="text-align: right; font-family: 'Lateef'; font-size: 1.6rem; color: #000;">مُرَكَّبٌ / اِسْمٌ</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0f2fe; padding: 4px 0;">
+                                    <span style="color: #64748b;">État</span>
+                                    <span style="text-align: right; font-family: 'Lateef'; font-size: 1.8rem; color: #000;">رَفْعٌ</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0;">
+                                    <span style="color: #64748b;">Type</span>
+                                    <span style="text-align: right; font-family: 'Lateef'; font-size: 1.8rem; color: #000;">نَكِرَةٌ</span>
+                                </div>
+                            </div>
 
-        <div style="background: white; padding: 1.2rem; display: flex; flex-direction: column; gap: 10px; direction: ltr;">
-            <div style="text-align: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 5px;">
-                <span style="font-family: 'Lateef'; font-size: 2.2rem; color: #000; font-weight: 700;">مُتَعَلِّقٌ بِالْخَبَرِ</span><br>
-                <span style="font-size: 0.85rem; color: #64748b; font-weight: 800; text-transform: uppercase;">Complément</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
-                <span style="color: #64748b;">Occurrence</span>
-                <span style="font-weight: 700; color: #000;">≥ 0</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
-                <span style="color: #64748b;">Composition</span>
-                <span style="text-align: right; font-family: 'Lateef'; font-size: 1.4rem; color: #000; text-align: right;">جار/مجرور <p>ظرف/مُضَافٌ إِلَيْهِ</p></span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
-                <span style="color: #64748b;">État</span>
-                <span style="font-weight: 700; color: #cbd5e1;">-</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0;">
-                <span style="color: #64748b;">Type</span>
-                <span style="font-weight: 700; color: #cbd5e1;">-</span>
-            </div>
-        </div>
-    </div>
-</div>
+                            <div style="background: white; padding: 1.2rem; display: flex; flex-direction: column; gap: 10px; direction: ltr;">
+                                <div style="text-align: center; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 5px;">
+                                    <span style="font-family: 'Lateef'; font-size: 2.2rem; color: #000; font-weight: 700;">مُتَعَلِّقٌ بِالْخَبَرِ</span><br>
+                                    <span style="font-size: 0.85rem; color: #64748b; font-weight: 800; text-transform: uppercase;">Complément</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
+                                    <span style="color: #64748b;">Occurrence</span>
+                                    <span style="font-weight: 700; color: #000;">≥ 0</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
+                                    <span style="color: #64748b;">Composition</span>
+                                    <span style="text-align: right; font-family: 'Lateef'; font-size: 1.4rem; color: #000; text-align: right;">جار/مجرور <p>ظرف/مُضَافٌ إِلَيْهِ</p></span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
+                                    <span style="color: #64748b;">État</span>
+                                    <span style="font-weight: 700; color: #cbd5e1;">-</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0;">
+                                    <span style="color: #64748b;">Type</span>
+                                    <span style="font-weight: 700; color: #cbd5e1;">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div style="flex: 1; min-width: 250px; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0;">
                         <p style="margin: 0 0 0.8rem 0; font-size: 0.95rem;">
@@ -1906,6 +1909,27 @@
                     <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1.05rem; font-weight: 600;">Méthode 2 : <em style="font-family: 'Lateef'; font-size: 2rem; color: red;"> إِنَّ</em><em style="font-family: 'Lateef'; font-size: 2rem;"> وَأَخَوَاتُهَا</em></h3>
                     <p style="margin: 0.8rem 0; font-size: 0.95rem;">Le <strong><span style="font-family: 'Lateef'; font-size: 2rem;">مُبْتَدَأُ</span></strong> devient <strong><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">نَصْبٌ</span></strong> et le <strong><span style="font-family: 'Lateef'; font-size: 2rem;">خَبَرُ</span></strong> reste <strong><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">رَفْعٌ</span></strong>.</p>
 
+                    <div style="flex: 1; min-width: 250px; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0;">
+                        <p style="margin: 0 0 0.8rem 0; font-size: 0.95rem;">
+                            <em style="text-align: center; color: #555; display: block;"><strong style="color: green;">Certes,</strong> Allah <strong style="color: red;">est</strong> Pardonneur</em>
+                        </p>
+                        <div style="display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.5rem; color: #0066cc; font-weight: 600;">
+                            <div style="text-align: right; flex: 1;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem;">غَفُورٌ<br>
+                                    <small style="color: #999;">خَبَرُ إِنَّ</small></span>
+                            </div>
+                            <div style="text-align: center; flex: 1;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem;">اللهَ<br>
+                                    <small style="color: #999;">اِسْمُ إِنَّ</small></span>
+                            </div>
+                            <div style="text-align: left; flex: 1;">
+                                <span style="font-family: 'Lateef'; font-size: 2rem; color: green;">إِنَّ<br>
+                                    <small style="color: #999;">حَرْفُ إِنَّ</small>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div style="margin: 2rem 0;">
                         <div style="background: #004d99; color: white; padding: 0.8rem 1.5rem; border-radius: 12px 12px 0 0; display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.05em;">
                             <span style="font-family: 'Lateef'; font-size: 1.8rem; line-height: 1;">إِنَّ وَأَخَوَاتُهَا</span>
@@ -1954,30 +1978,8 @@
                         </div>
                     </div>
 
-                    <div style="flex: 1; min-width: 250px; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0;">
-                        <p style="margin: 0 0 0.8rem 0; font-size: 0.95rem;">
-                            <em style="text-align: center; color: #555; display: block;"><strong style="color: green;">Certes,</strong> Allah <strong style="color: red;">est</strong> Pardonneur</em>
-                        </p>
-                        <div style="display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.5rem; color: #0066cc; font-weight: 600;">
-                            <div style="text-align: right; flex: 1;">
-                                <span style="font-family: 'Lateef'; font-size: 2rem;">غَفُورٌ<br>
-                                    <small style="color: #999;">خَبَرُ إِنَّ</small></span>
-                            </div>
-                            <div style="text-align: center; flex: 1;">
-                                <span style="font-family: 'Lateef'; font-size: 2rem;">اللهَ<br>
-                                    <small style="color: #999;">اِسْمُ إِنَّ</small></span>
-                            </div>
-                            <div style="text-align: left; flex: 1;">
-                                <span style="font-family: 'Lateef'; font-size: 2rem; color: green;">إِنَّ<br>
-                                    <small style="color: #999;">حَرْفُ إِنَّ</small>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1.05rem; font-weight: 600;">Méthode 3 : <em style="font-family: 'Lateef'; font-size: 2rem; color: red;">اللَّامُ الْمُزَحْلَقَةُ</em>  (Le "Lam" glissant)</h3>
-                    
+                    <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1.05rem; font-weight: 600;">Méthode 3 : <em style="font-family: 'Lateef'; font-size: 2rem; color: red;">اللَّامُ الْمُزَحْلَقَةُ</em></h3>
+                    <p style="margin: 0.8rem 0; font-size: 0.95rem;">Le <strong>"Lam" glissant</strong></p>
                     <div style="flex: 1; min-width: 250px; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0;">
                         <p style="margin: 0 0 0.8rem 0; font-size: 0.95rem;">
                             <em style="text-align: center; color: #555; display: block;"><strong style="color: green;">Sans doute,</strong> Muhammad <strong style="color: red;">est</strong> <strong style="color: #673147;">vraiment</strong> un messager</em>
@@ -2087,9 +2089,9 @@
             'm4': {
                 id: 'm4', name: 'Module 4', title: "Le Verbe au Passé", summary: "La Conjugaison du Passé (Maadi) et ses applications",
                 course: `
-                    <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">1. Introduction au Fi'l (Verbe)</h2>
+                    <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">1. Introduction au Verbe (فِعْلٌ)</h2>
                     <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
-                        <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;"><strong>Définition :</strong> Contrairement au Nom (<em>Ism</em>) qui est intemporel, le <strong><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">فِعْلٌ</span></strong> (Fi'l) est un mot qui dépend du temps. Il décrit une action ou un état.</p>
+                        <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;"><strong>Définition :</strong> Contrairement au Nom (<em>اِسْم</em>) qui est intemporel, le <strong>Verbe</strong> (فِعْلٌ) est un mot qui dépend du temps. Il décrit une action ou un état.</p>
                         <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;"><strong>Il existe 3 temps en arabe :</strong></p>
                         <ul style="margin: 0.5rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.7;">
                             <li><strong><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">الْمَاضِي</span></strong> (Al-Maadi) : Le Passé (Accompli)</li>
@@ -2105,48 +2107,48 @@
                     <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6; text-align: center; font-weight: 600;">Modèle de base : <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">فَعَلَ</span> (Fa'ala - Il a fait)</p>
 
 
-<div style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
-    <table style="width: 100%; border-collapse: collapse; direction: rtl; text-align: center; background: white; table-layout: fixed;">
-        <thead>
-            <tr style="background: #0066cc; color: white;">
-                <th class="fit-pad" style="border: 1px solid #cbd5e1; width: 7%;"></th>
-                <th class="fit-ar fit-pad" style="border: 1px solid #cbd5e1; font-family: 'Lateef', serif; width: 31%;">واحد</th>
-                <th class="fit-ar fit-pad" style="border: 1px solid #cbd5e1; font-family: 'Lateef', serif; width: 31%;">مثنى</th>
-                <th class="fit-ar fit-pad" style="border: 1px solid #cbd5e1; font-family: 'Lateef', serif; width: 31%;">جمع</th>
-            </tr>
-        </thead>
-        <tbody style="color: #1a1a1a; font-family: 'Lateef', serif;">
-            <tr>
-                <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">3(M)</td>
-                <td class="fit-ar" style="border: 1px solid #cbd5e1;">(<span style="color: #3b82f6;">هُوَ</span>) فَعَلَ</td>
-                <td class="fit-ar" style="border: 1px solid #cbd5e1;">(هُمَا) فَعَلَ<span style="color: #ef4444;">ا</span></td>
-                <td class="fit-ar" style="border: 1px solid #cbd5e1;">(هُمْ) فَعَلُ<span style="color: #ef4444;">وا</span></td>
-            </tr>
-            <tr style="background: #f8fafc;">
-                <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">3(F)</td>
-                <td class="fit-ar" style="border: 1px solid #cbd5e1;">(<span style="color: #3b82f6;">هِيَ</span>) فَعَلَ<span style="color: #ef4444;">تْ</span></td>
-                <td class="fit-ar" style="border: 1px solid #cbd5e1;">(هُمَا) فَعَلَ<span style="color: #ef4444;">تَا</span></td>
-                <td class="fit-ar" style="border: 1px solid #cbd5e1; padding: 0.1rem;">(هُنَّ) فَعَلْ<span style="color: #ef4444;">نَ</span></td>
-            </tr>
-            <tr style="background: #f8fafc;">
-                <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">2(M)</td>
-                <td class="fit-ar" style="border: 1px solid #cbd5e1;">(أَنْتَ) فَعَلْ<span style="color: #ef4444;">تَ</span></td>
-                <td rowspan="2" class="fit-ar" style="border: 1px solid #cbd5e1; vertical-align: middle;">(أَنْتُمَا) فَعَلْ<span style="color: #ef4444;">تُمَا</span></td>
-                <td class="fit-ar" style="border: 1px solid #cbd5e1;">(أَنْتُمْ) فَعَلْ<span style="color: #ef4444;">تُمْ</span></td>
-            </tr>
-            <tr style="background: #f8fafc;">
-                <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">2(F)</td>
-                <td class="fit-ar" style="border: 1px solid #cbd5e1;">(أَنْتِ) فَعَلْ<span style="color: #ef4444;">تِ</span></td>
-                <td class="fit-ar" style="border: 1px solid #cbd5e1; padding: 0.1rem;">(أَنْتُنَّ) فَعَلْ<span style="color: #ef4444;">تُنَّ</span></td>
-            </tr>
-            <tr style="background: #f8fafc;">
-                <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">1(MF)</td>
-                <td class="fit-ar" style="border: 1px solid #cbd5e1; padding: 0.1rem;">(أَنَا) فَعَلْ<span style="color: #ef4444;">تُ</span></td>
-                <td colspan="2" class="fit-ar" style="border: 1px solid #cbd5e1; padding: 0.1rem;">(نَحْنُ) فَعَلْ<span style="color: #ef4444;">نَا</span></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    <div style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse; direction: rtl; text-align: center; background: white; table-layout: fixed;">
+                            <thead>
+                                <tr style="background: #0066cc; color: white;">
+                                    <th class="fit-pad" style="border: 1px solid #cbd5e1; width: 7%;"></th>
+                                    <th class="fit-ar fit-pad" style="border: 1px solid #cbd5e1; font-family: 'Lateef', serif; width: 31%;">واحد</th>
+                                    <th class="fit-ar fit-pad" style="border: 1px solid #cbd5e1; font-family: 'Lateef', serif; width: 31%;">مثنى</th>
+                                    <th class="fit-ar fit-pad" style="border: 1px solid #cbd5e1; font-family: 'Lateef', serif; width: 31%;">جمع</th>
+                                </tr>
+                            </thead>
+                            <tbody style="color: #1a1a1a; font-family: 'Lateef', serif;">
+                                <tr>
+                                    <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">3(M)</td>
+                                    <td class="fit-ar" style="border: 1px solid #cbd5e1;">(<span style="color: #3b82f6;">هُوَ</span>) فَعَلَ</td>
+                                    <td class="fit-ar" style="border: 1px solid #cbd5e1;">(هُمَا) فَعَلَ<span style="color: #ef4444;">ا</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #cbd5e1;">(هُمْ) فَعَلُ<span style="color: #ef4444;">وا</span></td>
+                                </tr>
+                                <tr style="background: #f8fafc;">
+                                    <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">3(F)</td>
+                                    <td class="fit-ar" style="border: 1px solid #cbd5e1;">(<span style="color: #3b82f6;">هِيَ</span>) فَعَلَ<span style="color: #ef4444;">تْ</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #cbd5e1;">(هُمَا) فَعَلَ<span style="color: #ef4444;">تَا</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #cbd5e1; padding: 0.1rem;">(هُنَّ) فَعَلْ<span style="color: #ef4444;">نَ</span></td>
+                                </tr>
+                                <tr style="background: #f8fafc;">
+                                    <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">2(M)</td>
+                                    <td class="fit-ar" style="border: 1px solid #cbd5e1;">(أَنْتَ) فَعَلْ<span style="color: #ef4444;">تَ</span></td>
+                                    <td rowspan="2" class="fit-ar" style="border: 1px solid #cbd5e1; vertical-align: middle;">(أَنْتُمَا) فَعَلْ<span style="color: #ef4444;">تُمَا</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #cbd5e1;">(أَنْتُمْ) فَعَلْ<span style="color: #ef4444;">تُمْ</span></td>
+                                </tr>
+                                <tr style="background: #f8fafc;">
+                                    <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">2(F)</td>
+                                    <td class="fit-ar" style="border: 1px solid #cbd5e1;">(أَنْتِ) فَعَلْ<span style="color: #ef4444;">تِ</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #cbd5e1; padding: 0.1rem;">(أَنْتُنَّ) فَعَلْ<span style="color: #ef4444;">تُنَّ</span></td>
+                                </tr>
+                                <tr style="background: #f8fafc;">
+                                    <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">1(MF)</td>
+                                    <td class="fit-ar" style="border: 1px solid #cbd5e1; padding: 0.1rem;">(أَنَا) فَعَلْ<span style="color: #ef4444;">تُ</span></td>
+                                    <td colspan="2" class="fit-ar" style="border: 1px solid #cbd5e1; padding: 0.1rem;">(نَحْنُ) فَعَلْ<span style="color: #ef4444;">نَا</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     
                     <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
                         <strong style="color: #e67e22; font-size: 1rem; display: block; margin-bottom: 0.8rem;">Observation :</strong>
@@ -2160,26 +2162,26 @@
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0;">
                         <div style="background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem;">
-                            <h3 style="margin: 0 0 0.8rem 0; font-size: 1rem; color: #0066cc; font-weight: 600;">1. Sujet Interne (Pronom)</h3>
+                            <h4 style="margin: 0 0 0.8rem 0; font-size: 1rem; color: #0066cc; font-weight: 600;">Sujet Interne - Pronom</h4>
                             <p style="margin: 0.5rem 0; font-size: 0.95rem;">Le sujet est le suffixe attaché au verbe ou caché.</p>
-                            <p style="margin: 0.5rem 0; font-size: 0.95rem;">Ex. : <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">كَتَبَ</span> (Il a écrit)<br><em style="color: #555;">(Sujet "Huwa" caché)</em></p>
+                            <p style="margin: 0.5rem 0; font-size: 0.95rem;">Ex. : <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">كَتَبَ</span> (Il a écrit)<br><em style="color: #555;">(Sujet caché)</em></p>
                         </div>
                         <div style="background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem;">
-                            <h3 style="margin: 0 0 0.8rem 0; font-size: 1rem; color: #0066cc; font-weight: 600;">2. Sujet Externe (Nom)</h3>
+                            <h4 style="margin: 0 0 0.8rem 0; font-size: 1rem; color: #0066cc; font-weight: 600;">Sujet Externe - Nom</h4>
                             <p style="margin: 0.5rem 0; font-size: 0.95rem;">Le sujet est un nom apparent qui vient <strong>APRÈS</strong> le verbe.</p>
                             <p style="margin: 0.5rem 0; font-size: 0.95rem;">Doit être à l'état <strong><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">رَفْعٌ</span></strong> (Raf').</p>
                         </div>
                     </div>
 
                     <div style="background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0;">
-                        <p style="margin: 0 0 0.8rem 0; font-size: 0.95rem;"><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700; display: block; margin-bottom: 0.5rem;">كَتَبَ الْمُسْلِمُ</span><em style="color: #555;">Le musulman a écrit.</em></p>
+                        <p style="text-align: center; margin: 0 0 0.8rem 0; font-size: 0.95rem;"><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700; display: block; margin-bottom: 0.5rem;">كَتَبَ الْمُسْلِمُ</span><em style="color: #555;">Le musulman a écrit.</em></p>
                     </div>
 
                     <hr style="border: none; border-top: 2px solid #ddd; margin: 2rem 0;">
 
                     <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">4. Les Pronoms attachés au verbe</h2>
                     <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">Lorsqu'on attache un pronom complément (<em>Damir</em>) à la fin d'un verbe, il devient <strong><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">مَفْعُولٌ بِهِ</span></strong> (l'objet qui subit l'action).</p>
-                    <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6; text-align: center; font-weight: 600;">Exemple : <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">نَصَرَ</span> (Il a aidé) + <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">هُ</span> (lui) = <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">نَصَرَهُ</span> (Il l'a aidé)</p>
+                    <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6; text-align: center; font-weight: 600;"><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">هُ</span> (lui) + <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">نَصَرَ</span> (Il a aidé) = <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">نَصَرَهُ</span> (Il l'a aidé)</p>
 
                     <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1rem; font-weight: 600;">Règle 1 : Le "Nun" de protection - <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">نُونُ الْوِقَايَةِ</span></h3>
                     <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
@@ -2196,15 +2198,13 @@
                     <hr style="border: none; border-top: 2px solid #ddd; margin: 2rem 0;">
 
                     <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">5. Structure de la phrase verbale</h2>
-                    <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6; text-align: center; font-weight: 600; padding: 1rem; background: #f5f5f5; border-radius: 0.4rem;">[ Verbe (<span style="font-family: 'Lateef'; font-size: 2rem;">فِعْلٌ</span>) ] + [ Sujet (<span style="font-family: 'Lateef'; font-size: 2rem;">فَاعِلٌ</span>) ] + [ Objet (<span style="font-family: 'Lateef'; font-size: 2rem;">مَفْعُولٌ بِهِ</span>) ]</p>
+                    <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6; text-align: center; direction : rtl; font-weight: 600; padding: 1rem; background: #f5f5f5; border-radius: 0.4rem;">[ Verbe (<span style="font-family: 'Lateef'; font-size: 2rem;">فِعْلٌ</span>) ] + [ Sujet (<span style="font-family: 'Lateef'; font-size: 2rem;">فَاعِلٌ</span>) ] + [ Objet (<span style="font-family: 'Lateef'; font-size: 2rem;">مَفْعُولٌ بِهِ</span>) ]</p>
 
-                    <div style="background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0;">
+                    <div style="text-align: center; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0;">
                         <p style="margin: 0 0 0.8rem 0; font-size: 0.95rem;"><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700; display: block; margin-bottom: 0.5rem;">خَلَقَ اللهُ السَّمَاوَاتِ</span><em style="color: #555;">Allah a créé les cieux.</em></p>
-                        <ul style="margin: 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.7;">
-                            <li><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">خَلَقَ</span> : فِعْلٌ مَاضٍ (Verbe passé)</li>
-                            <li><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">اللهُ</span> : فَاعِلٌ (Sujet, Raf')</li>
-                            <li><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">السَّمَاوَاتِ</span> : مَفْعُولٌ بِهِ (Objet)</li>
-                        </ul>
+                        <p>(Verbe passé) <span style=" font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">خَلَقَ</span><span style="font-family: 'Lateef'; font-size: 2rem; font-weight: 700;">: فِعْلٌ مَاضٍ </span></p>
+                        <p>(Sujet, Raf') <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">اللهُ</span><span style="font-family: 'Lateef'; font-size: 2rem; font-weight: 700;">: فَاعِلٌ </span></p>
+                        <p>(Objet) <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">السَّمَاوَاتِ</span><span style="font-family: 'Lateef'; font-size: 2rem; font-weight: 700;"> : مَفْعُولٌ بِهِ </span></p>
                     </div>
                 `,
                 exercises: [
@@ -2288,47 +2288,47 @@
                     <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">Les lettres préfixes du présent sont regroupées dans le mot <strong>"ANAYTU"</strong> : Alif, Nun, Ya, Ta.</p>
                     <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6; text-align: center; font-weight: 600;">Modèle de base : <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">يَفْعَلُ</span> (Yaf'alu - Il fait)</p>
 
-<div style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
-    <table style="width: 100%; border-collapse: collapse; direction: rtl; text-align: center; background: white; table-layout: fixed;">
-        <thead>
-            <tr style="background: #2e5a8d; color: white;"> <th style="padding: 0.1rem; border: 1px solid #ddd; width: 12%;"></th>
-                <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 29.33%;">واحد</th>
-                <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 29.33%;">مثنى</th>
-                <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 29.33%;">جمع</th>
-            </tr>
-        </thead>
-        <tbody style="color: #1a1a1a; font-family: 'Lateef', serif;">
-            <tr>
-                <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #2e5a8d; padding: 0.1rem;">3(M)</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(<span style="color: #3b82f6;">هُوَ</span>) <span style="color: #ef4444;">يَـ</span>ـفْعَلُ</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(هُمَا) <span style="color: #ef4444;">يَـ</span>ـفْعَلَـ<span style="color: #ef4444;">انِ</span></td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(هُمْ) <span style="color: #ef4444;">يَـ</span>ـفْعَلُـ<span style="color: #ef4444;">ونَ</span></td>
-            </tr>
-            <tr style="background: #fdfdfd;">
-                <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #2e5a8d; padding: 0.1rem;">3(F)</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(<span style="color: #3b82f6;">هِيَ</span>) <span style="color: #ef4444;">تَـ</span>ـفْعَلُ</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(هُمَا) <span style="color: #ef4444;">تَـ</span>ـفْعَلَـ<span style="color: #ef4444;">انِ</span></td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(هُنَّ) <span style="color: #ef4444;">يَـ</span>ـفْعَلْـ<span style="color: #ef4444;">نَ</span></td>
-            </tr>
-            <tr>
-                <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #2e5a8d; padding: 0.1rem;">2(M)</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(أَنْتَ) <span style="color: #ef4444;">تَـ</span>ـفْعَلُ</td>
-                <td rowspan="2" class="fit-ar" style="border: 1px solid #ddd; vertical-align: middle; padding: 0.1rem;">(أَنْتُمَا) <span style="color: #ef4444;">تَـ</span>ـفْعَلَـ<span style="color: #ef4444;">انِ</span></td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(أَنْتُمْ) <span style="color: #ef4444;">تَـ</span>ـفْعَلُـ<span style="color: #ef4444;">ونَ</span></td>
-            </tr>
-            <tr style="background: #fdfdfd;">
-                <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #2e5a8d; padding: 0.1rem;">2(F)</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(أَنْتِ) <span style="color: #ef4444;">تَـ</span>ـفْعَلِـ<span style="color: #ef4444;">ينَ</span></td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(أَنْتُنَّ) <span style="color: #ef4444;">تَـ</span>ـفْعَلْـ<span style="color: #ef4444;">نَ</span></td>
-            </tr>
-            <tr>
-                <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #2e5a8d; padding: 0.1rem;">1(MF)</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(أَنَا) <span style="color: #ef4444;">أَ</span>فْعَلُ</td>
-                <td colspan="2" class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(نَحْنُ) <span style="color: #ef4444;">نَـ</span>ـفْعَلُ</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    <div style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse; direction: rtl; text-align: center; background: white; table-layout: fixed;">
+                            <thead>
+                                <tr style="background: #2e5a8d; color: white;"> <th style="padding: 0.1rem; border: 1px solid #ddd; width: 12%;"></th>
+                                    <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 29.33%;">واحد</th>
+                                    <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 29.33%;">مثنى</th>
+                                    <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 29.33%;">جمع</th>
+                                </tr>
+                            </thead>
+                            <tbody style="color: #1a1a1a; font-family: 'Lateef', serif;">
+                                <tr>
+                                    <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">3(M)</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(<span style="color: #3b82f6;">هُوَ</span>) <span style="color: #ef4444;">يَـ</span>ـفْعَلُ</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(هُمَا) <span style="color: #ef4444;">يَـ</span>ـفْعَلَـ<span style="color: #ef4444;">انِ</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(هُمْ) <span style="color: #ef4444;">يَـ</span>ـفْعَلُـ<span style="color: #ef4444;">ونَ</span></td>
+                                </tr>
+                                <tr style="background: #fdfdfd;">
+                                    <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">3(F)</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(<span style="color: #3b82f6;">هِيَ</span>) <span style="color: #ef4444;">تَـ</span>ـفْعَلُ</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(هُمَا) <span style="color: #ef4444;">تَـ</span>ـفْعَلَـ<span style="color: #ef4444;">انِ</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(هُنَّ) <span style="color: #ef4444;">يَـ</span>ـفْعَلْـ<span style="color: #ef4444;">نَ</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">2(M)</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(أَنْتَ) <span style="color: #ef4444;">تَـ</span>ـفْعَلُ</td>
+                                    <td rowspan="2" class="fit-ar" style="border: 1px solid #ddd; vertical-align: middle; padding: 0.1rem;">(أَنْتُمَا) <span style="color: #ef4444;">تَـ</span>ـفْعَلَـ<span style="color: #ef4444;">انِ</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(أَنْتُمْ) <span style="color: #ef4444;">تَـ</span>ـفْعَلُـ<span style="color: #ef4444;">ونَ</span></td>
+                                </tr>
+                                <tr style="background: #fdfdfd;">
+                                    <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">2(F)</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(أَنْتِ) <span style="color: #ef4444;">تَـ</span>ـفْعَلِـ<span style="color: #ef4444;">ينَ</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(أَنْتُنَّ) <span style="color: #ef4444;">تَـ</span>ـفْعَلْـ<span style="color: #ef4444;">نَ</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fit-lab" style="background: #e8f4f8; font-family: 'Inter', sans-serif; border: 1px solid #cbd5e1; font-weight: 700; color: #0066cc; padding: clamp(0.1rem, 0.8vw, 0.4rem);">1(MF)</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(أَنَا) <span style="color: #ef4444;">أَ</span>فْعَلُ</td>
+                                    <td colspan="2" class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem;">(نَحْنُ) <span style="color: #ef4444;">نَـ</span>ـفْعَلُ</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
                         <strong style="color: #e67e22; font-size: 1rem; display: block; margin-bottom: 0.8rem;">Observations :</strong>
@@ -2343,8 +2343,9 @@
 
                     <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">3. Les Pronoms attachés</h2>
                     <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">Comme pour le passé, on peut attacher un pronom (<em>Damir</em>) à la fin du verbe présent. Il devient alors <strong><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">مَفْعُولٌ بِهِ</span></strong> (Complément d'objet).</p>
-                    <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6; text-align: center; font-weight: 600;">Exemple : <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">يَنْصُرُ</span> (Il aide) + <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">هُ</span> = <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">يَنْصُرُهُ</span> (Il l'aide)</p>
-                    <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6; text-align: center; font-weight: 600;">Autre exemple : <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">يُحِبُّونَ</span> (Ils aiment) + <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">هُ</span> = <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">يُحِبُّونَهُ</span> (Ils l'aiment)</p>
+                    <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6; text-align: left; font-weight: 600;">Exemples :</p>
+                    <p style="direction: rtl; text-align: center;"><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">يَنْصُرُهُ</span> (Il l'aide) = <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">يَنْصُرُ</span> (Il aide) + <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">هُ</span> (lui)</p>
+                    <p style="direction: rtl; text-align: center;"><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">يُحِبُّونَهُ</span> (Ils l'aiment) = <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">يُحِبُّونَ</span> (Ils aiment) + <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">هُ</span> (lui)</p>
 
                     <hr style="border: none; border-top: 2px solid #ddd; margin: 2rem 0;">
 
@@ -2352,46 +2353,48 @@
                     <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">La règle du sujet interne/externe vue pour le passé s'applique exactement de la même manière au présent.</p>
 
                     <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
-                        <h3 style="margin: 0 0 0.8rem 0; font-size: 1rem; color: #0066cc; font-weight: 600;">Conditions pour un Sujet Externe (Nom apparent) :</h3>
+                        <h4 style="margin: 0 0 0.8rem 0; font-size: 1rem; color: #0066cc; font-weight: 600;">Conditions pour un Sujet Externe (Nom apparent) :</h4>
                         <ol style="margin: 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.7;">
-                            <li>Le verbe doit être conjugué à la <strong>3ème personne du singulier</strong> (Masculin <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">هُوَ</span> ou Féminin <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">هِيَ</span>).</li>
-                            <li>Le sujet vient <strong>APRÈS</strong> le verbe.</li>
-                            <li>Le sujet est un nom à l'état <strong>Raf'</strong> (<span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">رَفْعٌ</span>).</li>
+                            <li>• Le verbe doit être conjugué à la <strong>3ème personne du singulier :</strong> 
+                                <br>(Masculin <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">هُوَ</span> ou 
+                                Féminin <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">هِيَ</span>).</li>
+                            <li>• Le sujet vient <strong>APRÈS</strong> le verbe.</li>
+                            <li>• Le sujet est un nom à l'état <strong>Raf'</strong> (<span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">رَفْعٌ</span>).</li>
                         </ol>
                     </div>
 
-<div style="width: 100%; margin: 0.5rem 0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
-    <table style="width: 100%; border-collapse: collapse; direction: ltr; text-align: center; background: white; table-layout: fixed;">
-        <thead>
-            <tr style="background: #8d453b; color: white;">
-                <th class="txt-fit" style="padding: 0.2rem; border: 1px solid #ddd; width: 15%;">Type</th>
-                <th class="ar-fit" style="padding: 0.2rem; border: 1px solid #ddd; width: 40%;">Arabe</th>
-                <th class="txt-fit" style="padding: 0.2rem; border: 1px solid #ddd; width: 20%;">Français</th>
-                <th class="txt-fit" style="padding: 0.2rem; border: 1px solid #ddd; width: 25%;">Analyse</th>
-            </tr>
-        </thead>
-        <tbody style="color: #1a1a1a;">
-            <tr>
-                <td class="txt-fit" style="background: #f8f9fa; border: 1px solid #ddd; font-weight: 700; color: #8d453b;">Interne</td>
-                <td class="ar-fit" style="border: 1px solid #ddd; color: #0066cc; font-weight: 700;">يَكْتُبُ<span style="color: #ef4444;">ونَ</span></td>
-                <td class="txt-fit" style="border: 1px solid #ddd;">Ils écrivent</td>
-                <td class="txt-fit" style="border: 1px solid #ddd; background: #fafafa;">Sujet = <span style="color: #ef4444;">و</span> (pluriel)</td>
-            </tr>
-            <tr style="background: #fdfdfd;">
-                <td class="txt-fit" style="background: #f8f9fa; border: 1px solid #ddd; font-weight: 700; color: #8d453b;">Externe</td>
-                <td class="ar-fit" style="border: 1px solid #ddd; color: #0066cc; font-weight: 700;">يَكْتُبُ <span style="color: #3b82f6;">الْمُسْلِمُ</span></td>
-                <td class="txt-fit" style="border: 1px solid #ddd;">Le musulman écrit</td>
-                <td class="txt-fit" style="border: 1px solid #ddd; background: #fafafa;">Sujet = <span style="color: #3b82f6;">Nom</span> après verbe</td>
-            </tr>
-            <tr>
-                <td class="txt-fit" style="background: #f8f9fa; border: 1px solid #ddd; font-weight: 700; color: #8d453b;">Externe</td>
-                <td class="ar-fit" style="border: 1px solid #ddd; color: #0066cc; font-weight: 700;">يَكْتُبُ <span style="color: #3b82f6;">الْمُسْلِمُونَ</span></td>
-                <td class="txt-fit" style="border: 1px solid #ddd;">Les musulmans écrivent</td>
-                <td class="txt-fit" style="border: 1px solid #ddd; background: #fafafa;">Verbe reste au <span style="color: #ef4444;">singulier</span></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    <div style="width: 100%; margin: 0.5rem 0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse; direction: ltr; text-align: center; background: white; table-layout: fixed;">
+                            <thead>
+                                <tr style="background: #8d453b; color: white;">
+                                    <th class="txt-fit" style="padding: 0.2rem; border: 1px solid #ddd; width: 15%;">Type</th>
+                                    <th class="ar-fit" style="padding: 0.2rem; border: 1px solid #ddd; width: 40%;">Arabe</th>
+                                    <th class="txt-fit" style="padding: 0.2rem; border: 1px solid #ddd; width: 20%;">Français</th>
+                                    <th class="txt-fit" style="padding: 0.2rem; border: 1px solid #ddd; width: 25%;">Analyse</th>
+                                </tr>
+                            </thead>
+                            <tbody style="color: #1a1a1a;">
+                                <tr>
+                                    <td class="txt-fit" style="background: #fafafa; border: 1px solid #ddd; font-weight: 700; color: #8d453b;">Interne</td>
+                                    <td class="ar-fit" style="border: 1px solid #ddd; color: #0066cc; font-weight: 700;">يَكْتُبُ<span style="color: #ef4444;">ونَ</span></td>
+                                    <td class="txt-fit" style="border: 1px solid #ddd;">Ils écrivent</td>
+                                    <td class="txt-fit" style="border: 1px solid #ddd; background: #fafafa;">Sujet = <span style="color: #ef4444;">و</span> (pluriel)</td>
+                                </tr>
+                                <tr style="background: #fdfdfd;">
+                                    <td class="txt-fit" style="background: #fafafa; border: 1px solid #ddd; font-weight: 700; color: #8d453b;">Externe</td>
+                                    <td class="ar-fit" style="border: 1px solid #ddd; color: #0066cc; font-weight: 700;">يَكْتُبُ <span style="color: #3b82f6;">الْمُسْلِمُ</span></td>
+                                    <td class="txt-fit" style="border: 1px solid #ddd;">Le musulman écrit</td>
+                                    <td class="txt-fit" style="border: 1px solid #ddd; background: #fafafa;">Sujet = <span style="color: #3b82f6;">Nom</span> après verbe</td>
+                                </tr>
+                                <tr>
+                                    <td class="txt-fit" style="background: #fafafa; border: 1px solid #ddd; font-weight: 700; color: #8d453b;">Externe</td>
+                                    <td class="ar-fit" style="border: 1px solid #ddd; color: #0066cc; font-weight: 700;">يَكْتُبُ <span style="color: #3b82f6;">الْمُسْلِمُونَ</span></td>
+                                    <td class="txt-fit" style="border: 1px solid #ddd;">Les musulmans écrivent</td>
+                                    <td class="txt-fit" style="border: 1px solid #ddd; background: #fafafa;">Verbe reste au <span style="color: #ef4444;">singulier</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <hr style="border: none; border-top: 2px solid #ddd; margin: 2rem 0;">
 
@@ -2547,118 +2550,119 @@
                     </div>
 
                     <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1.05rem; font-weight: 600;">Les soeurs de Kana (Les plus fréquentes)</h3>
-<div style="width: 100%; margin: 0.5rem 0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
-    <table style="width: 100%; border-collapse: collapse; direction: tlr; text-align: center; background: white; table-layout: fixed;">
-        <thead>
-            <tr style="background: #8d453b; color: white;">
-                <th class="txt-fit" style="padding: 0.1rem; border: 1px solid #ddd; width: 20%;">فِعْل (Verbe)</th>
-                <th class="txt-fit" style="padding: 0.1rem; border: 1px solid #ddd; width: 30%;">مَعْنَى (Sens)</th>
-                <th class="txt-fit" style="padding: 0.1rem; border: 1px solid #ddd; width: 20%;">فِعْل (Verbe)</th>
-                <th class="txt-fit" style="padding: 0.1rem; border: 1px solid #ddd; width: 30%;">مَعْنَى (Sens)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="ar-fit" style="border: 1px solid #ddd; padding: 0.1rem;">كَانَ</td>
-                <td class="txt-fit" style="border: 1px solid #ddd; padding: 0.1rem;">Être (Passé)</td>
-                <td class="ar-fit" style="border: 1px solid #ddd; padding: 0.1rem;">لَيْسَ</td>
-                <td class="txt-fit" style="border: 1px solid #ddd; padding: 0.1rem;">Négation</td>
-            </tr>
-            <tr style="background: #fdfdfd;">
-                <td class="ar-fit" style="border: 1px solid #ddd; padding: 0.1rem;">صَارَ</td>
-                <td class="txt-fit" style="border: 1px solid #ddd; padding: 0.1rem;">Devenir</td>
-                <td class="ar-fit" style="border: 1px solid #ddd; padding: 0.1rem;">ظَلَّ</td>
-                <td class="txt-fit" style="border: 1px solid #ddd; padding: 0.1rem;">Rester</td>
-            </tr>
-            <tr>
-                <td class="ar-fit" style="border: 1px solid #ddd; padding: 0.1rem;">أَصْبَحَ</td>
-                <td class="txt-fit" style="border: 1px solid #ddd; padding: 0.1rem;">Devenir (matin)</td>
-                <td class="ar-fit" style="border: 1px solid #ddd; padding: 0.1rem;">بَاتَ</td>
-                <td class="txt-fit" style="border: 1px solid #ddd; padding: 0.1rem;">Devenir (nuit)</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    <div style="width: 100%; margin: 0.5rem 0; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse; direction: tlr; text-align: center; background: white; table-layout: fixed;">
+                            <thead>
+                                <tr style="background: #8d453b; color: white;">
+                                    <th class="txt-fit" style="padding: 0.1rem; border: 1px solid #ddd; width: 20%;">فِعْل (Verbe)</th>
+                                    <th class="txt-fit" style="padding: 0.1rem; border: 1px solid #ddd; width: 30%;">مَعْنَى (Sens)</th>
+                                    <th class="txt-fit" style="padding: 0.1rem; border: 1px solid #ddd; width: 20%;">فِعْل (Verbe)</th>
+                                    <th class="txt-fit" style="padding: 0.1rem; border: 1px solid #ddd; width: 30%;">مَعْنَى (Sens)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="ar-fit" style="border: 1px solid #ddd; padding: 0.1rem;">كَانَ</td>
+                                    <td class="txt-fit" style="border: 1px solid #ddd; padding: 0.1rem;">Être (Passé)</td>
+                                    <td class="ar-fit" style="border: 1px solid #ddd; padding: 0.1rem;">لَيْسَ</td>
+                                    <td class="txt-fit" style="border: 1px solid #ddd; padding: 0.1rem;">Négation</td>
+                                </tr>
+                                <tr style="background: #fdfdfd;">
+                                    <td class="ar-fit" style="border: 1px solid #ddd; padding: 0.1rem;">صَارَ</td>
+                                    <td class="txt-fit" style="border: 1px solid #ddd; padding: 0.1rem;">Devenir</td>
+                                    <td class="ar-fit" style="border: 1px solid #ddd; padding: 0.1rem;">ظَلَّ</td>
+                                    <td class="txt-fit" style="border: 1px solid #ddd; padding: 0.1rem;">Rester</td>
+                                </tr>
+                                <tr>
+                                    <td class="ar-fit" style="border: 1px solid #ddd; padding: 0.1rem;">أَصْبَحَ</td>
+                                    <td class="txt-fit" style="border: 1px solid #ddd; padding: 0.1rem;">Devenir (matin)</td>
+                                    <td class="ar-fit" style="border: 1px solid #ddd; padding: 0.1rem;">بَاتَ</td>
+                                    <td class="txt-fit" style="border: 1px solid #ddd; padding: 0.1rem;">Devenir (nuit)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1.05rem; font-weight: 600;">Conjugaison de Kana (كَانَ - Il était)</h3>
-<div style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
-    <table style="width: 100%; border-collapse: collapse; direction: rtl; text-align: center; background: white; table-layout: fixed;">
-        <thead>
-            <tr style="background: #8d453b; color: white;">
-                <th style="padding: 0.1rem; border: 1px solid #ddd; width: 14%;"></th>
-                <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 28.66%;">واحد</th>
-                <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 28.66%;">مثنى</th>
-                <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 28.66%;">جمع</th>
-            </tr>
-        </thead>
-        <tbody style="color: #1a1a1a; font-family: 'Lateef', serif;">
-            <tr>
-                <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #8d453b; padding: 0.1rem;">3(M)</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كَانَ</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كَانَ<span style="color: #ef4444;">ا</span></td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كَانُ<span style="color: #ef4444;">وا</span></td>
-            </tr>
-            <tr style="background: #fdfdfd;">
-                <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #8d453b; padding: 0.1rem;">3(F)</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كَانَ<span style="color: #ef4444;">تْ</span></td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كَانَ<span style="color: #ef4444;">تَا</span></td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كُ<span style="color: #ef4444;">نَّ</span></td>
-            </tr>
-            <tr>
-                <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #8d453b; padding: 0.1rem;">2(M)</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كُـنْ<span style="color: #ef4444;">تَ</span></td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كُـنْ<span style="color: #ef4444;">تُمَا</span></td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كُـنْ<span style="color: #ef4444;">تُمْ</span></td>
-            </tr>
-            <tr style="background: #fdfdfd;">
-                <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #8d453b; padding: 0.1rem;">1(MF)</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كُـنْ<span style="color: #ef4444;">تُ</span></td>
-                <td colspan="2" class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كُـ<span style="color: #ef4444;">نَّا</span></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    <div style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse; direction: rtl; text-align: center; background: white; table-layout: fixed;">
+                            <thead>
+                                <tr style="background: #8d453b; color: white;">
+                                    <th style="padding: 0.1rem; border: 1px solid #ddd; width: 14%;"></th>
+                                    <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 28.66%;">واحد</th>
+                                    <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 28.66%;">مثنى</th>
+                                    <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 28.66%;">جمع</th>
+                                </tr>
+                            </thead>
+                            <tbody style="color: #1a1a1a; font-family: 'Lateef', serif;">
+                                <tr>
+                                    <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #8d453b; padding: 0.1rem;">3(M)</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كَانَ</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كَانَ<span style="color: #ef4444;">ا</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كَانُ<span style="color: #ef4444;">وا</span></td>
+                                </tr>
+                                <tr style="background: #fdfdfd;">
+                                    <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #8d453b; padding: 0.1rem;">3(F)</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كَانَ<span style="color: #ef4444;">تْ</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كَانَ<span style="color: #ef4444;">تَا</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كُ<span style="color: #ef4444;">نَّ</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #8d453b; padding: 0.1rem;">2(M)</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كُـنْ<span style="color: #ef4444;">تَ</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كُـنْ<span style="color: #ef4444;">تُمَا</span></td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كُـنْ<span style="color: #ef4444;">تُمْ</span></td>
+                                </tr>
+                                <tr style="background: #fdfdfd;">
+                                    <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #8d453b; padding: 0.1rem;">1(MF)</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كُـنْ<span style="color: #ef4444;">تُ</span></td>
+                                    <td colspan="2" class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">كُـ<span style="color: #ef4444;">نَّا</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1.05rem; font-weight: 600;">Conjugaison de Yakunu (يَكُونُ - Il est/sera)</h3>
-<div style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
-    <table style="width: 100%; border-collapse: collapse; direction: rtl; text-align: center; background: white; table-layout: fixed;">
-        <thead>
-            <tr style="background: #2e5a8d; color: white;">
-                <th style="padding: 0.1rem; border: 1px solid #ddd; width: 15%;"></th>
-                <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 42.5%;">واحد</th>
-                <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 42.5%;">جمع</th>
-            </tr>
-        </thead>
-        <tbody style="color: #1a1a1a; font-family: 'Lateef', serif;">
-            <tr>
-                <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #2e5a8d; padding: 0.1rem;">3(M)</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">
-                    <span style="color: #ef4444;">يَـ</span>ـكُونُ
-                </td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">
-                    <span style="color: #ef4444;">يَـ</span>ـكُونُـ<span style="color: #ef4444;">ونَ</span>
-                </td>
-            </tr>
-            <tr style="background: #fdfdfd;">
-                <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #2e5a8d; padding: 0.1rem;">2(M)</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">
-                    <span style="color: #ef4444;">تَـ</span>ـكُونُ
-                </td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">
-                    <span style="color: #ef4444;">تَـ</span>ـكُونُـ<span style="color: #ef4444;">ونَ</span>
-                </td>
-            </tr>
-            <tr>
-                <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #2e5a8d; padding: 0.1rem;">1(MF)</td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">
-                    <span style="color: #ef4444;">أَ</span>كُونُ
-                </td>
-                <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">
-                    <span style="color: #ef4444;">نَـ</span>ـكُونُ
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    <div style="width: 100%; margin: 0.5rem 0; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #ddd; overflow: hidden;">
+                        <table style="width: 100%; border-collapse: collapse; direction: rtl; text-align: center; background: white; table-layout: fixed;">
+                            <thead>
+                                <tr style="background: #2e5a8d; color: white;">
+                                    <th style="padding: 0.1rem; border: 1px solid #ddd; width: 15%;"></th>
+                                    <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 42.5%;">واحد</th>
+                                    <th class="fit-ar" style="padding: 0.1rem; border: 1px solid #ddd; font-family: 'Lateef', serif; width: 42.5%;">جمع</th>
+                                </tr>
+                            </thead>
+                            <tbody style="color: #1a1a1a; font-family: 'Lateef', serif;">
+                                <tr>
+                                    <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #2e5a8d; padding: 0.1rem;">3(M)</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">
+                                        <span style="color: #ef4444;">يَـ</span>ـكُونُ
+                                    </td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">
+                                        <span style="color: #ef4444;">يَـ</span>ـكُونُـ<span style="color: #ef4444;">ونَ</span>
+                                    </td>
+                                </tr>
+                                <tr style="background: #fdfdfd;">
+                                    <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #2e5a8d; padding: 0.1rem;">2(M)</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">
+                                        <span style="color: #ef4444;">تَـ</span>ـكُونُ
+                                    </td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">
+                                        <span style="color: #ef4444;">تَـ</span>ـكُونُـ<span style="color: #ef4444;">ونَ</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fit-lab" style="background: #f8f9fa; font-family: 'Inter', sans-serif; border: 1px solid #ddd; font-weight: 700; color: #2e5a8d; padding: 0.1rem;">1(MF)</td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">
+                                        <span style="color: #ef4444;">أَ</span>كُونُ
+                                    </td>
+                                    <td class="fit-ar" style="border: 1px solid #ddd; padding: 0.1rem; color: #0066cc; font-weight: 700;">
+                                        <span style="color: #ef4444;">نَـ</span>ـكُونُ
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 `,
                 exercises: [
                                         {
@@ -3409,11 +3413,9 @@
                             <p style="margin: 0.5rem 0; font-size: 0.95rem;">Le verbe est classé en deux catégories selon que le sujet est
                                 connu ou non :</p>
                             <ol style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.95rem;">
-                                <li style="margin: 0.3rem 0;"><strong
-                                        style="color: #0066cc;font-family: 'Lateef'; font-size: 2rem;">المَعْلُوم</strong> : La forme
+                                <li style="margin: 0.3rem 0;"><strong style="color: #0066cc;font-family: 'Lateef'; font-size: 2rem;">المَعْلُوم</strong> : La forme
                                     Active. Le sujet (celui qui fait l'action) est connu.</li>
-                                <li style="margin: 0.3rem 0;"><strong
-                                        style="color: #0066cc;font-family: 'Lateef'; font-size: 2rem;">المَجْهُول</strong> : La forme
+                                <li style="margin: 0.3rem 0;"><strong style="color: #0066cc;font-family: 'Lateef'; font-size: 2rem;">المَجْهُول</strong> : La forme
                                     Passive. Le sujet est inconnu ou non mentionné ou évident.</li>
                             </ol>
                         </div>
@@ -3421,14 +3423,14 @@
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; max-width: 100%;">
                             <div
                                 style="background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; text-align: center;">
-                                <h3 style="margin: 0 0 1rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;">Forme Active</h3>
+                                <h4 style="text-align: right; margin: 0 0 1rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;"><strong style="color: #0066cc;font-family: 'Lateef'; font-size: 2rem;">المَعْلُوم</strong></h4>
                                 <p style="margin: 0.5rem 0; font-size: 0.95rem;"><em>Muhammad a frappé Zayd</em></p>
                                 <p style="margin: 0.5rem 0; font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">ضَرَبَ مُحَمَّدٌ
                                     زَيْدًا</p>
                             </div>
                             <div
                                 style="background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; text-align: center;">
-                                <h3 style="margin: 0 0 1rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;">Forme Passive</h3>
+                                <h4 style="text-align: right; margin: 0 0 1rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;"><strong style="color: #0066cc;font-family: 'Lateef'; font-size: 2rem;">المَجْهُول</strong></h4>
                                 <p style="margin: 0.5rem 0; font-size: 0.95rem;"><em>Zayd a été frappé/ On a frappé Zayd</em></p>
                                 <p style="margin: 0.5rem 0; font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">ضُرِبَ زَيْدٌ</p>
                             </div>
@@ -3649,8 +3651,8 @@
 
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; max-width: 100%;">
                             <div style="background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem;">
-                                <h3 style="margin: 0 0 1rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;"><span
-                                        style="font-family: 'Lateef'; font-size: 2rem;">مَنْ</span></h3>
+                                <h4 style="margin: 0 0 1rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;"><span
+                                        style="font-family: 'Lateef'; font-size: 2rem;">مَنْ</span></h4>
                                 <p style="margin: 0.5rem 0; font-size: 0.95rem;"><strong style="color: #0066cc;">Pour les êtres doués de
                                         raison</strong><br>(Humains, Anges, Djinns)</p>
                                 <p style="margin: 0.5rem 0; font-size: 0.9rem; font-style: italic;">"Celui qui / Qui"</p>
@@ -3659,8 +3661,8 @@
                                 <p style="margin: 0.5rem 0; font-size: 0.85rem;">(Il guide qui Il veut)</p>
                             </div>
                             <div style="background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem;">
-                                <h3 style="margin: 0 0 1rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;"><span
-                                        style="font-family: 'Lateef'; font-size: 2rem;">مَا</span></h3>
+                                <h4 style="margin: 0 0 1rem 0; color: #0066cc; font-size: 1rem; font-weight: 700;"><span
+                                        style="font-family: 'Lateef'; font-size: 2rem;">مَا</span></h4>
                                 <p style="margin: 0.5rem 0; font-size: 0.95rem;"><strong style="color: #0066cc;">Pour les non-doués de
                                         raison</strong><br>(Objets, animaux, concepts)</p>
                                 <p style="margin: 0.5rem 0; font-size: 0.9rem; font-style: italic;">"Ce que / Ce qui"</p>
@@ -3712,56 +3714,56 @@
                         ],
                         "rule": "La phrase débute par un impératif (قُلْ). La particule 'Innamā' (إِنَّمَا) restreint l'action qui suit. 'Umirtu' (أُمِرْتُ) est un verbe au passé passif dont le suffixe 'Tu' (تُ) est le Na'ib Fa'il. La structure 'An A'buda' (أَنْ أَعْبُدَ) complète le sens de l'ordre reçu. 'Allāha' (اللَّهَ) est au cas Mansūb car il est l'objet (Maf'ūl Bihī) de l'adoration. Enfin, 'Ushrika' (أُشْرِكَ) est lié par coordination (Atf) au verbe précédent."
                     },
-                                        {
+                    {
                         translation: "L'homme a été créé",
                         phrase: ["الْإِنسَانُ", "خُلِقَ"],
                         correct: ["نَائِب فَاعِل", "فِعْل َمْجُهول"],
                         opts: ["فِعْل َمْجُهول", "نَائِب فَاعِل", "فِعْل َمْعُلوم", "فَاعِل"],
                         rule: "Le verbe 'Khuliqa' a une Damma au début et une Kasra à l'avant-dernière lettre (Passé Passif). Le mot qui suit devient Na'ib Fa'il (Raf')."
                     },
-                                        {
+                    {
                         translation: "Il est interrogé ...",
                         phrase: ["يُسْأَلُ"],
                         correct: ["فِعْل َمْجُهول"],
                         opts: ["فِعْل َمْجُهول", "فِعْل َمْعُلوم", "مُبْتَدَأ", "خَبَر"],
                         rule: "Le verbe présent (Moudari') passif commence par une Damma et l'avant-dernière lettre porte une Fatha (Yus'alu)."
                     },
-                                        {
+                    {
                         translation: "Zayd a été frappé",
                         phrase: ["زَيْدٌ", "ضُرِبَ"],
                         correct: ["نَائِب فَاعِل", "فِعْل َمْجُهول"],
                         opts: ["نَائِب فَاعِل", "فَاعِل", "مَفْعُول بِهِ", "مُضَاف إِلَيْهِ", "فِعْل َمْجُهول"],
                         rule: "Dans la forme passive, l'objet (Zayd) prend la place du sujet. Il s'appelle 'Na'ib Fa'il' et prend l'état Raf' (Damma)."
                     },
-                                        {
+                    {
                         translation: "Vous serez rassemblés",
                         phrase: ["ونَ", "تُحْشَرُ"],
                         correct: ["نَائِب فَاعِل", "فِعْل َمْجُهول"],
                         opts: ["فِعْل َمْجُهول", "نَائِب فَاعِل", "فَاعِل", "مَفْعُول بِهِ"],
                         rule: "Le 'Waw' du pluriel est ici le Na'ib Fa'il (le sujet qui subit l'action) car le verbe est passif (Tuhsharuna)."
                     },
-                                        {
+                    {
                         translation: "Ceux qui ont cru",
                         phrase: ["آمَنُوا", "الَّذِينَ"],
                         correct: ["صِلَةُ الْمَوْصُول", "اِسْم َمْوُصول"],
                         opts: ["اِسْم َمْوُصول", "صِلَةُ الْمَوْصُول", "اِسْم إِشَارَة", "مُشَار إِلَيْهِ"],
                         rule: "'Alladhina' est le relatif pluriel masculin. La phrase verbale qui suit est appelée 'Silat al-Mawsul' (la connexion)."
                     },
-                                        {
+                    {
                         translation: "Celle qui discute avec toi",
                         phrase: ["كَ", "تُجَادِلُ", "الَّتِي"],
                         correct: ["مَفْعُول بِهِ", "فِعْل مُضَارِع", "اِسْم َمْوُصول"],
                         opts: ["اِسْم َمْوُصول", "حَرْف جَرّ", "مُبْتَدَأ", "فَاعِل"],
                         rule: "'Allati' est le relatif singulier féminin. Il s'accorde avec le mot qu'il remplace (ici une femme)."
                     },
-                                        {
+                    {
                         translation: "Il guide qui Il veut",
                         phrase: ["يَشَاءُ", "مَنْ", "يَهْدِي"],
                         correct: ["فِعْل", "اِسْم َمْوُصول", "صِلَةُ الْمَوْصُول"],
                         opts: ["اِسْم َمْوُصول", "حَرْف شَرْط", "حَرْف فِعْل", "اِسْم الْمَوْصُول"],
                         rule: "'Man' est utilisé pour les êtres doués de raison (humains, anges...). Il joue ici le rôle de l'objet (celui qu'Il guide)."
                     },
-                                        {
+                    {
                         translation: "Il crée ce qu'Il veut",
                         phrase: ["يَشَاءُ", "مَا", "يَخْلُقُ"],
                         correct: ["صِلَةُ الْمَوْصُول", "اِسْم َمْوُصول", "فِعْل"],
@@ -3991,6 +3993,7 @@
                 container.appendChild(card);
             });
         };
+        // --- ENREGISTREMENT SERVICE WORKER ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js').then(reg => {
@@ -4087,7 +4090,6 @@
                 }
             });
         }
-
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
@@ -4095,46 +4097,29 @@
             document.getElementById('theme-btn').innerText = isDark ? '☀️' : '🌙';
             applyDarkModeStyles();
         }
-
         // Chargement du thème
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark-mode');
             document.getElementById('theme-btn').innerText = '☀️';
         }
-
         // Appliquer les styles dark mode une fois que le DOM est chargé
         document.addEventListener('DOMContentLoaded', () => {
             if (document.body.classList.contains('dark-mode')) {
                 applyDarkModeStyles();
             }
         });
-
         // Aussi appliquer au chargement complet de la page
         window.addEventListener('load', () => {
             if (document.body.classList.contains('dark-mode')) {
                 applyDarkModeStyles();
             }
         });
-
         // --- DONNÉES & NAVIGATION ---
-        // (Copiez ici votre variable modulesData que vous m'avez fournie précédemment)
-
         function showMenu() {
             document.querySelectorAll('body > div').forEach(d => d.id !== 'theme-btn' && d.classList.add('hidden'));
             document.getElementById('screen-menu').classList.remove('hidden');
             window.scrollTo(0,0);
         }
-
-        // --- ENREGISTREMENT SERVICE WORKER ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('PWA prête !'))
-                    .catch(err => console.log('Erreur PWA', err));
-            });
-        }
-
     </script>
 </body>
-
 </html>
