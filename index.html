@@ -507,6 +507,18 @@
         body.dark-mode .border-blue-50 { border-color: var(--border-color) !important; }
         body.dark-mode .border-blue-900\/10 { border-color: var(--border-color) !important; }
         body.dark-mode .bg-blue-800 { background-color: var(--primary-blue) !important; }
+        
+        /* Select en mode dark */
+        body.dark-mode select {
+            background-color: var(--bg-card) !important;
+            color: var(--text-main) !important;
+            border-color: var(--border-color) !important;
+        }
+        
+        body.dark-mode select option {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+        }
 
         /* --- CLASSES RESPONSIVES POUR TOUS LES TABLEAUX --- */
         .fit-ar {font-size: clamp(0.6rem, 3.5vw, 2rem);line-height: 1.3;font-family: 'Lateef', serif;}
@@ -520,6 +532,77 @@
 
         .sub-text {font-size: clamp(0.5rem, 1.5vw, 0.75rem); color: #666; font-family: 'Inter', sans-serif; display: block; margin-top: 2px;}
 
+        /* Initialiser la visibilité des tableaux par genre */
+        #masculineTableContainer {
+            display: block !important;
+        }
+        
+        #feminineTableContainer {
+            display: none !important;
+        }
+
+        /* --- RESPONSIVE POUR PETITS ÉCRANS --- */
+        @media (max-width: 768px) {
+            /* Conteneur principal des sélections */
+            div[style*="margin: 1rem 0; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;"] {
+                flex-wrap: wrap !important;
+                gap: 0.75rem !important;
+            }
+
+            /* Conteneur des boutons radio (genre et état) */
+            div[style*="display: flex; align-items: center; gap: 2rem; height: 3.8rem;"] {
+                flex-wrap: wrap !important;
+                gap: 1rem !important;
+                height: auto !important;
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+
+            /* Encadrements des boutons radio */
+            div[style*="display: flex; align-items: center; gap: 1.5rem; border: 2px solid"],
+            div[style*="display: flex; align-items: center; gap: 1.5rem; margin-left: auto; border: 2px solid"] {
+                height: auto !important;
+                flex: 1 1 calc(50% - 0.5rem) !important;
+                min-width: 200px !important;
+                padding: 0.75rem 1rem !important;
+                margin-left: 0 !important;
+            }
+
+            /* Select */
+            #wordSelector {
+                flex: 1 1 100% !important;
+                min-width: 100% !important;
+            }
+
+            /* Labels dans les encadrements */
+            label[style*="display: flex; align-items: center; gap: 0.5rem; font-weight: 500;"] {
+                flex-wrap: nowrap !important;
+                gap: 0.3rem !important;
+            }
+
+            label[style*="display: flex; align-items: center; gap: 0.5rem; font-weight: 500;"] span {
+                font-size: 1.5rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Très petits écrans - une colonne */
+            div[style*="display: flex; align-items: center; gap: 2rem; height: 3.8rem;"] {
+                flex-wrap: wrap !important;
+                gap: 0.5rem !important;
+            }
+
+            /* Encadrements un par un */
+            div[style*="display: flex; align-items: center; gap: 1.5rem; border: 2px solid"],
+            div[style*="display: flex; align-items: center; gap: 1.5rem; margin-left: auto; border: 2px solid"] {
+                flex: 1 1 100% !important;
+                padding: 0.5rem 1rem !important;
+            }
+
+            label[style*="display: flex; align-items: center; gap: 0.5rem; font-weight: 500;"] span {
+                font-size: 1.3rem !important;
+            }
+        }
 
     </style>   
 </head>
@@ -649,6 +732,8 @@
     </div>
 
     <script>
+        let wordRadical = 'مُسْلِم'; // Variable par défaut
+
         const modulesData = {
             'm1': {
                 id: 'm1', name: 'Module 1', title: "le Nom", summary: "Les fondations de l'analyse nominale et le tableau Mouslimoun",
@@ -705,7 +790,7 @@
                         <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
                             <p style="margin: 0; font-size: 0.9rem;">C'est le changement de la terminaison du mot qui définit son rôle dans
                                 la phrase.</p>
-                            <ul style="list-style-type: disc; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1;">
+                            <ul style="list-style-type: disc; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.9rem; line-height: 1;">
                                 <li style="margin: 0.6rem 0;">
                                     <strong style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">رَفْعٌ
                                         :</strong> Le cas du sujet (celui qui fait l'action).
@@ -779,7 +864,7 @@
                         <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
                             <strong style="color: #e67e22; font-size: 1rem; display: block; margin-bottom: 0.8rem;">Règles spécifiques
                                 :</strong>
-                            <ol style="margin: 0; padding-left: 0.7rem; font-size: 0.95rem; line-height: 1;">
+                            <ol style="margin: 0; padding-left: 0.7rem; font-size: 0.9rem; line-height: 1;">
                                 <li style="margin: 0.4rem;">Les 
                                     <strong>Ghayr Munsarif</strong> ne prennent jamais de Tanwin ni de Kasra.
                                 </li>
@@ -831,7 +916,7 @@
                        
                         <div style="background: #fff305; background: linear-gradient(135deg, #fff305 0%, #ffeb3b 100%); border-left: 4px solid #fbc02d; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem; opacity: 0.95;">
                             <strong style="display: block; margin-bottom: 0.8rem;">⚠️ Règle d'or :</strong>
-                            <p style="margin: 0; font-size: 0.85rem;">Un mot est <strong>masculin par défaut</strong>, sauf s'il appartient à l'une des catégories du féminin.</p>
+                            <p style="margin: 0; font-size: 0.9rem;">Un mot est <strong>masculin par défaut</strong>, sauf s'il appartient à l'une des catégories du féminin.</p>
                         </div>
                         <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
                             <strong style="color: #e67e22; font-size: 1rem; display: block; margin-bottom: 0.8rem;">Les 3 catégories du Féminin :</strong>
@@ -874,65 +959,38 @@
                         </div>
                         <h3 style="margin: 2rem 0 1rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.1rem; font-weight: 700;">3.
                             Le Nombre - <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">الْعَدَدُ</span></h3>
-                        <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0;">
-                            <div
-                                style="flex: 1; min-width: 140px; background: #f5f5f5; border: 1px solid #ddd; padding: 1rem; text-align: center; border-radius: 0.4rem;">
-                                <strong style="color: #0066cc; display: block; margin-bottom: 0.5rem;">Singulier</strong>
-                                <span
-                                    style="font-family: 'Lateef'; color: #0066cc; font-weight: 700; font-size: 2rem; display: block;">وَاحِدٌ</span>
-                                <small style="color: #999;">1 unité</small>
-                            </div>
-                            <div
-                                style="flex: 1; min-width: 140px; background: #f5f5f5; border: 1px solid #ddd; padding: 1rem; text-align: center; border-radius: 0.4rem;">
-                                <strong style="color: #0066cc; display: block; margin-bottom: 0.5rem;">Duel</strong>
-                                <span
-                                    style="font-family: 'Lateef'; color: #0066cc; font-weight: 700; font-size: 2rem; display: block;">مُثَنَّى</span>
-                                <small style="color: #999;">2 unités</small>
-                            </div>
-                            <div
-                                style="flex: 1; min-width: 140px; background: #f5f5f5; border: 1px solid #ddd; padding: 1rem; text-align: center; border-radius: 0.4rem;">
-                                <strong style="color: #0066cc; display: block; margin-bottom: 0.5rem;">Pluriel</strong>
-                                <span
-                                    style="font-family: 'Lateef'; color: #0066cc; font-weight: 700; font-size: 2rem; display: block;">جَمْعٌ</span>
-                                <small style="color: #999;">3+ unités</small>
-                            </div>
+
+
+                        <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
+                            <p style="margin: 0; font-size: 0.9rem;">Indique la quantité du ism.</p>
+                            <ul style="list-style-type: disc; margin: 1rem 0; padding-left: 0.5rem; font-size: 0.9rem; line-height: 1.2;">
+                                <li style="margin: 0.4rem;">
+                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">وَاحِدٌ
+                                        :</strong> Singulier (correspond à 1 unité).
+                                </li>
+                                <li style="margin: 0.4rem;">
+                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">مُثَنَّى
+                                        :</strong> Duel (correspond à 2 unités).
+                                </li>
+                                <li style="margin: 0.4rem;">
+                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">جَمْعٌ
+                                        :</strong> Pluriel (correspond à 3+ unités).
+                                </li>
+                            </ul>
                         </div>
 
-                        <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
-                            <strong style="color: #e67e22; font-size: 1rem; display: block; margin-bottom: 0.8rem;">Règles de construction :</strong>
-                            <ol style="list-style-type: disc; margin: 0; padding-left: 1.5rem; font-size: 0.95rem; line-height: 1;">
-                                <li style="margin: 0.4rem;">
-                                    <strong style="color: #555;">Duel :</strong> Ajout de 
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">ـَانِ</strong> pour  
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">رَفْعٌ</strong>, ou
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">ـَيْنِ</strong> pour 
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">نَصْبٌ/جَرٌّ</strong>.
-                                </li>
-                                <li style="margin: 0.4rem;">
-                                    <strong style="color: #555;">Pluriel Sain Masculin :</strong> Ajout de 
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">ـُونَ</strong> pour  
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">رَفْعٌ</strong>, ou
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">ـِينَ</strong> pour 
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">نَصْبٌ/جَرٌّ</strong>.
-                                </li>
-                                <li style="margin: 0.4rem;">
-                                    <strong style="color: #555;">Pluriel Sain Féminin :</strong> Ajout de 
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">ـَاتٌ</strong> pour 
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">رَفْعٌ</strong>, ou
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">ـَاتٍ</strong> pour 
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">نَصْبٌ/جَرٌّ</strong>.
-                                </li>
-                                <li style="margin: 0.4rem;">
-                                    <strong style="color: #555;">Pluriel Brisé (Taksir) :</strong> Changement interne du mot (ex: 
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">كِتَابٌ</strong>→
-                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">كُتُبٌ</strong>).
-                                </li>
-                            </ol>
-                        </div>
-                        <div style="background: #fff305; background: linear-gradient(135deg, #fff305 0%, #ffeb3b 100%); border-left: 4px solid #fbc02d; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem; opacity: 0.95;">
+                        <div style="background: #fff305; background: linear-gradient(135deg, #fff305 0%, #ffeb3b 100%); border-left: 4px solid #fbc02d; padding: 1rem; margin: 1.5rem 0; border-radius: 0.4rem; opacity: 0.95;">
                             <strong style="display: block; margin-bottom: 0.8rem;">⚠️ Règle importante :</strong>
-                            <p style="margin: 0; font-size: 0.85rem;">Les pluriels non-doués de raison (objets, animaux) sont traités
-                                grammaticalement comme du <strong>Féminin Singulier</strong>.</p>
+                            <ol style="list-style-type: disc; margin: 0; padding-left: 0.5rem; font-size: 0.9rem; line-height: 1.2;">
+                                <li style="margin: 0.4rem;">
+                                    <strong>Les pluriels non-doués de raison</strong> (objets, animaux) sont traités grammaticalement comme du <strong>Féminin Singulier</strong>.
+                                </li>
+                                <li style="margin: 0.4rem;">
+                                    <strong>Le pluriel Brisé (Taksir)</strong> opère un changement interne du mot
+                                    (<strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">كُتُبٌ</strong> →
+                                    <strong style="font-family: 'Lateef'; font-size: 1.5rem; color: #0066cc;">كِتَابٌ</strong>).
+                                </li>
+                            </ol>                            
                         </div>
 
                         <h3 style="margin: 2rem 0 1rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.1rem; font-weight: 700;">4.
@@ -987,11 +1045,59 @@
                         <hr style="border: none; border-top: 2px solid #ddd; margin: 2rem 0;">
 
                         <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">📊
-                            Tableau de Synthèse</h2>
-                        <p>Terminaisons <strong style="font-family: 'Lateef'; font-size: 1.8rem; line-height: 0;">مُسْلِمٌ</strong></p>
+                            Terminaisons</h2>
+                        <div style="margin: 1rem 0; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+                            <label for="wordSelector" style="font-weight: 600;">Sélectionnez un mot:</label>
+                            <select id="wordSelector" style="padding: 0.5rem; font-size: 1.8rem; border: 1px solid #ddd; border-radius: 4px; font-family: 'Lateef', serif; cursor: pointer;">
+                                <option value="مُسْلِم" selected>
+                                    مُسْلِمٌ - Musulman</option>
+                                <option value="مُعَلِّم">
+                                    مُعَلِّمٌ - Enseignant</option>
+                                <option value="طَالِب">
+                                    طَالِبٌ - Étudiant</option>
+                                <option value="طَبِيب">
+                                    طَبِيبٌ - Médecin</option>
+                                <option value="مُؤْمِن">
+                                    مُؤْمِنٌ - Croyant</option>
+                                <option value="مُحْسِن">
+                                    مُحْسِنٌ - Bienfaisant</option>
+                                <option value="مُنَافِق">
+                                    مُنَافِقٌ - Hypocrite</option>
+                                <option value="كَاذِب">
+                                    كَاذِبٌ - Menteur</option>
+                            </select>
+                            
+                            <div style="display: flex; align-items: center; gap: 2rem; height: 3.8rem;">
+                                <div style="display: flex; align-items: center; gap: 1.5rem; border: 2px solid var(--border-color); padding: 0.5rem 1.5rem; border-radius: 0.5rem; background: var(--bg-card); height: 100%;">
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 500; cursor: pointer;">
+                                        <input type="radio" name="wordGender" value="masculine" checked style="cursor: pointer;">
+                                        <span style="font-family: 'Lateef'; font-size: 1.8rem;">مُذَكَّر</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 500; cursor: pointer;">
+                                        <input type="radio" name="wordGender" value="feminine" style="cursor: pointer;">
+                                        <span style="font-family: 'Lateef'; font-size: 1.8rem;">مُؤَنَّث</span>
+                                    </label>
+                                </div>
 
-                        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1rem 0; border-radius: 8px;">
-                            <table style="width: auto; min-width: 100%; direction: rtl;">
+                                <div style="display: flex; align-items: center; gap: 1.5rem; margin-left: auto; border: 2px solid var(--border-color); padding: 0.5rem 1.5rem; border-radius: 0.5rem; background: var(--bg-card); height: 100%;">
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 500; cursor: pointer;">
+                                        <input type="radio" name="wordState" value="nakirah" checked style="cursor: pointer;">
+                                        <span style="font-family: 'Lateef'; font-size: 1.8rem;">نَكِرَةٌ</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 500; cursor: pointer;">
+                                        <input type="radio" name="wordState" value="marifah" style="cursor: pointer;">
+                                        <span style="font-family: 'Lateef'; font-size: 1.8rem;">مَعْرِفَةٌ</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; font-weight: 500; cursor: pointer;">
+                                        <input type="radio" name="wordState" value="moudaf" style="cursor: pointer;">
+                                        <span style="font-family: 'Lateef'; font-size: 1.8rem;">مُضَافٌ</span> (alléger)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="masculineTableContainer" style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1rem 0; border-radius: 8px;">
+                            <table id="masculineTable" style="width: auto; min-width: 100%; direction: rtl;">
                                 <thead>
                                     <tr>
                                         <th style="font-family: 'Lateef'; font-size: 2rem; background: blue;">
@@ -1010,7 +1116,7 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem;">
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
                                             وَاحِد
                                         </td>
                                         <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
@@ -1018,21 +1124,11 @@
                                             <span style="position: relative;">
                                                 <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"> ٌ</span>
                                             </span>
-                                            <br>
-                                            <span style="color: #008000;">ال</span>مُسْلِم
-                                            <span style="position: relative;">
-                                                <span style="color: #008000; position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"> ُ</span>
-                                            </span>
                                         </td>
                                         <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
                                             مُسْلِم<span style="color: #ef4444;">ا</span>
                                             <span style="position: relative;">
                                                 <span style="color: #ef4444;position: absolute; top: 0.1em; right: -0.3em; font-size: 1em;"> ً</span>
-                                            </span>
-                                            <br>
-                                            <span style="color: #008000;">ال</span>مُسْلِم
-                                            <span style="position: relative;">
-                                                <span style="color: #008000; position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"> َ</span>
                                             </span>
                                         </td>
                                         <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
@@ -1040,7 +1136,25 @@
                                             <span style="position: relative;">
                                                 <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"> ٍ</span>
                                             </span>
-                                            <br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
+                                            وَاحِد
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            <span style="color: #008000;">ال</span>مُسْلِم
+                                            <span style="position: relative;">
+                                                <span style="color: #008000; position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"> ُ</span>
+                                            </span>
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            <span style="color: #008000;">ال</span>مُسْلِم
+                                            <span style="position: relative;">
+                                                <span style="color: #008000; position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"> َ</span>
+                                            </span>
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
                                             <span style="color: #008000;">ال</span>مُسْلِم
                                             <span style="position: relative;">
                                                 <span style="color: #008000; position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"> ِ</span>
@@ -1048,16 +1162,34 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem;">
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
+                                            وَاحِد
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم
+                                            <span style="position: relative;">
+                                                <span style="color: #008000; position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"> ُ</span>
+                                            </span>
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم
+                                            <span style="position: relative;">
+                                                <span style="color: #008000; position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"> َ</span>
+                                            </span>
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم
+                                            <span style="position: relative;">
+                                                <span style="color: #008000; position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"> ِ</span>
+                                            </span>
+                                        </td>
+                                    </tr>                                    
+                                    <tr>
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
                                             مُثَنَّى
                                         </td>
                                         <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
                                             مُسْلِم<span style="color: #ef4444;">انِ</span>
-                                            <span style="position: relative;">
-                                                <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.7em; font-size: 1em;"> َ</span>
-                                                </span>
-                                            <br>
-                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #ef4444;">انِ</span>
                                             <span style="position: relative;">
                                                 <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.7em; font-size: 1em;"> َ</span>
                                             </span>
@@ -1067,7 +1199,19 @@
                                             <span style="position: relative;">
                                                 <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.8em; font-size: 1em;"> َ</span>
                                             </span>
-                                            <br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
+                                            مُثَنَّى
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #ef4444;">انِ</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.7em; font-size: 1em;"> َ</span>
+                                            </span>
+                                        </td>
+                                        <td colspan="2" style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
                                             <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #ef4444;">يْنِ</span>
                                             <span style="position: relative;">
                                                 <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.8em; font-size: 1em;"> َ</span>
@@ -1075,16 +1219,28 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem;">
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
+                                            مُثَنَّى
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم<span style="color: #ef4444;">ا</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.3em; font-size: 1em;"> َ</span>
+                                            </span>
+                                        </td>
+                                        <td colspan="2" style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم<span style="color: #ef4444;">ي</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.6em; font-size: 1em;"> َ</span>
+                                            </span>
+                                        </td>
+                                    </tr>                                    
+                                    <tr>
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
                                             جَمْع
                                         </td>
                                         <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
                                             مُسْلِم<span style="color: #ef4444;">ونَ</span>
-                                            <span style="position: relative;">
-                                                <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.8em; font-size: 1em;"> ُ</span>
-                                            </span>
-                                            <br>
-                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #ef4444;">ونَ</span>
                                             <span style="position: relative;">
                                                 <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.8em; font-size: 1em;"> ُ</span>
                                             </span>
@@ -1094,20 +1250,49 @@
                                             <span style="position: relative;">
                                                 <span style="color: #ef4444; position: absolute; top: -0.1em; right: -0.8em; font-size: 1em;"> ِ</span>
                                             </span>
-                                            <br>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
+                                            جَمْع
+                                        </td>                                        
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #ef4444;">ونَ</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.8em; font-size: 1em;"> ُ</span>
+                                            </span>
+                                        </td>
+                                        <td colspan="2" style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
                                             <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #ef4444;">ينَ</span>
                                             <span style="position: relative;">
                                                 <span style="color: #ef4444; position: absolute; top: -0.1em; right: -0.8em; font-size: 1em;"> ِ</span>
                                             </span>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
+                                            جَمْع
+                                        </td>                                        
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم<span style="color: #ef4444;">و</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.4em; font-size: 1em;"> ُ</span>
+                                            </span>
+                                        </td>
+                                        <td colspan="2" style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم<span style="color: #ef4444;">ي</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #ef4444; position: absolute; top: -0.1em; right: -0.6em; font-size: 1em;"> ِ</span>
+                                            </span>
+                                        </td>
+                                    </tr>                                    
                                 </tbody>
                             </table>
                         </div>
 
 
-                        <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1rem 0; border-radius: 8px;">
-                            <table style="min-width: 100%; direction: rtl;">
+                        <div id="feminineTableContainer" style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1rem 0; border-radius: 8px;">
+                            <table id="feminineTable" style="min-width: 100%; direction: rtl;">
                                 <thead>
                                     <tr>
                                         <th style="font-family: 'Lateef'; font-size: 2rem; background: pink;">
@@ -1126,65 +1311,93 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem;">
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
                                             وَاحِد
                                         </td>
                                         <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
                                             مُسْلِم<span style="color: #FF0087;">ة</span>
                                             <span style="position: relative;">
-                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.5em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.4em; font-size: 1em;">&#x064e;</span>
                                                 <span style="color: #ef4444; position: absolute; top: -0.1em; right: -0.1em; font-size: 1em;">ٌ</span>
                                             </span>
-                                            <br>
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم<span style="color: #FF0087;">ة</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.4em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #ef4444; position: absolute; top: -0.1em; right: -0.1em; font-size: 1em;">ً</span>
+                                            </span>                             
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم<span style="color: #FF0087;">ة</span>
+                                            <span style=" position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.4em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #ef4444;position: absolute; top: -0.1em; right: -0.1em; font-size: 1em;">ٍ</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
+                                            وَاحِد
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
                                             <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #FF0087;">ة</span>
                                             <span style="position: relative;">
-                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.5em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.4em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #008000; position: absolute; top: -0.1em; right: -0.1em; font-size: 1em;"> ُ</span>
+                                            </span>
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #FF0087;">ة</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.4em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #008000; position: absolute; top: -0.1em; right: -0.1em; font-size: 1em;"> َ</span>
+                                            </span>                                
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #FF0087;">ة</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.4em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #008000; position: absolute; top: -0.1em; right: -0.1em; font-size: 1em;"> ِ</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
+                                            وَاحِد
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم<span style="color: #FF0087;">ة</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.4em; font-size: 1em;">&#x064e;</span>
                                                 <span style="color: #008000; position: absolute; top: -0.1em; right: -0.1em; font-size: 1em;"> ُ</span>
                                             </span>
                                         </td>
                                         <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
                                             مُسْلِم<span style="color: #FF0087;">ة</span>
                                             <span style="position: relative;">
-                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.5em; font-size: 1em;">&#x064e;</span>
-                                                <span style="color: #ef4444; position: absolute; top: -0.1em; right: -0.1em; font-size: 1em;">ً</span>
-                                            </span>
-                                            <br>
-                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #FF0087;">ة</span>
-                                            <span style="position: relative;">
-                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.5em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.4em; font-size: 1em;">&#x064e;</span>
                                                 <span style="color: #008000; position: absolute; top: -0.1em; right: -0.1em; font-size: 1em;"> َ</span>
                                             </span>                                
                                         </td>
                                         <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
                                             مُسْلِم<span style="color: #FF0087;">ة</span>
-                                            <span style=" position: relative;">
-                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.5em; font-size: 1em;">&#x064e;</span>
-                                                <span style="color: #ef4444;position: absolute; top: -0.1em; right: -0.1em; font-size: 1em;">ٍ</span>
-                                            </span>
-                                            <br>
-                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #FF0087;">ة</span>
                                             <span style="position: relative;">
-                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.5em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.4em; font-size: 1em;">&#x064e;</span>
                                                 <span style="color: #008000; position: absolute; top: -0.1em; right: -0.1em; font-size: 1em;"> ِ</span>
                                             </span>
                                         </td>
-                                    </tr>
+                                    </tr>                                    
                                     <tr>
-                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem;">
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
                                             مُثَنَّى
                                         </td>
                                         <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
                                             مُسْلِم<span style="color: #FF0087;">ت</span><span style="color: #ef4444;">انِ</span> 
                                             <span style="position: relative;">
-                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -1em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.9em; font-size: 1em;">&#x064e;</span>
                                                 <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.7em; font-size: 1em;">&#x064e;</span>
-                                            </span>
-                                            <br>
-                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #FF0087;">ت</span><span style="color: #ef4444;">انِ</span> 
-                                            <span style="position: relative;">
-                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -1em; font-size: 1em;">&#x064e;</span>
-                                                <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.7em; font-size: 1em;">&#x064e;</span>
-                                            </span>                                        
+                                            </span>                                    
                                         </td>
                                         <td colspan="2" style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
                                             مُسْلِم<span style="color: #FF0087;">ت</span><span style="color: #ef4444;">يْنِ</span> 
@@ -1192,7 +1405,21 @@
                                                 <span style="color: #FF0087; position: absolute; top: 0.1em; right: -1em; font-size: 1em;">&#x064e;</span>
                                                 <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.8em; font-size: 1em;">&#x064e;</span>
                                             </span>
-                                            <br><span style="color: #008000;">ال</span>مُسْلِم<span style="color: #FF0087;">ت</span><span style="color: #ef4444;">يْنِ</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
+                                            مُثَنَّى
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #FF0087;">ت</span><span style="color: #ef4444;">انِ</span> 
+                                            <span style="position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.9em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.7em; font-size: 1em;">&#x064e;</span>
+                                            </span>                                        
+                                        </td>
+                                        <td colspan="2" style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #FF0087;">ت</span><span style="color: #ef4444;">يْنِ</span>
                                             <span style="color: #ef4444; position: relative;">
                                                 <span style="color: #FF0087; position: absolute; top: 0.1em; right: -1em; font-size: 1em;">&#x064e;</span>
                                                 <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.8em; font-size: 1em;">&#x064e;</span>
@@ -1200,18 +1427,81 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem;">
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
+                                            مُثَنَّى
+                                        </td>
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم<span style="color: #FF0087;">ت</span><span style="color: #ef4444;">ا</span> 
+                                            <span style="position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.6em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.3em; font-size: 1em;">&#x064e;</span>
+                                            </span>                                        
+                                        </td>
+                                        <td colspan="2" style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم<span style="color: #FF0087;">ت</span><span style="color: #ef4444;">ي</span>
+                                            <span style="color: #ef4444; position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.9em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.6em; font-size: 1em;">&#x064e;</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
                                             جَمْع
                                         </td>
                                         <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
-                                            مُسْلِمَ<span style="color: #ef4444; position: relative;"><span style="position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"></span>اتٌ</span>
-                                            <br><span style="color: #008000;">ال</span>مُسْلِمَ<span style="color: #008000; position: relative;"><span style="position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"></span>ات&#x064f;</span>
+                                            مُسْلِم<span style="color: #FF0087;">ات</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.9em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #ef4444; position: absolute; top: 0.1em; right: -0.3em; font-size: 1em;">ٌ</span>
+                                            </span>
                                         </td>
                                         <td colspan="2" style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
-                                            مُسْلِمَ<span style="color: #ef4444; position: relative;"><span style="position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"></span>اتٍ</span>
-                                            <br><span style="color: #008000;">ال</span>مُسْلِمَ<span style="color: #008000; position: relative;"><span style="position: absolute; top: 0.1em; right: -0.1em; font-size: 1em;"></span>اتِ</span>
+                                            مُسْلِم<span style="color: #FF0087;">ات</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.9em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #ef4444;position: absolute; top: -0.1em; right: -0.2em; font-size: 1em;">ٍ</span>
+                                            </span>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
+                                            جَمْع
+                                        </td>                                        
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #FF0087;">ات</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.9em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #008000; position: absolute; top: 0.1em; right: -0.3em; font-size: 1em;"> ُ</span>
+                                            </span>
+                                        </td>
+                                        <td colspan="2" style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            <span style="color: #008000;">ال</span>مُسْلِم<span style="color: #FF0087;">ات</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.9em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #008000; position: absolute; top: -0.1em; right: -0.2em; font-size: 1em;"> ِ</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fit-lab" style="background: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; color: #fff">
+                                            جَمْع
+                                        </td>                                        
+                                        <td style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم<span style="color: #FF0087;">ات</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.9em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #008000; position: absolute; top: 0.1em; right: -0.3em; font-size: 1em;"> ُ</span>
+                                            </span>
+                                        </td>
+                                        <td colspan="2" style="font-family: 'Lateef'; font-size: 2rem; white-space: nowrap;">
+                                            مُسْلِم<span style="color: #FF0087;">ات</span>
+                                            <span style="position: relative;">
+                                                <span style="color: #FF0087; position: absolute; top: 0.1em; right: -0.9em; font-size: 1em;">&#x064e;</span>
+                                                <span style="color: #008000; position: absolute; top: -0.1em; right: -0.2em; font-size: 1em;"> ِ</span>
+                                            </span>
+                                        </td>
+                                    </tr>                                    
                                 </tbody>
                             </table>
                         </div>
@@ -1337,7 +1627,7 @@
                     <div style="margin-bottom: 2rem;">
                         
                         <h2 style="margin: 2rem 0 1rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.25rem; font-weight: 700;">
-                            <strong style="font-family: 'Lateef'; font-size: 1.6rem; font-weight: 700;">مُرَكَّبٌ</strong> ?
+                            <strong style="font-family: 'Lateef'; font-size: 1.6rem; font-weight: 700;">المُرَكَّبُ</strong>
                         </h2>
                         <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 0.4rem; border-radius: 0.4rem;">
                             <p style="margin: 0.5rem 0; font-size: 0.9rem; line-height: 1.2;">C'est un groupe de noms qui ne forme pas une phrase complète.
@@ -1389,7 +1679,7 @@
                         <h2 style="margin: 2rem 0 1rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.25rem; font-weight: 700;">2.
                             <strong style="font-family: 'Lateef'; font-size: 1.6rem; font-weight: 700;">اِسْمُ الْإِشَارَةِ وَالْمُشَارُ إِلَيْهِ</strong></h2>
                         <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 0.4rem; border-radius: 0.4rem;">
-                            <p style="margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.2;">Correspond à la démonstration (ce, cet, cette, ces...).</p>
+                            <p style="margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.2;">Correspond à la démonstration (ce, cet, ces...)</p>
                             <ul style="list-style-type: disc; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.9rem; line-height: 1.2;">
                                 <li style="margin: 0.5rem 0;"><strong style="font-family: 'Lateef'; font-size: 1.6rem;">اِسْمُ الْإِشَارَةِ</strong> : Le pronom démonstratif (celui qui montre).</li>
                                 <li style="margin: 0.5rem 0;"><strong style="font-family: 'Lateef'; font-size: 1.6rem;">الْمُشَارُ إِلَيْهِ</strong> : Le nom indiqué (celui qu'on montre).</li>
@@ -1853,11 +2143,12 @@
             'm3': {
                 id: 'm3', name: 'Module 3', title: "La Phrase Nominale (1/2)", summary: "Mubtada/Khabar et les listes complètes de Inna et Kana",
                 course: `
-                    <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">1. Définition et Composition</h2>
+                    <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">1. <strong style="font-family: 'Lateef'; font-size: 1.6rem; font-weight: 700;">جُمْلَةٌ اِسِميَّةٌ</strong></h2>
                     
                     <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem; line-height: 1;">
-                        <p style="margin: 0.5rem 0; font-size: 0.95rem;">Une <strong style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">جُمْلَةٌ اِسِميَّةٌ</strong> est
-                            une phrase qui commence par un <strong style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">اِسْم</strong> (nom). 
+                        <p style="margin: 0.5rem 0; font-size: 0.95rem;">C'est une phrase qui commence par un
+                            <strong style="font-family: 'Lateef'; font-size: 1.8rem; color: #0066cc;">اِسْم</strong> à l'état
+                            <strong style="font-family: 'Lateef'; font-size: 1.8rem; color: #0066cc;">رَفْعٌ</strong>. 
                             <br>En arabe, le verbe "être" est sous-entendu au présent.</p><br>
                         <p style="margin: 0.5rem 0; font-size: 0.95rem; font-weight: 600;">Elle est composée obligatoirement de deux parties :</p>
                         <ol style="list-style-type: disc; margin: 0.8rem 0 0; padding-left: 1.2rem; font-size: 0.95rem; line-height: 1.7;">
@@ -1868,6 +2159,32 @@
                         <ol style="list-style-type: disc; margin: 0.8rem 0 0; padding-left: 1.5rem; font-size: 0.95rem; line-height: 1.7;">
                             <li style="margin: 0.4rem 0;"><strong style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">الْمُتَعَلِّقُ بِالْخَبَرِ</strong> : Le complément du prédicat (information supplémentaire sur le prédicat).</li>
                         </ol>
+                    </div>
+                    <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
+                        <strong style="color: #e67e22; font-size: 1rem; display: block; margin-bottom: 0.8rem;">Règle d'accord :</strong>
+                        <p style="margin: 0; font-size: 0.95rem;">Le <em style="font-family: 'Lateef'; font-size: 2rem;">مُبْتَدَأُ</em> et le <em style="font-family: 'Lateef'; font-size: 2rem;">خَبَرُ</em> s'accordent toujours en <strong>Genre</strong> et en <strong>Nombre</strong>.</p>
+                    </div>
+
+                    
+                    <div style="flex: 1; min-width: 250px; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0;">
+                        <p style="margin: 0 0 0.8rem 0; font-size: 0.95rem;">
+                            <em style="text-align: center; color: #555; display: block;">Le musulman <strong style="color: red;">est</strong> assis dans la mosquée</em>
+                        </p>
+                        <div style="display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.5rem; color: #0066cc; font-weight: 600;">
+                            <div style="text-align: right; flex: 1;">
+                                <strong style="font-family: 'Lateef'; font-size: 2rem;"> فِي الْمَسْجِدِ<br>
+                                    <small style="color: #999;">مُتَعَلِّقٌ بِالْخَبَرِ</small></strong>
+                            </div>
+                            <div style="text-align: center; flex: 1;">
+                                <strong style="font-family: 'Lateef'; font-size: 2rem;"> جَالِسٌ <br>
+                                    <small style="color: #999;">خَبَرٌ</small></strong>
+                            </div>
+                            <div style="text-align: left; flex: 1;">
+                                <strong style="font-family: 'Lateef'; font-size: 2rem;">الْمُسْلِمُ<br>
+                                    <small style="color: #999;">مُبْتَدَأٌ</small>
+                                </strong>
+                            </div>
+                        </div>
                     </div>
 
                     <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1rem; font-weight: 600;">Les caractéristiques grammaticales :</h3>
@@ -1944,7 +2261,7 @@
                                 </div>
                                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
                                     <span style="color: #64748b;">Composition</span>
-                                    <span style="text-align: right; font-family: 'Lateef'; font-size: 1.4rem; color: #000; text-align: right;">جار/مجرور <p>ظرف/مُضَافٌ إِلَيْهِ</p></span>
+                                    <span style="text-align: right; font-family: 'Lateef'; font-size: 1.4rem; color: #000; text-align: right;">جَارٌ/مَجْرُورٌ <p>ظَرْفٌ/مُضَافٌ إِلَيْهِ</p></span>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f1f5f9; padding: 4px 0;">
                                     <span style="color: #64748b;">État</span>
@@ -1956,32 +2273,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div style="flex: 1; min-width: 250px; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0;">
-                        <p style="margin: 0 0 0.8rem 0; font-size: 0.95rem;">
-                            <em style="text-align: center; color: #555; display: block;">Le musulman <strong style="color: red;">est</strong> assis dans la mosquée</em>
-                        </p>
-                        <div style="display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.5rem; color: #0066cc; font-weight: 600;">
-                            <div style="text-align: right; flex: 1;">
-                                <strong style="font-family: 'Lateef'; font-size: 2rem;"> فِي الْمَسْجِدِ<br>
-                                    <small style="color: #999;">مُتَعَلِّقٌ بِالْخَبَرِ</small></strong>
-                            </div>
-                            <div style="text-align: center; flex: 1;">
-                                <strong style="font-family: 'Lateef'; font-size: 2rem;"> جَالِسٌ <br>
-                                    <small style="color: #999;">خَبَرٌ</small></strong>
-                            </div>
-                            <div style="text-align: left; flex: 1;">
-                                <strong style="font-family: 'Lateef'; font-size: 2rem;">الْمُسْلِمُ<br>
-                                    <small style="color: #999;">مُبْتَدَأٌ</small>
-                                </strong>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
-                        <strong style="color: #e67e22; font-size: 1rem; display: block; margin-bottom: 0.8rem;">Règle d'accord :</strong>
-                        <p style="margin: 0; font-size: 0.95rem;">Le <em style="font-family: 'Lateef'; font-size: 2rem;">مُبْتَدَأُ</em> et le <em style="font-family: 'Lateef'; font-size: 2rem;">خَبَرُ</em> s'accordent toujours en <strong>Genre</strong> et en <strong>Nombre</strong>.</p>
                     </div>
 
                     <hr style="border: none; border-top: 2px solid #ddd; margin: 2rem 0;">
@@ -2006,9 +2297,9 @@
                             </div>
                             <div style="text-align: left; flex: 1;">
                                 <span style="font-family: 'Lateef'; font-size: 2rem;"><strong style="color: green;"> إِنَّمَا</strong><br>
-                                    <small style="color: #999;">حَرْفُ إِنَّمَا</small>
+                                    <small style="color: #999;">حَرْفُ تَأْكِيد</small>
                                 </span>
-                            </div>
+                            </div
                         </div>
                     </div>
 
@@ -2570,21 +2861,11 @@
                             <li>Le sujet peut être interne (Raf') ou externe (Raf' après le verbe).</li>
                             <li>Elle peut contenir un objet (Nasb) et des compléments (Raf' ou Nasb).</li>
                         </ul>
-                        <p style="margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.6; color: #0066cc; font-weight: 600;">Ex :</p>
-                        <ul style="direction: rtl; font-size: 0.85rem; line-height: 1.2;">
-                            <li>Le Messager est venu<br><strong style="font-family: 'Lateef'; font-size: 1.6rem; color: #0066cc; font-weight: 700;">جَاءَ الرَّسُولُ</strong><br>Verbe + Sujet Externe</li>
-                            <br>
-                            <li>Le musulman a écrit la leçon<br><strong style="font-family: 'Lateef'; font-size: 1.6rem; color: #0066cc; font-weight: 700;">كَتَبَ الْمُسْلِمُ الدَّرْسَ</strong><br>Verbe + Sujet + Objet</li>
-                            <br>
-                            <li>Allah secourt les croyants dans ce monde et dans l'au-delà<br><strong style="font-family: 'Lateef'; font-size: 1.6rem; color: #0066cc; font-weight: 700;">يَنْصُرُ اللهُ الْمُؤْمِنِينَ فِي الدُّنْيَا وَالْآخِرَةِ</strong><br>Verbe + Sujet + Objet + Compléments</li>
-                        </ul>
                     </div>
                     <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 0.5rem; border-radius: 0.4rem; margin-top: 1.5rem;">
                         <strong style="color: #e67e22; font-size: 1rem; display: block; margin-bottom: 0.4rem;">Règle d'identification du sujet :</strong>
                         <p style="margin: 0.5rem 0; font-size: 0.9rem; line-height: 1.2;"><strong></strong> Si le verbe est à la 3ème personne du singulier et qu'il est suivi d'un nom à l'état Raf', alors ce nom est le sujet (Sujet Externe).</p>
-                    </div>
-
-                    
+                    </div>                 
                 `,
                 exercises: [
                                         {
@@ -2670,33 +2951,33 @@
                     <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">1. Méthodes d'intensification (2/2)</h2>
 
                     <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1.05rem; font-weight: 600;">Méthode 4 : Le Pronom de Séparation (<strong style="font-family: 'Lateef'; font-size: 1.6rem; color: #0066cc;">ضَمِيرُ مُنْفَصِلٌ</strong>)</h3>
-                    <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">On insère un pronom personnel (lui, toi, nous...) entre le Moubtada et le Khabar. Cela donne un sens d'exclusivité ("C'est lui le...").</p>
-                    <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
-                        <strong style="color: #e67e22; font-size: 1rem; display: block; margin-bottom: 0.8rem;">Conséquence :</strong>
-                        <p style="margin: 0; font-size: 0.95rem;">Le Khabar devient <strong>Défini (Ma'rifah)</strong> en ajoutant (<span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">الـ</span>).</p>
+                    <p style="margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.6;">On insère un pronom personnel (lui, toi, nous...) entre le Moubtada et le Khabar. Cela donne un sens d'exclusivité ("C'est lui le...").</p>
+                    <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1rem; margin: 1rem 0; border-radius: 0.4rem;">
+                        <strong style="color: #e67e22; font-size: 0.9rem; display: block; margin-bottom: 0.8rem;">Conséquence :</strong>
+                        <p style="margin: 0; font-size: 0.9rem;">Le Khabar devient <strong>Ma'rifah</strong> en ajoutant (<strong style="font-family: 'Lateef'; font-size: 1.6rem; color: #0066cc; font-weight: 700;">الـ</strong>).</p>
                     </div>
-                    <p style="direction: rtl; margin: 1rem 0; font-size: 0.95rem; font-weight: 600; text-align: center; padding: 1rem; background: #f5f5f5; border-radius: 0.4rem;">Moubtada + <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">ضَمِيرٌ مُنْفَصِلٌ</span> + <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">الـ</span> avec Khabar</p>
-                    <div style="background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0;">
-                        <p style="text-align: center; margin: 0; font-size: 0.95rem;"><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">مُحَمَّدٌ هُوَ الرَّسُولُ</span><br><em style="color: #555;">Muhammad, c'est lui le messager.</em></p>
+                    <p style="direction: rtl; margin: 0.9rem 0; font-size: 0.9rem; font-weight: 600; text-align: center; padding: 0.9rem; background: #f5f5f5; border-radius: 0.4rem;">Moubtada + <strong style="font-family: 'Lateef'; font-size: 1.8rem; color: #0066cc; font-weight: 700;">ضَمِيرٌ مُنْفَصِلٌ</strong> + <strong style="font-family: 'Lateef'; font-size: 1.8rem; color: #0066cc; font-weight: 700;">الـ</strong> avec Khabar</p>
+                    <div style="background: #f5f5f5; border: 1px solid #ddd; padding: 1rem; border-radius: 0.4rem; margin: 1.2rem 0;">
+                        <p style="text-align: center; margin: 0; font-size: 0.9rem;"><strong style="font-family: 'Lateef'; font-size: 1.8rem; color: #0066cc; font-weight: 700;">مُحَمَّدٌ هُوَ الرَّسُولُ</strong><br><em style="color: #555;">Muhammad, c'est lui le messager.</em></p>
                     </div>
 
                     <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1.05rem; font-weight: 600;">Méthode 5 : Le Lam du début (<strong style="font-family: 'Lateef'; font-size: 1.6rem; color: #0066cc;">لَامُ الِابْتِدَاءِ</strong>)</h3>
-                    <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">On ajoute la lettre <strong>La</strong> (<span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">لَـ</span>) devant le Moubtada pour insister (Vraiment/Certes).</p>
-                    <div style="background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0;">
-                        <p style="text-align: center; margin: 0; font-size: 0.95rem;"><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">لَمُحَمَّدٌ رَسُولٌ</span><br><em style="color: #555;">Muhammad est vraiment un messager.</em></p>
+                    <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">On ajoute la lettre <strong>La</strong> (<strong style="font-family: 'Lateef'; font-size: 1.6rem; color: #0066cc; font-weight: 700;">لَـ</strong>) devant le Moubtada pour insister (Vraiment/Certes).</p>
+                    <div style="background: #f5f5f5; border: 1px solid #ddd; padding: 1rem; border-radius: 0.4rem; margin: 1.2rem 0;">
+                        <p style="text-align: center; margin: 0; font-size: 0.95rem;"><strong style="font-family: 'Lateef'; font-size: 1.6rem; color: #0066cc; font-weight: 700;">لَمُحَمَّدٌ رَسُولٌ</strong><br><em style="color: #555;">Muhammad est vraiment un messager.</em></p>
                     </div>
 
                     <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
-                        <strong style="color: #e67e22; font-size: 1rem; display: block; margin-bottom: 0.8rem;">Le Lam glissant (اللَّامُ الْمُزَحْلَقَةُ) :</strong>
-                        <p style="margin: 0 0 0.8rem 0; font-size: 0.95rem;">Si on utilise <strong><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">إِنَّ</span></strong> (Inna) au début de la phrase, le "Lam" ne peut pas rester sur le Moubtada. Il "glisse" et s'accroche au <strong>Khabar</strong>.</p>
-                        <p style="margin: 0; font-size: 0.95rem;">Ex. : <span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; font-weight: 700;">إِنَّ مُحَمَّدًا لَرَسُولٌ</span> (Certes, Muhammad est vraiment un messager)</p>
+                        <strong style="color: #e67e22; font-size: 0.9rem; display: block; margin-bottom: 0.8rem;">Le Lam glissant (اللَّامُ الْمُزَحْلَقَةُ) :</strong>
+                        <p style="margin: 0 0 0.8rem 0; font-size: 0.9rem;">Si on utilise <strong><span style="font-family: 'Lateef'; font-size: 1.8rem; color: #0066cc; font-weight: 700;">إِنَّ</span></strong> (Inna) au début de la phrase, le "Lam" ne peut pas rester sur le Moubtada. Il "glisse" et s'accroche au <strong>Khabar</strong>.</p>
+                        <p style="margin: 0; font-size: 0.9rem;">Ex. : <span style="font-family: 'Lateef'; font-size: 1.8rem; color: #0066cc; font-weight: 700;">إِنَّ مُحَمَّدًا لَرَسُولٌ</span> (Certes, Muhammad est vraiment un messager)</p>
                     </div>
 
                     <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1.05rem; font-weight: 600;">Méthode 6 : L'Inversion (<strong style="font-family: 'Lateef'; font-size: 1.6rem; color: #0066cc;">التَّقْدِيمُ وَالتَّأْخِيرُ</strong>)</h3>
                     <p style="margin: 0.8rem 0; font-size: 0.95rem; line-height: 1.6;">On inverse l'ordre standard : le Khabar passe devant le Moubtada.</p>
                     <div style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
-                        <strong style="color: #e67e22; font-size: 1rem; display: block; margin-bottom: 0.8rem;">Conditions :</strong>
-                        <ul style="margin: 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.7;">
+                        <strong style="color: #e67e22; font-size: 0.9rem; display: block; margin-bottom: 0.8rem;">Conditions :</strong>
+                        <ul style="margin: 0; padding-left: 1.8rem; font-size: 0.9rem; line-height: 1.7;">
                             <li>Le Moubtada devient <strong>Indéfini (Nakirah)</strong></li>
                             <li>Le verbe "être" est souvent remplacé par le sens "il y a" ou "avoir"</li>
                         </ul>
@@ -3454,7 +3735,6 @@
                         <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">1. Introduction</h2>
                         <div
                             style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
-                            <strong style="color: #0066cc; display: block; margin-bottom: 0.8rem;">Définition :</strong>
                             <p style="margin: 0.5rem 0; font-size: 0.95rem;">L'impératif est un mode utilisé pour :</p>
                             <ol style="list-style-type: disc; margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.95rem;">
                                 <li style="margin: 0.3rem 0;">Ordonner (<span
@@ -3471,10 +3751,11 @@
 
                     <div style="margin-bottom: 2rem;">
                         <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">2. L'Interdiction</h2>
-                        <p style="margin: 0.8rem 0; font-size: 0.95rem;">Pour exprimer "Ne fais pas !", on utilise la particule <strong>La
-                                (<span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">لَا</span>)</strong> suivie du verbe
-                            au présent à l'état <strong>Majzoum</strong>.</p>
-
+                        <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
+                            <p style="margin: 0.8rem 0; font-size: 0.95rem;">Pour exprimer "Ne fais pas !", on utilise la particule <strong>La
+                                    (<span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">لَا</span>)</strong> suivie du verbe
+                                au présent à l'état <strong>Majzoum</strong>.</p>
+                        </div>
                         <div
                             style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem; text-align: center;">
                             <strong style="color: #ff9800;"><span style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">لَا</span>
@@ -3560,8 +3841,9 @@
                     </div>
                     <div style="margin-bottom: 2rem;">
                         <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">3. L'Impératif / Ordre</h2>
-                        <p style="margin: 0.8rem 0; font-size: 0.95rem;">La construction de l'impératif positif ("Fais !") suit une
-                            procédure stricte en 4 étapes.</p>
+                        <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
+                            <p style="margin: 0.8rem 0; font-size: 0.95rem;">La construction de l'impératif positif ("Fais !") suit une procédure stricte en 4 étapes.</p>
+                        </div>
 
                         <div
                             style="background: #f5f5f5; border: 2px solid #0066cc; border-radius: 0.4rem; padding: 1.2rem; margin: 1rem 0;">
@@ -3764,23 +4046,22 @@
                     <div style="margin-bottom: 2rem;">
                         <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">
                             4. La Demande / Invocation</h2>
-                        <div
-                            style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
-                            <strong style="color: #0066cc; display: block; margin-bottom: 0.8rem;">Définition :</strong>
+                        <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
                             <p style="margin: 0.5rem 0; font-size: 0.95rem;">Grammaticalement, la conjugaison est strictement identique
                                 à l'Impératif ou à l'Interdiction. Cependant, par politesse envers Allah (swt), on ne dit pas qu'on Lui
                                 donne un "ordre". On parle de <strong>Talab</strong> (Demande/Requête) ou <strong>Du'a</strong>.</p>
-                        </div>
+                        
 
-                        <p style="margin: 1rem 0 0.5rem 0; font-size: 0.95rem;"><strong>Exemple Coranique :</strong></p>
-                        <div style="text-align: center; margin: 1.5rem 0;">
-                            <strong style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; margin: 0.5rem 0;">رَبَّنَا اغْفِرْ
-                                لَنَا</strong>
-                            <p style="font-style: italic; margin: 0.5rem 0; font-size: 0.9rem;">"Seigneur, pardonne-nous"</p>
-                            <p style="font-size: 0.9rem; margin: 1rem 0 0 0;">Ici, <strong
-                                    style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">اغْفِرْ</strong> est
-                                grammaticalement un impératif, mais rhétoriquement une invocation.</p>
-                        </div>
+                            <p style="margin: 1rem 0 0.5rem 0; font-size: 0.95rem;"><strong>Exemple Coranique :</strong></p>
+                            <div style="text-align: center; margin: 1.5rem 0;">
+                                <strong style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc; margin: 0.5rem 0;">رَبَّنَا اغْفِرْ
+                                    لَنَا</strong>
+                                <p style="font-style: italic; margin: 0.5rem 0; font-size: 0.9rem;">"Seigneur, pardonne-nous"</p>
+                                <p style="font-size: 0.9rem; margin: 1rem 0 0 0;">Ici, <strong
+                                        style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">اغْفِرْ</strong> est
+                                    grammaticalement un impératif, mais rhétoriquement une invocation.</p>
+                            </div>
+                        </div>    
                     </div>
                 `,
                 exercises: [
@@ -3857,7 +4138,6 @@
                             Introduction au Passif</h2>
                         <div
                             style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
-                            <strong style="color: #0066cc; display: block; margin-bottom: 0.8rem;">Définition :</strong>
                             <p style="margin: 0.5rem 0; font-size: 0.95rem;">Le verbe est classé en deux catégories selon que le sujet est
                                 connu ou non :</p>
                             <ol style="list-style-type: disc; margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.95rem;">
@@ -3901,11 +4181,12 @@
                     <div style="margin-bottom: 2rem;">
                         <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">2.
                             Le Substitut du Sujet</h2>
-                        <p style="margin: 0.8rem 0; font-size: 0.95rem;">C'est la transformation grammaticale majeure du passif. Puisque le
-                            vrai sujet (<strong style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">فَاعِل</strong>) disparaît,
-                            l'objet qui subissait l'action (<strong style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">مَفْعُول
-                                بِهِ</strong>) prend sa place.</p>
-
+                        <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
+                            <p style="margin: 0.8rem 0; font-size: 0.95rem;">C'est la transformation grammaticale majeure du passif. Puisque le
+                                vrai sujet (<strong style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">فَاعِل</strong>) disparaît,
+                                l'objet qui subissait l'action (<strong style="font-family: 'Lateef'; font-size: 2rem; color: #0066cc;">مَفْعُول
+                                    بِهِ</strong>) prend sa place.</p>
+                        </div>
                         <div
                             style="background: #fff3e0; border-left: 4px solid #ff9800; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
                             <strong style="color: #ff9800; display: block; margin-bottom: 0.8rem;">La Transformation :</strong>
@@ -3942,18 +4223,17 @@
                     <div style="margin-bottom: 2rem;">
                         <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">3.
                             Construction du Passé Passif</h2>
-                        <p style="margin: 0.8rem 0; font-size: 0.95rem;">Pour transformer un verbe passé actif en passif, on applique 3
-                            changements de voyelles :</p>
+                        <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
+                            <p style="margin: 0.8rem 0; font-size: 0.95rem;">Pour transformer un verbe passé actif en passif, on applique 3 changements de voyelles :</p>
 
-                        <ol style="list-style-type: decimal; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.8;">
-                            <li style="margin: 0.6rem 0;">La <strong style="color: #0066cc;">dernière lettre</strong> ne change pas.</li>
-                            <li style="margin: 0.6rem 0;">L'<strong style="color: #0066cc;">avant-dernière lettre</strong> prend une <strong
-                                    style="color: #0066cc;">Kasra</strong>.</li>
-                            <li style="margin: 0.6rem 0;">Toutes les lettres voyellées <strong style="color: #0066cc;">avant</strong>
-                                prennent une <strong style="color: #0066cc;">Damma</strong>.</li>
-                        </ol>
-
-
+                            <ol style="list-style-type: decimal; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.8;">
+                                <li style="margin: 0.6rem 0;">La <strong style="color: #0066cc;">dernière lettre</strong> ne change pas.</li>
+                                <li style="margin: 0.6rem 0;">L'<strong style="color: #0066cc;">avant-dernière lettre</strong> prend une <strong
+                                        style="color: #0066cc;">Kasra</strong>.</li>
+                                <li style="margin: 0.6rem 0;">Toutes les lettres voyellées <strong style="color: #0066cc;">avant</strong>
+                                    prennent une <strong style="color: #0066cc;">Damma</strong>.</li>
+                            </ol>
+                        </div>
 
                         <div style="flex: 1; min-width: 250px; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0; direction: rtl; line-height: 1.1;">
                             <div style="display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.5rem; color: #0066cc; font-weight: 600;">
@@ -4031,16 +4311,17 @@
                     <div style="margin-bottom: 2rem;">
                         <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">4.
                             Construction du Présent Passif</h2>
-                        <p style="margin: 0.8rem 0; font-size: 0.95rem;">Pour le présent, la règle diffère légèrement :</p>
+                        <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
+                            <p style="margin: 0.8rem 0; font-size: 0.95rem;">Pour le présent, la règle diffère légèrement :</p>
 
-                        <ol style="list-style-type: decimal; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.8;">
-                            <li style="margin: 0.6rem 0;">La <strong style="color: #0066cc;">dernière lettre</strong> ne change pas.</li>
-                            <li style="margin: 0.6rem 0;">La <strong style="color: #0066cc;">1ère lettre</strong> prend
-                                une <strong style="color: #0066cc;">Damma</strong>.</li>
-                            <li style="margin: 0.6rem 0;">Toutes les lettres voyellées <strong style="color: #0066cc;">entre</strong> prennent une <strong
-                                    style="color: #0066cc;">Fatha</strong>.</li>
-                        </ol>
-
+                            <ol style="list-style-type: decimal; margin: 1rem 0; padding-left: 1.8rem; font-size: 0.95rem; line-height: 1.8;">
+                                <li style="margin: 0.6rem 0;">La <strong style="color: #0066cc;">dernière lettre</strong> ne change pas.</li>
+                                <li style="margin: 0.6rem 0;">La <strong style="color: #0066cc;">1ère lettre</strong> prend
+                                    une <strong style="color: #0066cc;">Damma</strong>.</li>
+                                <li style="margin: 0.6rem 0;">Toutes les lettres voyellées <strong style="color: #0066cc;">entre</strong> prennent une <strong
+                                        style="color: #0066cc;">Fatha</strong>.</li>
+                            </ol>
+                        </div>
                         <div style="flex: 1; min-width: 250px; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; margin: 1.5rem 0; direction: rtl;">
                             <div style="display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.5rem; color: #0066cc; font-weight: 600;">
                                 <div style="text-align: left; flex: 1;">
@@ -4094,9 +4375,7 @@
                         <h2 style="margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700;">5.
                             L'Interjection - Le Nidâ - النِّدَاء </h2>
 
-                        <div
-                            style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
-                            <strong style="color: #0066cc; display: block; margin-bottom: 0.8rem;">Définition :</strong>
+                        <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
                             <p style="margin: 0; font-size: 0.95rem;">La particule <strong>يَا</strong> (<em>harf n-nidâ</em>) est utilisée pour interpeler une personne ou un groupe.
                                 <br>Elle est systématiquement suivie du <strong style="font-family: 'Lateef'; font-size: 2rem;">مُنَادَى</strong> (<em>munâdâ</em>), qui désigne l'entité interpelée.
                                 <br>Il existe 3 règles spécifiques pour la déclinaison du nom après "Yâ", selon sa nature (défini, indéfini, propre, etc.).
@@ -4104,22 +4383,23 @@
                         </div>
 
                         <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1rem; font-weight: 600;">1. L'interpellation d'un nom commençant par <span style="font-family: 'Lateef'; font-size: 2rem; font-weight: 700;">ال</span></h3>
-                        <p>Pour les noms définis par l'article, on intercale une particule spécifique entre "Yâ" et le nom :</p>
-                        <ol style="list-style-type: disc; margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.95rem;">
-                            <li><strong>Masculin (<span style="font-family: 'Lateef'; font-size: 2rem;">مُذَكَّر</span>) :</strong> On ajoute <span style="font-family: 'Lateef'; font-size: 2rem; color: #ef4444;">أَيُّهَا</span> devant le nom.
-                                <ul style="list-style-type: square; margin: 1rem 0; padding-left: 1.8rem; font-family: 'Lateef'; font-size: 2rem;">
-                                    <li>يَا<span style="color: #ef4444;"> أَيُّهَا</span> الرَّسُولُ </li>
-                                    <li>يَا<span style="color: #ef4444;"> أَيُّهَا</span> النَّاسُ </li>
-                                    <li>يَا<span style="color: #ef4444;"> أَيُّهَا</span> الكَافِرُونَ </li>
-                                </ul>
-                            </li>
-                            <li><strong>Féminin (<span style="font-family: 'Lateef'; font-size: 2rem;">مُؤَنَّتْ</span>) :</strong> On ajoute <span style="font-family: 'Lateef'; font-size: 2rem; color: #ef4444;">أَيَّتُهَا</span> devant le nom.
-                                <ul style="list-style-type: square; margin: 1rem 0; padding-left: 1.8rem; font-family: 'Lateef'; font-size: 2rem;">
-                                    <li>يَا <span style="color: #ef4444;">أَيَّتُهَا</span> النَّفْسُ </li>
-                                </ul>
-                            </li>
-                        </ol>
-
+                        <div style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
+                            <p>Pour les noms définis par l'article, on intercale une particule spécifique entre "Yâ" et le nom :</p>
+                            <ol style="list-style-type: disc; margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.95rem;">
+                                <li><strong>Masculin (<span style="font-family: 'Lateef'; font-size: 2rem;">مُذَكَّر</span>) :</strong> On ajoute <span style="font-family: 'Lateef'; font-size: 2rem; color: #ef4444;">أَيُّهَا</span> devant le nom.
+                                    <ul style="list-style-type: square; margin: 1rem 0; padding-left: 1.8rem; font-family: 'Lateef'; font-size: 2rem;">
+                                        <li>يَا<span style="color: #ef4444;"> أَيُّهَا</span> الرَّسُولُ </li>
+                                        <li>يَا<span style="color: #ef4444;"> أَيُّهَا</span> النَّاسُ </li>
+                                        <li>يَا<span style="color: #ef4444;"> أَيُّهَا</span> الكَافِرُونَ </li>
+                                    </ul>
+                                </li>
+                                <li><strong>Féminin (<span style="font-family: 'Lateef'; font-size: 2rem;">مُؤَنَّتْ</span>) :</strong> On ajoute <span style="font-family: 'Lateef'; font-size: 2rem; color: #ef4444;">أَيَّتُهَا</span> devant le nom.
+                                    <ul style="list-style-type: square; margin: 1rem 0; padding-left: 1.8rem; font-family: 'Lateef'; font-size: 2rem;">
+                                        <li>يَا <span style="color: #ef4444;">أَيَّتُهَا</span> النَّفْسُ </li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
                         <h3 style="margin: 1.5rem 0 1rem 0; color: #555; font-family: 'Poppins'; font-size: 1rem; font-weight: 600;">2. Le Nom Propre (<span style="font-family: 'Lateef'; font-size: 2rem; font-weight: 700;">العلم</span>)</h3>
                         <p class="rule">Règle : Le prénom devient "mabnî" (invariable dans cette position) sur la damma (<span style="font-family: 'Lateef'; font-size: 2rem;">ضَمَّةٌ</span>).</p>
                         <ol style="margin: 0.5rem 0; padding-left: 1.5rem; font-size: 0.95rem;">
@@ -4150,7 +4430,6 @@
                             Les Mots de Liaison</h2>
                         <div
                             style="background: #e8f4f8; border-left: 4px solid #0066cc; padding: 1.2rem; margin-bottom: 1.5rem; border-radius: 0.4rem;">
-                            <strong style="color: #0066cc; display: block; margin-bottom: 0.8rem;">Définition :</strong>
                             <p style="margin: 0; font-size: 0.95rem;">Ce sont les pronoms relatifs (qui, que, dont, lequel...). Ils servent
                                 à relier un nom à une phrase descriptive appelée <strong style="color: #0066cc;">Silat al-Mawsul</strong>
                                 <strong style="font-family: 'Lateef'; font-size: 2rem;">(صِلَةُ الْمَوْصُول)</strong>.</p>
@@ -4237,8 +4516,7 @@
                             </div>
                         </div>
 
-                        <div
-                            style="background: #fff305; border-left: 4px solid #fbc02d; opacity: 0.95; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
+                        <div style="background: #fff305; border-left: 4px solid #fbc02d; opacity: 0.95; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0.4rem;">
                             <strong style="display: block; margin-bottom: 0.8rem;">⚠️ Attention aux homonymes de <span
                                     style="font-family: 'Lateef'; font-size: 2rem;">مَا</span> :</strong>
                             <p style="margin: 0; font-size: 0.95rem;">Dans le Qur'an, <span
@@ -4436,6 +4714,9 @@
             document.getElementById('screen-course').classList.remove('hidden');
             applyDarkModeStyles();
             initializeAccordion();
+            initializeTables();
+            updateTableVisibility();  // Initialiser la visibilité des lignes au chargement
+            updateTableGenderVisibility();  // Initialiser la visibilité des tables par genre
             window.scrollTo(0, 0);
         }
         function startGame(id) { currentModId = id; currentIdx = 0; score = 0; userAnswers = []; gameState = null; loadedExerciseIdx = -1; document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-game').classList.remove('hidden'); loadExercise(); }
@@ -4679,6 +4960,147 @@
                 applyDarkModeStyles();
             }
         });
+
+        // Variables globales pour stocker les templates originaux
+        let originalMascTableHTML = '';
+        let originalFemTableHTML = '';
+
+        // Fonction pour initialiser les tables
+        function initializeTables() {
+            console.log('initializeTables appelé');
+            const mascTable = document.getElementById('masculineTable');
+            const femTable = document.getElementById('feminineTable');
+            const wordSelector = document.getElementById('wordSelector');
+            
+            console.log('mascTable:', mascTable ? 'trouvé' : 'NON trouvé');
+            console.log('femTable:', femTable ? 'trouvé' : 'NON trouvé');
+            console.log('wordSelector:', wordSelector ? 'trouvé' : 'NON trouvé');
+            
+            if (!mascTable || !femTable || !wordSelector) {
+                console.log('Éléments manquants, abandon');
+                return;
+            }
+            
+            // Toujours recapturer les templates originaux
+            originalMascTableHTML = mascTable.innerHTML;
+            originalFemTableHTML = femTable.innerHTML;
+            
+            console.log('Templates capturés, length:', originalMascTableHTML.length, originalFemTableHTML.length);
+            console.log('Contient مُسْلِم?', originalMascTableHTML.includes('مُسْلِم'));
+            
+            // Supprimer les anciens listeners en clonant
+            const newSelector = wordSelector.cloneNode(true);
+            wordSelector.parentNode.replaceChild(newSelector, wordSelector);
+            
+            // Ajouter le nouvel event listener
+            newSelector.addEventListener('change', function(e) {
+                console.log('Change event déclenché, valeur:', this.value);
+                wordRadical = this.value;
+                console.log('wordRadical défini à:', wordRadical);
+                updateTerminationTables();
+            });
+            
+            console.log('Event listener attaché');
+            
+            // Ajouter les event listeners pour les boutons radio d'état
+            const radioButtons = document.querySelectorAll('input[name="wordState"]');
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    updateTableVisibility();
+                });
+            });
+            
+            // Ajouter les event listeners pour les boutons radio de genre
+            const genderRadioButtons = document.querySelectorAll('input[name="wordGender"]');
+            genderRadioButtons.forEach((radio, idx) => {
+                radio.addEventListener('change', function() {
+                    updateTableGenderVisibility();
+                });
+            });
+        }
+
+        function updateTerminationTables() {
+            console.log('updateTerminationTables appelé avec wordRadical:', wordRadical);
+            const mascTable = document.getElementById('masculineTable');
+            const femTable = document.getElementById('feminineTable');
+            
+            console.log('mascTable:', mascTable ? 'trouvé' : 'NON trouvé');
+            console.log('femTable:', femTable ? 'trouvé' : 'NON trouvé');
+            console.log('originalMascTableHTML length:', originalMascTableHTML.length);
+            console.log('originalFemTableHTML length:', originalFemTableHTML.length);
+            
+            if (mascTable && originalMascTableHTML) {
+                const newHTML = originalMascTableHTML.replace(/مُسْلِم/g, wordRadical);
+                console.log('Mise à jour masculineTable, remplacements effectués?', newHTML !== originalMascTableHTML);
+                mascTable.innerHTML = newHTML;
+            }
+            
+            if (femTable && originalFemTableHTML) {
+                const newHTML = originalFemTableHTML.replace(/مُسْلِم/g, wordRadical);
+                console.log('Mise à jour feminineTable, remplacements effectués?', newHTML !== originalFemTableHTML);
+                femTable.innerHTML = newHTML;
+            }
+            
+            // Appliquer le filtre d'état
+            updateTableVisibility();
+        }
+        
+        function updateTableVisibility() {
+            const selectedState = document.querySelector('input[name="wordState"]:checked')?.value || 'nakirah';
+            const mascTable = document.getElementById('masculineTable');
+            const femTable = document.getElementById('feminineTable');
+            
+            console.log('updateTableVisibility appelé, état sélectionné:', selectedState);
+            
+            if (mascTable) {
+                const rows = mascTable.querySelectorAll('tbody tr');
+                rows.forEach((row, index) => {
+                    if (selectedState === 'nakirah') {
+                        // Afficher les lignes nakirah (indices 0, 3, 6, 9...)
+                        row.style.display = (index % 3 === 0) ? 'table-row' : 'none';
+                    } else if (selectedState === 'marifah') {
+                        // Afficher les lignes marifah (indices 1, 4, 7, 10...)
+                        row.style.display = (index % 3 === 1) ? 'table-row' : 'none';
+                    } else if (selectedState === 'moudaf') {
+                        // Afficher les lignes moudaf (indices 2, 5, 8, 11...)
+                        row.style.display = (index % 3 === 2) ? 'table-row' : 'none';
+                    }
+                });
+            }
+            
+            if (femTable) {
+                const rows = femTable.querySelectorAll('tbody tr');
+                rows.forEach((row, index) => {
+                    if (selectedState === 'nakirah') {
+                        // Afficher les lignes nakirah (indices 0, 3, 6, 9...)
+                        row.style.display = (index % 3 === 0) ? 'table-row' : 'none';
+                    } else if (selectedState === 'marifah') {
+                        // Afficher les lignes marifah (indices 1, 4, 7, 10...)
+                        row.style.display = (index % 3 === 1) ? 'table-row' : 'none';
+                    } else if (selectedState === 'moudaf') {
+                        // Afficher les lignes moudaf (indices 2, 5, 8, 11...)
+                        row.style.display = (index % 3 === 2) ? 'table-row' : 'none';
+                    }
+                });
+            }
+        }
+
+        function updateTableGenderVisibility() {
+            const selectedGender = document.querySelector('input[name="wordGender"]:checked');
+            if (!selectedGender) return;
+            
+            const gender = selectedGender.value;
+            const mascContainer = document.getElementById('masculineTableContainer');
+            const femContainer = document.getElementById('feminineTableContainer');
+            
+            if (mascContainer) {
+                mascContainer.style.setProperty('display', gender === 'masculine' ? 'block' : 'none', 'important');
+            }
+            if (femContainer) {
+                femContainer.style.setProperty('display', gender === 'feminine' ? 'block' : 'none', 'important');
+            }
+        }
+
         // --- DONNÉES & NAVIGATION ---
         function showMenu() {
             document.querySelectorAll('body > div').forEach(d => d.id !== 'theme-btn' && d.classList.add('hidden'));
