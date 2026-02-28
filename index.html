@@ -4771,7 +4771,7 @@
             });
         };
         // --- ENREGISTREMENT SERVICE WORKER ---
-// --- GESTION DE LA MISE À JOUR (SERVICE WORKER) ---
+        // --- GESTION DE LA MISE À JOUR (SERVICE WORKER) ---
 let newWorker;
 
 function updateApp() {
@@ -4786,25 +4786,24 @@ function updateApp() {
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').then(reg => {
-        // FORCE la vérification d'une mise à jour sur le serveur à chaque chargement
-        reg.update();
-
-        reg.addEventListener('updatefound', () => {
-            newWorker = reg.installing;
-            newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    console.log("Mise à jour détectée !");
-                    document.getElementById('update-toast').classList.remove('hidden');
-                }
-            });
-        });
-
+        // 1. Vérifie au démarrage s'il y a déjà une mise à jour en attente
         if (reg.waiting) {
             newWorker = reg.waiting;
             document.getElementById('update-toast').classList.remove('hidden');
         }
-    }).catch(err => console.error("Erreur d'enregistrement SW:", err));
 
+        // 2. Surveille l'arrivée d'une nouvelle mise à jour
+        reg.addEventListener('updatefound', () => {
+            newWorker = reg.installing;
+            newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    document.getElementById('update-toast').classList.remove('hidden');
+                }
+            });
+        });
+    });
+
+    // 3. Écoute le changement de contrôle pour recharger proprement la page
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (!refreshing) {
@@ -5087,6 +5086,7 @@ if ('serviceWorker' in navigator) {
 </body>
 
 </html>
+
 
 
 
