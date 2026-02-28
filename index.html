@@ -674,10 +674,10 @@
             <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-blue-900 flex-1 text-center">
                 Grammaire Arabe
             </h1>
-            <div id="update-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm bg-blue-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between animate-bounce">
-                <div class="text-xs font-bold">Nouvelle version disponible !</div>
-                <button onclick="window.location.reload()" class="bg-white text-blue-900 px-3 py-1 rounded-lg text-[10px] font-black uppercase">Mettre à jour</button>
-            </div>
+<div id="update-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm bg-blue-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between">
+    <div class="text-xs font-bold">Nouvelle version disponible !</div>
+    <button onclick="updateApp()" class="bg-white text-blue-900 px-3 py-1 rounded-lg text-[10px] font-black uppercase">Mettre à jour</button>
+</div>
             <button onclick="toggleDarkMode()" class="theme-toggle" id="theme-btn">🌙</button>
         </header>
 
@@ -4771,23 +4771,37 @@
             });
         };
         // --- ENREGISTREMENT SERVICE WORKER ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').then(reg => {
-                    // On surveille les mises à jour
-                    reg.addEventListener('updatefound', () => {
-                        const newWorker = reg.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            // Si le nouveau script est installé et prêt
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                // On affiche la notification
-                                document.getElementById('update-toast').classList.remove('hidden');
-                            }
-                        });
-                    });
-                });
+let newWorker;
+
+// Fonction appelée par le bouton du Toast
+function updateApp() {
+    if (newWorker) {
+        newWorker.postMessage({ type: 'SKIP_WAITING' });
+    }
+}
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').then(reg => {
+        reg.addEventListener('updatefound', () => {
+            newWorker = reg.installing;
+            newWorker.addEventListener('statechange', () => {
+                // On détecte quand le nouveau script est prêt mais en attente
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    document.getElementById('update-toast').classList.remove('hidden');
+                }
             });
-        }
+        });
+    });
+
+    // Écouter le changement de contrôle pour recharger la page
+    let refreshing;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        window.location.reload();
+        refreshing = true;
+    });
+}
+
         // --- LOGIQUE MODE NUIT ---
         function applyDarkModeStyles() {
             const isDark = document.body.classList.contains('dark-mode');
@@ -5040,4 +5054,5 @@
         }
     </script>
 </body>
+
 </html>
