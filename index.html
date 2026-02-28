@@ -672,7 +672,7 @@
             </svg>
 
             <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-blue-900 flex-1 text-center">
-                Grammaire Arabes
+                Grammaires Arabe
             </h1>
 <div id="update-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm bg-blue-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between">
     <div class="text-xs font-bold">Nouvelle version disponible !</div>
@@ -4772,35 +4772,47 @@
         };
         // --- ENREGISTREMENT SERVICE WORKER ---
 let newWorker;
+let newWorker;
 
-// Fonction appelée par le bouton du Toast
 function updateApp() {
+    // On envoie l'ordre au Service Worker de s'activer
     if (newWorker) {
         newWorker.postMessage({ type: 'SKIP_WAITING' });
+    } else {
+        // Sécurité si newWorker n'est pas encore capturé
+        window.location.reload();
     }
 }
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').then(reg => {
+        // 1. Détecte si une mise à jour est trouvée pendant que l'app est ouverte
         reg.addEventListener('updatefound', () => {
             newWorker = reg.installing;
             newWorker.addEventListener('statechange', () => {
-                // On détecte quand le nouveau script est prêt mais en attente
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                     document.getElementById('update-toast').classList.remove('hidden');
                 }
             });
         });
+
+        // 2. Vérifie au démarrage s'il y a déjà une mise à jour en attente
+        if (reg.waiting) {
+            newWorker = reg.waiting;
+            document.getElementById('update-toast').classList.remove('hidden');
+        }
     });
 
-    // Écouter le changement de contrôle pour recharger la page
-    let refreshing;
+    // 3. Recharge automatiquement la page dès que le nouveau SW prend le contrôle
+    let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (refreshing) return;
-        window.location.reload();
-        refreshing = true;
+        if (!refreshing) {
+            window.location.reload();
+            refreshing = true;
+        }
     });
 }
+
 
         // --- LOGIQUE MODE NUIT ---
         function applyDarkModeStyles() {
@@ -5056,4 +5068,5 @@ if ('serviceWorker' in navigator) {
 </body>
 
 </html>
+
 
