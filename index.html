@@ -672,7 +672,7 @@
             </svg>
 
             <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-blue-900 flex-1 text-center">
-                Grammaires Arabe
+                Grammaire_Arabe
             </h1>
 <div id="update-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm bg-blue-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between">
     <div class="text-xs font-bold">Nouvelle version disponible !</div>
@@ -5059,14 +5059,32 @@ if ('serviceWorker' in navigator) {
         }
 
         // --- DONNÉES & NAVIGATION ---
-        function showMenu() {
-            document.querySelectorAll('body > div').forEach(d => d.id !== 'theme-btn' && d.classList.add('hidden'));
-            document.getElementById('screen-menu').classList.remove('hidden');
-            window.scrollTo(0,0);
-        }
+        //function showMenu() {
+      //      document.querySelectorAll('body > div').forEach(d => d.id !== 'theme-btn' && d.classList.add('hidden'));
+     //       document.getElementById('screen-menu').classList.remove('hidden');
+   //         window.scrollTo(0,0);
+      //  }
+   function showMenu() {
+    // On cache tous les écrans principaux
+    const screens = ['screen-menu', 'screen-course', 'screen-game'];
+    screens.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+
+    // On affiche uniquement le menu
+    const menu = document.getElementById('screen-menu');
+    if (menu) menu.classList.remove('hidden');
+
+    // On s'assure que le bouton de thème et le toast de mise à jour restent accessibles
+    // (Ils ne doivent pas être dans la liste des éléments à cacher)
+    window.scrollTo(0, 0);
+}
+     
     </script>
 </body>
 
 </html>
+
 
 
