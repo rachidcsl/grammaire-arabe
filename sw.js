@@ -1,4 +1,4 @@
-const CACHE_NAME = 'arabe-v4'; // Passez à v3, v4, etc., à chaque mise à jour
+const CACHE_NAME = 'arabe-v5'; // Changez bien le numéro ici (ex: v3)
 const ASSETS = [
   './index.html',
   './manifest.json',
@@ -6,18 +6,32 @@ const ASSETS = [
   './icon-512.png'
 ];
 
-// Installation : on télécharge les fichiers dans le cache du téléphone
+// Installation
 self.addEventListener('install', (event) => {
+  // Force le nouveau SW à devenir actif immédiatement sans attendre
+  self.skipWaiting(); 
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
-    })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
 });
 
-// Activation : on nettoie les anciens caches si besoin
+// Écoute du message de mise à jour
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
+// Nettoyage des anciens caches (Crucial)
 self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim());
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.filter((name) => name !== CACHE_NAME)
+                  .map((name) => caches.delete(name))
+      );
+    })
+  );
 });
 
 // Fetch : priorité au cache pour une vitesse maximale (Offline First)
@@ -28,11 +42,3 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
-// Écouter le message pour activer la nouvelle version immédiatement
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-});
-
-
