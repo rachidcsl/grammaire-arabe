@@ -27,5 +27,11 @@ self.addEventListener('fetch', (event) => {
       return response || fetch(event.request);
     })
   );
-
 });
+// Écouter le message pour activer la nouvelle version immédiatement
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
