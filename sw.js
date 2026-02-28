@@ -1,4 +1,4 @@
-const CACHE_NAME = 'arabe-v5'; // Changez bien le numéro ici (ex: v3)
+const CACHE_NAME = 'arabe-v1'; // Changez bien le numéro ici (ex: v3)
 const ASSETS = [
   './index.html',
   './manifest.json',
@@ -42,3 +42,4 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
