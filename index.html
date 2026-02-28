@@ -672,7 +672,7 @@
             </svg>
 
             <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-blue-900 flex-1 text-center">
-                Grammaire_Arabe
+                Grammaire Arabe
             </h1>
 <div id="update-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm bg-blue-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between">
     <div class="text-xs font-bold">Nouvelle version disponible !</div>
@@ -4771,22 +4771,28 @@
             });
         };
         // --- ENREGISTREMENT SERVICE WORKER ---
-let newWorker;
+// --- GESTION DE LA MISE À JOUR (SERVICE WORKER) ---
 let newWorker;
 
 function updateApp() {
-    // On envoie l'ordre au Service Worker de s'activer
+    console.log("Tentative de mise à jour...");
     if (newWorker) {
         newWorker.postMessage({ type: 'SKIP_WAITING' });
     } else {
-        // Sécurité si newWorker n'est pas encore capturé
+        // Si le worker n'est pas capturé, on tente un refresh simple
         window.location.reload();
     }
 }
 
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').then(reg => {
-        // 1. Détecte si une mise à jour est trouvée pendant que l'app est ouverte
+        // 1. Vérifie au démarrage s'il y a déjà une mise à jour en attente
+        if (reg.waiting) {
+            newWorker = reg.waiting;
+            document.getElementById('update-toast').classList.remove('hidden');
+        }
+
+        // 2. Surveille l'arrivée d'une nouvelle mise à jour
         reg.addEventListener('updatefound', () => {
             newWorker = reg.installing;
             newWorker.addEventListener('statechange', () => {
@@ -4795,15 +4801,9 @@ if ('serviceWorker' in navigator) {
                 }
             });
         });
-
-        // 2. Vérifie au démarrage s'il y a déjà une mise à jour en attente
-        if (reg.waiting) {
-            newWorker = reg.waiting;
-            document.getElementById('update-toast').classList.remove('hidden');
-        }
     });
 
-    // 3. Recharge automatiquement la page dès que le nouveau SW prend le contrôle
+    // 3. Écoute le changement de contrôle pour recharger proprement la page
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (!refreshing) {
@@ -5085,6 +5085,7 @@ if ('serviceWorker' in navigator) {
 </body>
 
 </html>
+
 
 
 
