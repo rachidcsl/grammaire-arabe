@@ -1,4 +1,4 @@
-const CACHE_NAME = 'arabe-v2'; // Passez à v3, v4, etc., à chaque mise à jour
+const CACHE_NAME = 'arabe-v3'; // Passez à v3, v4, etc., à chaque mise à jour
 const ASSETS = [
   './index.html',
   './manifest.json',
@@ -27,4 +27,5 @@ self.addEventListener('fetch', (event) => {
       return response || fetch(event.request);
     })
   );
+
 });
