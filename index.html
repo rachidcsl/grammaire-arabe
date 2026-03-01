@@ -679,6 +679,7 @@
     <button onclick="updateApp()" class="bg-white text-blue-900 px-3 py-1 rounded-lg text-[10px] font-black uppercase">Mettre à jour</button>
 </div>
             <button onclick="toggleDarkMode()" class="theme-toggle" id="theme-btn">🌙</button>
+            <br>
             <button onclick="showHistory()" class="p-2 rounded-xl border-2 border-blue-900/20 hover:bg-blue-100 transition-all text-xs font-bold"> 📊 Mon Progrès</button>
 
         </header>
@@ -4753,32 +4754,54 @@
             document.addEventListener('touchmove', onMove, { passive: false }); document.addEventListener('touchend', onEnd);
         }
         function handleAction() {
-            if (state === 'playing') {
-                const ex = modulesData[currentModId].exercises[currentIdx];
-                const isCorrect = userAnswers.every((v, i) => v === ex.correct[i]);
-                state = 'checked';
-                const fdb = document.getElementById('game-feedback'), fdbT = document.getElementById('game-feedback-text');
-                fdb.classList.remove('hidden');
-                userAnswers.forEach((v, i) => {
-                    const s = document.getElementById(`slot-${i}`);
-                    s.className = "drop-zone w-full slot-filled " + (v === ex.correct[i] ? "slot-correct" : "slot-wrong");
-                });
-                if (isCorrect) { score++; fdb.className = "mb-4 p-5 rounded-2xl flex bg-green-600 text-white shadow-xl"; fdbT.innerText = "Exact !"; }
-                else { fdb.className = "mb-4 p-5 rounded-2xl flex bg-red-600 text-white shadow-xl"; fdbT.innerText = "Erreur d'analyse"; }
-                document.getElementById('btn-action').innerText = "SUIVANT";
-            } else {
-   // Dans votre fonction handleAction(), à la fin du module 
     const mod = modulesData[currentModId];
-    // --- LIGNE À AJOUTER ICI ---
-    saveScoreToHistory(mod.title, score, mod.exercises.length);
-    // ---------------------------
-    document.getElementById('screen-game').classList.add('hidden'); 
-    document.getElementById('screen-result').classList.remove('hidden'); 
+    const ex = mod.exercises[currentIdx];
 
-                if (currentIdx < mod.exercises.length - 1) { currentIdx++; loadExercise(); }
-                else { document.getElementById('screen-game').classList.add('hidden'); document.getElementById('screen-result').classList.remove('hidden'); document.getElementById('result-title').innerText = `${mod.name}: ${mod.title}`; document.getElementById('result-score').innerText = `${score} / ${mod.exercises.length}`; }
-            }
+    if (state === 'playing') {
+        // --- ÉTAPE 1 : ON VÉRIFIE LA RÉPONSE ---
+        const isCorrect = userAnswers.every((v, i) => v === ex.correct[i]);
+        state = 'checked';
+        
+        const fdb = document.getElementById('game-feedback');
+        const fdbT = document.getElementById('game-feedback-text');
+        fdb.classList.remove('hidden');
+
+        userAnswers.forEach((v, i) => {
+            const s = document.getElementById(`slot-${i}`);
+            s.className = "drop-zone w-full slot-filled " + (v === ex.correct[i] ? "slot-correct" : "slot-wrong");
+        });
+
+        if (isCorrect) {
+            score++;
+            fdb.className = "mb-4 p-5 rounded-2xl flex bg-green-600 text-white shadow-xl";
+            fdbT.innerText = "Exact !";
+        } else {
+            fdb.className = "mb-4 p-5 rounded-2xl flex bg-red-600 text-white shadow-xl";
+            fdbT.innerText = "Erreur d'analyse";
         }
+        document.getElementById('btn-action').innerText = "SUIVANT";
+
+    } else {
+        // --- ÉTAPE 2 : ON PASSE À LA SUITE OU ON TERMINE ---
+        
+        // On vérifie s'il reste des exercices
+        if (currentIdx < mod.exercises.length - 1) {
+            // S'il en reste, on passe au suivant
+            currentIdx++;
+            loadExercise();
+        } else {
+            // SI C'EST LE DERNIER : On enregistre et on affiche les résultats
+            saveScoreToHistory(mod.title, score, mod.exercises.length);
+            
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+            
+            document.getElementById('result-title').innerText = `${mod.name}: ${mod.title}`;
+            document.getElementById('result-score').innerText = `${score} / ${mod.exercises.length}`;
+        }
+    }
+}
+
         function toggleRule() { const box = document.getElementById('game-rule'); box.innerText = modulesData[currentModId].exercises[currentIdx].rule; box.classList.toggle('hidden'); }
         window.onload = function () {
             const container = document.getElementById('module-container');
@@ -5160,6 +5183,7 @@ function clearHistory() {
 </body>
 
 </html>
+
 
 
 
