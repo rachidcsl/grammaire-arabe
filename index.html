@@ -679,6 +679,8 @@
     <button onclick="updateApp()" class="bg-white text-blue-900 px-3 py-1 rounded-lg text-[10px] font-black uppercase">Mettre à jour</button>
 </div>
             <button onclick="toggleDarkMode()" class="theme-toggle" id="theme-btn">🌙</button>
+            <button onclick="showHistory()" class="p-2 rounded-xl border-2 border-blue-900/20 hover:bg-blue-100 transition-all text-xs font-bold"> 📊 Mon Progrès</button>
+
         </header>
 
         <div id="module-container" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
@@ -751,6 +753,15 @@
         <button onclick="showMenu()"
             class="w-full max-w-sm py-8 bg-blue-600 text-white rounded-[3rem] font-black text-lg shadow-2xl active:scale-95 transition-all uppercase">Retour au menu</button>
     </div>
+<div id="screen-history" class="hidden min-h-screen p-6 max-w-2xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+        <button onclick="showMenu()" class="text-blue-600 font-bold">← RETOUR</button>
+        <button onclick="clearHistory()" class="text-red-500 text-[10px] font-bold uppercase">Effacer tout</button>
+    </div>
+    <h2 class="text-2xl font-black mb-6">Historique des Défis</h2>
+    <div id="history-list" class="flex flex-col gap-4">
+        </div>
+</div>
 
     <script>
         let wordRadical = 'مُسْلِم'; // Variable par défaut
@@ -4756,7 +4767,14 @@
                 else { fdb.className = "mb-4 p-5 rounded-2xl flex bg-red-600 text-white shadow-xl"; fdbT.innerText = "Erreur d'analyse"; }
                 document.getElementById('btn-action').innerText = "SUIVANT";
             } else {
-                const mod = modulesData[currentModId];
+   // Dans votre fonction handleAction(), à la fin du module 
+    const mod = modulesData[currentModId];
+    // --- LIGNE À AJOUTER ICI ---
+    saveScoreToHistory(mod.title, score, mod.exercises.length);
+    // ---------------------------
+    document.getElementById('screen-game').classList.add('hidden'); 
+    document.getElementById('screen-result').classList.remove('hidden'); 
+
                 if (currentIdx < mod.exercises.length - 1) { currentIdx++; loadExercise(); }
                 else { document.getElementById('screen-game').classList.add('hidden'); document.getElementById('screen-result').classList.remove('hidden'); document.getElementById('result-title').innerText = `${mod.name}: ${mod.title}`; document.getElementById('result-score').innerText = `${score} / ${mod.exercises.length}`; }
             }
@@ -5081,11 +5099,68 @@ if ('serviceWorker' in navigator) {
     // (Ils ne doivent pas être dans la liste des éléments à cacher)
     window.scrollTo(0, 0);
 }
-     
+
+        // Fonction pour sauvegarder un score (à appeler à la fin d'un module)
+function saveScoreToHistory(modTitle, score, total) {
+    const history = JSON.parse(localStorage.getItem('grammar_history') || '[]');
+    const newEntry = {
+        date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }),
+        title: modTitle,
+        score: score,
+        total: total
+    };
+    history.unshift(newEntry); // Ajoute au début pour voir le plus récent d'abord
+    localStorage.setItem('grammar_history', JSON.stringify(history.slice(0, 50))); // On garde les 50 derniers
+}
+
+// Fonction pour afficher l'écran historique
+function showHistory() {
+    const history = JSON.parse(localStorage.getItem('grammar_history') || '[]');
+    const listCont = document.getElementById('history-list');
+    listCont.innerHTML = '';
+
+    if (history.length === 0) {
+        listCont.innerHTML = '<p class="text-center text-muted py-10 italic">Aucun défi terminé pour le moment.</p>';
+    } else {
+        history.forEach(entry => {
+            const item = document.createElement('div');
+            item.className = "card p-4 flex justify-between items-center";
+            const percent = Math.round((entry.score / entry.total) * 100);
+            const color = percent >= 80 ? 'text-green-600' : (percent >= 50 ? 'text-orange-500' : 'text-red-500');
+            
+            item.innerHTML = `
+                <div>
+                    <p class="text-[10px] font-bold text-muted uppercase">${entry.date}</p>
+                    <p class="font-bold text-sm">${entry.title}</p>
+                </div>
+                <div class="text-right">
+                    <p class="font-black text-lg ${color}">${entry.score} / ${entry.total}</p>
+                    <p class="text-[9px] font-bold uppercase">${percent}%</p>
+                </div>
+            `;
+            listCont.appendChild(item);
+        });
+    }
+
+    document.querySelectorAll('body > div').forEach(d => d.id !== 'theme-btn' && d.id !== 'update-toast' && d.classList.add('hidden'));
+    document.getElementById('screen-history').classList.remove('hidden');
+}
+
+function clearHistory() {
+    if(confirm("Voulez-vous vraiment effacer tous vos résultats ?")) {
+        localStorage.removeItem('grammar_history');
+        showHistory();
+    }
+}
+
+
+
+        
     </script>
 </body>
 
 </html>
+
 
 
 
