@@ -10,107 +10,624 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Lateef:wght@400;700&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<style>
-    /* --- 1. DESIGN SYSTEM (VARIABLES) --- */
-    :root {
-        --bg-main: #f4f7f9;
-        --bg-card: #ffffff;
-        --text-main: #1e293b;
-        --text-muted: #64748b;
-        --primary-blue: #004d99;
-        --accent-blue: #0066cc;
-        --border-color: #e2e8f0;
-        --note-bg: #e6f7ff;
-        --table-header: #004d99;
-        --highlight-bg: #fef08a;
-        --highlight-text: #1e293b;
-        --danger: #ef4444;
-        --success: #22c55e;
-    }
 
-    body.dark-mode {
-        --bg-main: #0f172a;
-        --bg-card: #1e293b;
-        --text-main: #f1f5f9;
-        --text-muted: #94a3b8;
-        --primary-blue: #075985;
-        --accent-blue: #7dd3fc;
-        --border-color: #334155;
-        --note-bg: #1e3a5f;
-        --table-header: #075985;
-        --highlight-bg: #ca8a04;
-        --highlight-text: #ffffff;
-    }
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+            color: #1e293b;
+            line-height: 1.6;
+        }
 
-    /* --- 2. BASE & TYPO --- */
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: var(--bg-main);
-        color: var(--text-main);
-        line-height: 1.6;
-        transition: background-color 0.3s, color 0.3s;
-    }
+        .arabic {
+            font-family: 'Lateef', serif;
+            direction: rtl;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #000;
+        }
 
-    .arabic { font-family: 'Lateef', serif; direction: rtl; font-size: 2.2rem; font-weight: 700; }
-    .arabic-table { font-family: 'Lateef', serif; font-size: 2rem; font-weight: 700; line-height: 1; }
-    
-    /* Tailles de texte intelligentes pour les tableaux */
-    .fit-ar { font-size: clamp(0.6rem, 3.5vw, 2rem); line-height: 1.3; font-family: 'Lateef', serif; }
-    .fit-lab { font-size: clamp(0.5rem, 1.8vw, 0.8rem); line-height: 1.2; font-family: 'Inter', sans-serif; }
-    .sub-text { font-size: clamp(0.5rem, 1.5vw, 0.75rem); color: var(--text-muted); display: block; margin-top: 2px; }
+        .arabic-table {
+            font-family: 'Lateef', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+        }
 
-    /* --- 3. TITRES --- */
-    h1 { color: var(--primary-blue); font-weight: 900; }
-    h2 { font-size: 1.7rem; color: var(--accent-blue); border-left: 8px solid var(--accent-blue); padding: 15px; margin-top: 3rem; background: var(--bg-card); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    h3 { font-size: 1.4rem; color: var(--primary-blue); margin-top: 2.5rem; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; font-weight: 700; }
-    h4 { font-size: 1.1rem; font-weight: 800; color: var(--text-muted); margin-top: 2rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        h1 {
+            color: var(--primary-blue);
+            border-bottom: 4px solid var(--primary-blue);
+            text-align: center;
+            font-weight: 900;
+        }
 
-    /* --- 4. ACCORDÉON --- */
-    #course-body h2, #course-body h3 { cursor: pointer; user-select: none; position: relative; padding-right: 40px !important; }
-    #course-body h2::after, #course-body h3::after { 
-        content: '▼'; position: absolute; right: 15px; font-size: 0.8rem; transition: transform 0.3s ease; color: var(--primary-blue); 
-    }
-    #course-body h2.collapsed::after, #course-body h3.collapsed::after { transform: rotate(-90deg); }
-    .course-section { overflow: hidden; transition: max-height 0.4s ease-out, opacity 0.3s ease; max-height: 5000px; opacity: 1; }
-    .course-section.collapsed { max-height: 0; opacity: 0; margin: 0; }
+        h2 {
+            font-size: 1.7rem;
+            color: var(--accent-blue);
+            border-left: 8px solid var(--accent-blue);
+            padding-left: 15px;
+            margin-top: 3rem;
+            background: var(--bg-card);
+            padding-top: 15px;
+            padding-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-    /* --- 5. COMPOSANTS --- */
-    .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; }
-    .note-box { background-color: var(--note-bg); border-left: 6px solid var(--accent-blue); padding: 25px; margin: 25px 0; border-radius: 0 15px 15px 0; }
-    .warning-box { background-color: #fef2f2; border-left: 6px solid var(--danger); padding: 25px; margin: 25px 0; border-radius: 0 15px 15px 0; font-weight: 600; color: #991b1b; }
-    .search-highlight { background-color: var(--highlight-bg); color: var(--highlight-text); border-radius: 4px; padding: 0 2px; font-weight: 600; }
+        h3 {
+            font-size: 1.4rem;
+            color: var(--primary-blue);
+            margin-top: 2.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
 
-    /* --- 6. DRAG & DROP --- */
-    .drop-zone { border: 2px dashed var(--text-muted); background: var(--bg-card); border-radius: 15px; min-height: 5.5rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; text-transform: uppercase; font-size: 0.85rem; font-weight: 700; color: var(--text-muted); }
-    .drop-zone.drag-over { background-color: var(--note-bg); border-color: var(--accent-blue); border-style: solid; transform: scale(1.02); }
-    .draggable-label { font-family: 'Lateef', serif; font-size: 2rem; background: var(--bg-card); border: 2px solid var(--primary-blue); border-radius: 20px; padding: 12px 20px; cursor: grab; touch-action: none; color: var(--text-main); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-    .draggable-label.disabled { opacity: 0.3; cursor: not-allowed; }
-    .slot-filled { border: 3px solid var(--primary-blue); background: var(--note-bg); color: var(--primary-blue); border-radius: 15px; font-family: 'Lateef', serif; font-size: 2rem; }
-    .slot-correct { border: 4px solid var(--success) !important; background: #f0fdf4 !important; color: #166534 !important; }
-    .slot-wrong { border: 4px solid var(--danger) !important; background: #fef2f2 !important; color: #991b1b !important; }
-    .drag-ghost { position: fixed; pointer-events: none; z-index: 1000; opacity: 0.95; transform: scale(1.05); box-shadow: 0 20px 25px rgba(0,0,0,0.2); background: var(--bg-card); border: 3px solid var(--primary-blue); border-radius: 20px; font-family: 'Lateef', serif; font-size: 2rem; padding: 12px 20px; color: var(--text-main); }
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            margin-top: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
 
-    /* --- 7. TABLEAUX --- */
-    .table-container { width: 100%; overflow-x: auto; margin: 25px 0; border: 1px solid var(--border-color); border-radius: 12px; background: var(--bg-card); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
-    table { width: 100%; border-collapse: collapse; min-width: 800px; }
-    th { color: white; background: var(--table-header); padding: 15px 10px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.1em; border: 1px solid var(--border-color); }
-    td { padding: 12px 10px; border: 1px solid var(--border-color); text-align: center; font-size: 0.95rem; }
+        /* Tableaux Haute Résolution */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 25px 0;
+            border: 1px solid var(--primary-blue);
+            border-radius: 12px;
+            background: var(--bg-card);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
 
-    /* --- 8. RESPONSIVE --- */
-    @media (max-width: 900px) {
-        table { min-width: 0; width: 100% !important; table-layout: auto !important; }
-        th, td { padding: 8px 4px; font-size: 0.85rem; word-wrap: break-word; }
-        .arabic { font-size: 1.8rem; }
-        #game-words > div { width: calc(33.33% - 11px) !important; flex: none !important; }
-        header svg { width: 50px; height: 60px; }
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
 
-    @media (orientation: landscape) {
-        #module-container { grid-template-columns: repeat(3, 1fr) !important; }
-    }
-</style>
+        th {
+            color: white;
+            background: var(--table-header);
+            padding: 15px 10px;
+            border: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
 
+        td {
+            padding: 12px 10px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.95rem;
+            background-color: var(--bg-card);
+            color: var(--text-main);
+        }
 
+        .bg-blue-light {
+            background-color: var(--note-bg);
+        }
+
+        .bg-gray-light {
+            background-color: var(--bg-main);
+        }
+
+        .bg-header-sub {
+            background-color: var(--border-color);
+            font-weight: 800;
+            color: var(--primary-blue);
+            font-size: 0.75rem;
+        }
+
+        /* Atelier Drag & Drop Mobile Pro */
+        .drop-zone {
+            border: 2px dashed var(--text-muted);
+            background: var(--bg-card);
+            color: var(--text-muted);
+            border-radius: 15px;
+            height: 5.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            transition: all 0.2s;
+            position: relative;
+            width: 100%;
+            text-transform: uppercase;
+        }
+
+        .drop-zone.drag-over {
+            background-color: var(--note-bg);
+            border-color: var(--accent-blue);
+            border-style: solid;
+            transform: scale(1.02);
+        }
+
+        .draggable-label {
+            font-family: 'Lateef', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--bg-card);
+            border: 2px solid var(--primary-blue);
+            border-radius: 20px;
+            padding: 12px 20px;
+            cursor: grab;
+            user-select: none;
+            transition: transform 0.2s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 4.5rem;
+            touch-action: none;
+            z-index: 10;
+            color: var(--text-main);
+        }
+        
+        .drag-ghost {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.95;
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            background: var(--bg-card);
+            border: 3px solid var(--primary-blue);
+            border-radius: 20px;
+            font-family: 'Lateef', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+        }
+
+        .slot-filled {
+            border: 3px solid var(--primary-blue);
+            background: var(--note-bg);
+            color: var(--primary-blue);
+            font-weight: 700;
+            border-radius: 15px;
+            font-family: 'Lateef', serif;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .slot-correct {
+            border: 4px solid #22c55e;
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .slot-wrong {
+            border: 4px solid #ef4444;
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .btn-action {
+            background-color: var(--primary-blue);
+            color: white;
+            padding: 22px;
+            border-radius: 20px;
+            font-weight: 900;
+            width: 100%;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            box-shadow: 0 10px 15px -3px rgba(0, 77, 153, 0.3);
+        }
+
+        .btn-action:disabled {
+            opacity: 0.3;
+            box-shadow: none;
+        }
+
+        .note-box {
+            background-color: var(--note-bg);
+            border-left: 6px solid var(--accent-blue);
+            padding: 25px;
+            font-size: 1.05rem;
+            margin: 25px 0;
+            border-radius: 0 15px 15px 0;
+            color: var(--text-main);
+        }
+
+        .warning-box {
+            background-color: #fef2f2;
+            border-left: 6px solid #ef4444;
+            padding: 25px;
+            font-size: 1.05rem;
+            margin: 25px 0;
+            border-radius: 0 15px 15px 0;
+            font-weight: 600;
+            color: #991b1b;
+        }
+
+        .term {
+            font-weight: 800;
+            color: var(--primary-blue);
+        }
+
+        .arabic-inline {
+            font-family: 'Lateef', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            vertical-align: middle;
+            color: var(--text-main);
+        }
+
+        #course-main-title {
+            text-align: center !important;
+            direction: rtl;
+        }
+
+        @media (min-width: 901px) {
+            #game-words {
+                flex-wrap: wrap-reverse !important;
+                flex-direction: row !important;
+            }
+
+            #game-words > div {
+                flex: 1 !important;
+                width: auto !important;
+            }
+        }
+
+        @media (max-width: 900px) {
+            /* Responsive tables */
+            div[style*="overflow-x: auto"] {
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch !important;
+                overflow-y: visible !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                display: block !important;
+            }
+
+            table {
+                width: 100% !important;
+                table-layout: auto !important;
+                border: 1px solid #cbd5e1;
+                border-spacing: 0;
+                border-collapse: collapse;
+            }
+
+            div[style*="overflow: hidden"] {
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            th {
+                background: #004d99;
+                color: white !important;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                border: 0.1px solid #cbd5e1 !important;
+                width: auto !important;
+                min-width: 0 !important;
+            }
+
+            td {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                border: 0.1px solid #cbd5e1 !important;
+                width: auto !important;
+                min-width: 0 !important;
+            }
+
+            /* Empêcher rupture des mots arabes et français */
+            td.fit-ar, td.fit-lab, span[style*="font-family: 'Lateef'"] {
+                word-break: keep-all !important;
+                overflow-wrap: normal !important;
+                white-space: nowrap !important;
+
+            }
+
+            /* Réduire taille titre pour petits écrans */
+            h1 {
+                font-size: 1.25rem !important;
+            }
+
+            span[style*="font-family: 'Lateef'"] {
+                font-size: 2.5rem !important;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                margin: 0 !important;
+                font-weight: 500 !important;
+                width: 100%;
+            }
+
+            span[style*="display: block"][style*="line-height: 1"] {
+                line-height: 0.8 !important;
+            }
+
+            /* Réduire padding pour plus d'espace au texte */
+            td.fit-ar {
+                padding: 0.05rem !important;
+            }
+
+            /* Supprimer padding colonne labels et ajuster largeurs */
+            td.fit-lab {
+                padding: 0 !important;
+                white-space: nowrap !important;
+                padding-top: 0.4rem !important;
+            }
+                      
+            th:first-child {
+                width: 12% !important;
+            }
+            
+            th:nth-child(2),
+            th:nth-child(3),
+            th:nth-child(4) {
+                width: 29.33% !important;
+            }
+
+            /* Fix Arabic text alignment - start from top */
+            #game-words {
+                flex-wrap: wrap-reverse !important;
+                justify-content: center !important;
+                direction: ltr !important;
+            }
+
+            #game-words > div {
+                flex: none !important;
+                width: calc(33.333% - 11px) !important;
+                max-width: 100% !important;
+            }
+
+            #course-main-title {
+                font-size: 1.25rem !important;
+                text-align: center !important;
+                direction: rtl;
+            }
+
+            #course-body h2 {
+                font-size: 1.15rem !important;
+            }
+        }
+
+        /* Styles pour accordéon des cours */
+        #course-body h2, #course-body h3 {
+            cursor: pointer;
+            user-select: none;
+            padding: 0.5rem 0 !important;
+        }
+
+        #course-body h2::before, #course-body h3::before {
+            content: "▼ ";
+            display: inline-block;
+            margin-right: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        #course-body h2.collapsed::before, #course-body h3.collapsed::before {
+            content: "▶ ";
+            transform: rotate(0deg);
+        }
+
+        .course-section {
+            display: block;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            overflow: hidden;
+        }
+
+        .course-section.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        /* --- VARIABLES DE THÈME --- */
+        :root {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary-blue: #004d99;
+            --accent-blue: #0066cc;
+            --border-color: #e2e8f0;
+            --note-bg: #e6f7ff;
+            --table-header: #004d99;
+        }
+
+        body.dark-mode {
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --primary-blue: #075985;
+            --accent-blue: #7dd3fc;
+            --border-color: #334155;
+            --note-bg: #1e293b;
+            --table-header: #075985;
+        }
+
+        /* --- STYLES DE BASE --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: all 0.3s ease;
+            line-height: 1.6;
+        }
+
+        .arabic { font-family: 'Lateef', serif; direction: rtl; font-size: 2.2rem; }
+        
+        /* --- BOUTON MODE NUIT --- */
+        .theme-toggle {
+            margin-left: auto;
+            padding: 0.5rem 0.8rem;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--primary-blue);
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* --- OPTIMISATION PAYSAGE (ROTATION) --- */
+        @media (orientation: landscape) {
+            #module-container { grid-template-columns: repeat(3, 1fr) !important; }
+            .max-w-6xl { max-width: 95% !important; }
+            #game-words { flex-direction: row !important; flex-wrap: wrap; gap: 15px; }
+            .arabic-table { font-size: 1.8rem !important; }
+            header svg { width: 100px; height: 60px; }
+        }
+
+        /* --- COMPOSANTS --- */
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; }
+        .btn-primary { background: var(--primary-blue); color: white; }
+        .note-box { background: var(--note-bg); border-left: 6px solid var(--primary-blue); border-radius: 0 1rem 1rem 0; padding: 1.5rem; }
+        
+        /* Tableaux */
+        .table-container { overflow-x: auto; border: 1px solid var(--border-color); border-radius: 12px; background: var(--bg-card); }
+        th { background-color: var(--table-header); color: white; padding: 12px; }
+        td { border: 1px solid var(--border-color); padding: 10px; text-align: center; }
+
+        /* Drag & Drop */
+        .drop-zone { border: 2px dashed var(--text-muted); min-height: 4rem; border-radius: 1rem; display: flex; align-items: center; justify-content: center; }
+        .draggable-label { background: var(--bg-card); border: 2px solid var(--primary-blue); padding: 8px 15px; border-radius: 1rem; cursor: grab; font-family: 'Lateef', serif; font-size: 1.8rem; }
+        .draggable-label.disabled { opacity: 0.4; cursor: not-allowed; }
+        .slot-correct { border-color: #22c55e !important; background: #f0fdf4 !important; color: #166534 !important; }
+        .slot-wrong { border-color: #ef4444 !important; background: #fef2f2 !important; color: #991b1b !important; }
+
+        /* --- CORRECTIONS TAILWIND EN MODE DARK --- */
+        body.dark-mode .text-blue-800 { color: var(--accent-blue) !important; }
+        body.dark-mode .text-blue-900 { color: var(--accent-blue) !important; }
+        body.dark-mode .text-slate-500,
+        body.dark-mode .text-slate-400 { color: var(--text-muted) !important; }
+        body.dark-mode .bg-blue-50 { background-color: var(--note-bg) !important; }
+        body.dark-mode .border-blue-50 { border-color: var(--border-color) !important; }
+        body.dark-mode .border-blue-900\/10 { border-color: var(--border-color) !important; }
+        body.dark-mode .bg-blue-800 { background-color: var(--primary-blue) !important; }
+
+        
+        /* Select en mode dark */
+        body.dark-mode select {
+            background-color: var(--bg-card) !important;
+            color: var(--text-main) !important;
+            border-color: var(--border-color) !important;
+        }
+        
+        body.dark-mode select option {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+        }
+
+        /* --- CLASSES RESPONSIVES POUR TOUS LES TABLEAUX --- */
+        .fit-ar {font-size: clamp(0.6rem, 3.5vw, 2rem);line-height: 1.3;font-family: 'Lateef', serif;}
+        .fit-lab {font-size: clamp(0.5rem, 1.8vw, 0.8rem);line-height: 1.2;font-family: 'Inter', sans-serif;}
+        /*.fit-ar { font-size: clamp(0.85rem, 4vw, 2rem); line-height: 1.4; font-family: 'Lateef', serif; }      
+        .fit-lab { font-size: clamp(0.75rem, 2.2vw, 0.95rem); line-height: 1.4; font-family: 'Inter', sans-serif; }*/
+        .ar-fit { font-size: clamp(0.85rem, 4vw, 2rem); line-height: 1.4; font-family: 'Lateef', serif; }
+        .txt-fit { font-size: clamp(0.75rem, 2.2vw, 0.95rem); line-height: 1.4; font-family: 'Inter', sans-serif; }
+        .fit-pad { padding: clamp(0.15rem, 1vw, 0.5rem); }
+        .fit-pad-small { padding: clamp(0.1rem, 0.8vw, 0.4rem); }
+
+        .sub-text {font-size: clamp(0.5rem, 1.5vw, 0.75rem); color: #666; font-family: 'Inter', sans-serif; display: block; margin-top: 2px;}
+
+        /* Initialiser la visibilité des tableaux par genre */
+        #masculineTableContainer {
+            display: block !important;
+        }
+        
+        #feminineTableContainer {
+            display: none !important;
+        }
+
+        /* --- RESPONSIVE POUR PETITS ÉCRANS --- */
+        @media (max-width: 768px) {
+            /* Conteneur principal des sélections */
+            div[style*="margin: 1rem 0; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;"] {
+                flex-wrap: wrap !important;
+                gap: 0.75rem !important;
+            }
+
+            /* Conteneur des boutons radio (genre et état) */
+            div[style*="display: flex; align-items: center; gap: 2rem; height: 3.8rem;"] {
+                flex-wrap: wrap !important;
+                gap: 1rem !important;
+                height: auto !important;
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+
+            /* Encadrements des boutons radio */
+            div[style*="display: flex; align-items: center; gap: 1.5rem; border: 2px solid"],
+            div[style*="display: flex; align-items: center; gap: 1.5rem; margin-left: auto; border: 2px solid"] {
+                height: auto !important;
+                flex: 1 1 calc(50% - 0.5rem) !important;
+                min-width: 200px !important;
+                padding: 0.75rem 1rem !important;
+                margin-left: 0 !important;
+            }
+
+            /* Select */
+            #wordSelector {
+                flex: 1 1 100% !important;
+                min-width: 100% !important;
+            }
+
+            /* Labels dans les encadrements */
+            label[style*="display: flex; align-items: center; gap: 0.5rem; font-weight: 500;"] {
+                flex-wrap: nowrap !important;
+                gap: 0.3rem !important;
+            }
+
+            label[style*="display: flex; align-items: center; gap: 0.5rem; font-weight: 500;"] span {
+                font-size: 1.5rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Très petits écrans - une colonne */
+            div[style*="display: flex; align-items: center; gap: 2rem; height: 3.8rem;"] {
+                flex-wrap: wrap !important;
+                gap: 0.5rem !important;
+            }
+
+            /* Encadrements un par un */
+            div[style*="display: flex; align-items: center; gap: 1.5rem; border: 2px solid"],
+            div[style*="display: flex; align-items: center; gap: 1.5rem; margin-left: auto; border: 2px solid"] {
+                flex: 1 1 100% !important;
+                padding: 0.5rem 1rem !important;
+            }
+
+            label[style*="display: flex; align-items: center; gap: 0.5rem; font-weight: 500;"] span {
+                font-size: 1.3rem !important;
+            }
+        }
+
+        /* --- CLASSES RÉUTILISABLES --- */     
+        .heading-primary { margin: 2rem 0 1.5rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.3rem; font-weight: 700; }
+        body.dark-mode .heading-primary { color: #7dd3fc; }
+        .heading-secondary { margin: 2rem 0 1rem 0; color: #0066cc; font-family: 'Poppins'; font-size: 1.1rem; font-weight: 700;}
+        body.dark-mode .heading-secondary { color: #7dd3fc; }
+        .paragraph-main { margin: 0.8rem 0; font-size: 0.95rem; line-height: 1; }
+        .box-flex { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1.5rem 0; }
+        .card-item { flex: 1; min-width: 180px; background: #f5f5f5; border: 1px solid #ddd; padding: 1.2rem; border-radius: 0.4rem; }
+        body.dark-mode .card-item { background-color: var(--bg-card); }
+        .text-lateef-1-6rem { font-family: 'Lateef'; font-size: 1.6rem;  font-weight: 700; white-space: nowrap; }
+        .text-lateef-1-6rem-blue { font-family: 'Lateef'; font-size: 1.6rem;  color: #0066cc; font-weight: 700; white-space: nowrap; }
+        body.dark-mode .text-lateef-1-6rem-blue { color: #7dd3fc; }
+        .text-lateef-1-8rem { font-family: 'Lateef'; font-size: 1.8rem;  font-weight: 700; white-space: nowrap; }
+        .text-lateef-1-8rem-blue { font-family: 'Lateef'; font-size: 1.8rem;  color: #0066cc; font-weight: 700; white-space: nowrap; }
+        body.dark-mode .text-lateef-1-8rem-blue { color: #7dd3fc; }
+        .text-lateef-2rem { font-family: 'Lateef'; font-size: 2rem;  font-weight: 700; white-space: nowrap; }
+        .text-lateef-2rem-blue { font-family: 'Lateef'; font-size: 2rem; color: #0066cc; white-space: nowrap; }
+        body.dark-mode .text-lateef-2rem-blue { color: #7dd3fc; }
+        .text-lateef-2rem-green { font-family: 'Lateef'; font-size: 2rem; color: #008000; white-space: nowrap; }
+        body.dark-mode .text-lateef-2rem-green { color: #00ff00; }
+        .text-lateef-2rem-red { font-family: 'Lateef'; font-size: 2rem; color: #ff0000; white-space: nowrap; }
+    </style>   
 </head>
 
 <body class="bg-slate-50" style="background-color: var(--bg-main); transition: background-color 0.3s ease;">
@@ -274,6 +791,8 @@
 
 
     <script>
+        let wordRadical = 'مُسْلِم'; // Variable par défaut
+
         const modulesData = {
             'm1': {
                 id: 'm1', name: 'Module 1', title: "le Nom", summary: "Les fondations de l'analyse nominale et le tableau Mouslimoun",
@@ -4066,165 +4585,213 @@
                 ]
             }
         };
-
-         /* --- 1. VARIABLES D'ÉTAT GLOBALES --- */
-        let wordRadical = 'مُسْلِم';
         let currentModId = null, currentIdx = 0, userAnswers = [], score = 0, state = 'playing';
-        let dragGhost = null, gameState = null, loadedExerciseIdx = -1;
-        let newWorker, deferredPrompt;
-        let originalMascTableHTML = '', originalFemTableHTML = '';
-
-        /* --- 2. MOTEUR DE NAVIGATION --- */
+        let dragGhost = null;
+        let gameState = null; // Sauvegarde l'état du jeu
+        let loadedExerciseIdx = -1; // Track quel exercice est actuellement chargé
+        function initializeAccordion() {
+            const courseBody = document.getElementById('course-body');
+            if (!courseBody) return;
+            
+            // Créer les sections pour les H2
+            const h2Headings = courseBody.querySelectorAll('h2');
+            h2Headings.forEach(heading => {
+                heading.classList.add('collapsed');
+                heading.style.cursor = 'pointer';
+                
+                const section = document.createElement('div');
+                section.className = 'course-section collapsed';
+                
+                let nextElement = heading.nextElementSibling;
+                while (nextElement && nextElement.tagName !== 'H2') {
+                    const elementToMove = nextElement;
+                    nextElement = nextElement.nextElementSibling;
+                    section.appendChild(elementToMove);
+                }
+                heading.parentElement.insertBefore(section, heading.nextElementSibling);
+                
+                heading.addEventListener('click', () => {
+                    heading.classList.toggle('collapsed');
+                    section.classList.toggle('collapsed');
+                });
+            });
+            
+            // Créer les sections pour les H3 (après que les H2 sections soient créées)
+            const h3Headings = courseBody.querySelectorAll('h3');
+            h3Headings.forEach(heading => {
+                heading.classList.add('collapsed');
+                heading.style.cursor = 'pointer';
+                
+                const section = document.createElement('div');
+                section.className = 'course-section collapsed';
+                
+                let nextElement = heading.nextElementSibling;
+                while (nextElement && nextElement.tagName !== 'H2' && nextElement.tagName !== 'H3') {
+                    const elementToMove = nextElement;
+                    nextElement = nextElement.nextElementSibling;
+                    section.appendChild(elementToMove);
+                }
+                heading.parentElement.insertBefore(section, heading.nextElementSibling);
+                
+                heading.addEventListener('click', () => {
+                    heading.classList.toggle('collapsed');
+                    section.classList.toggle('collapsed');
+                });
+            });
+        }
+        // --- NAVIGATION ET AFFICHAGE ---
         function showMenu() {
             const screens = ['screen-menu', 'screen-course', 'screen-game', 'screen-result', 'screen-history', 'screen-search'];
+            
             screens.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) el.classList.add('hidden');
             });
-            document.getElementById('screen-menu').classList.remove('hidden');
+
+            // Afficher le menu
+            const menu = document.getElementById('screen-menu');
+            if (menu) menu.classList.remove('hidden');
             window.scrollTo(0, 0);
         }
 
-        function showCourse(id, queryToHighlight = null) {
-            // Sauvegarde l'état si on quitte un exercice en cours
-            if (currentModId === id && state === 'playing' && !gameState) {
-                gameState = { modId: id, currentIdx, score, userAnswers: [...userAnswers] };
-            }
+        function showCourseFromGame() {
+            if (currentModId) showCourse(currentModId);
+        }
 
+        // --- INITIALISATION AU CHARGEMENT ---
+        window.onload = function () {
+            const container = document.getElementById('module-container');
+            if (!container) return;
+            
+            Object.values(modulesData).forEach((m) => {
+                const card = document.createElement('div'); 
+                card.className = "w-full p-8 flex flex-col gap-6 rounded-3xl shadow-sm"; 
+                card.style.background = 'var(--bg-card)';
+                card.innerHTML = `
+                    <div>
+                        <p style="font-size: 0.75rem; font-weight: 900; color: #0066cc; text-transform: uppercase; margin: 0 0 1rem 0;">${m.name}</p>
+                        <p class="font-bold text-lg tracking-tight" style="color: var(--text-main);">${m.title}</p>
+                        <p class="text-sm" style="color: var(--text-muted); min-height: 2.5em;">${m.summary}</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="showCourse('${m.id}')" class="py-4 border-2 border-blue-100 text-blue-900 text-[10px] font-black rounded-[1.2rem] uppercase tracking-widest transition-all">Cours</button>
+                        <button onclick="startGame('${m.id}')" class="py-4 bg-blue-900 text-white text-[10px] rounded-[1.2rem] shadow-lg uppercase tracking-widest active:scale-95 transition-all">Exercices</button>
+                    </div>`;
+                container.appendChild(card);
+            });
+            showMenu(); // Afficher le menu au départ
+        };
+
+        // --- GESTION DE L'HISTORIQUE ---
+        function saveScoreToHistory(modTitle, score, total) {
+            const history = JSON.parse(localStorage.getItem('grammar_history') || '[]');
+            const newEntry = {
+                date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }),
+                title: modTitle,
+                score: score,
+                total: total
+            };
+            history.unshift(newEntry);
+            localStorage.setItem('grammar_history', JSON.stringify(history.slice(0, 50)));
+        }
+
+        function showHistory() {
+            const history = JSON.parse(localStorage.getItem('grammar_history') || '[]');
+            const listCont = document.getElementById('history-list');
+            listCont.innerHTML = '';
+
+            if (history.length === 0) {
+                listCont.innerHTML = '<p class="text-center text-muted py-10 italic">Aucun défi terminé.</p>';
+            } else {
+                history.forEach(entry => {
+                    const item = document.createElement('div');
+                    item.className = "card p-4 flex justify-between items-center mb-2";
+                    const percent = Math.round((entry.score / entry.total) * 100);
+                    const color = percent >= 80 ? 'text-green-600' : (percent >= 50 ? 'text-orange-500' : 'text-red-500');
+                    item.innerHTML = `
+                        <div>
+                            <p class="text-[10px] font-bold text-muted uppercase">${entry.date}</p>
+                            <p class="font-bold text-sm">${entry.title}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-black text-lg ${color}">${entry.score} / ${entry.total}</p>
+                        </div>`;
+                    listCont.appendChild(item);
+                });
+            }
+            // Masquer tout sauf l'historique
+            document.querySelectorAll('body > div').forEach(d => {
+                if (!['theme-btn', 'update-toast'].includes(d.id)) d.classList.add('hidden');
+            });
+            document.getElementById('screen-history').classList.remove('hidden');
+        }
+
+        function clearHistory() {
+            if(confirm("Effacer tous les résultats ?")) {
+                localStorage.removeItem('grammar_history');
+                showHistory();
+            }
+        }
+        
+
+function showCourse(id) {
+            // Sauvegarder l'état du jeu s'il y a une partie en cours
+            if (currentModId === id && state === 'playing') {
+                gameState = {
+                    modId: currentModId,
+                    currentIdx: currentIdx,
+                    score: score,
+                    userAnswers: JSON.parse(JSON.stringify(userAnswers))
+                };
+            }
+            
             currentModId = id;
             const mod = modulesData[id];
             const keys = Object.keys(modulesData);
             const idx = keys.indexOf(id);
 
-            // Remplissage contenu
             document.getElementById('course-header-title').innerText = mod.name;
             document.getElementById('course-main-title').innerText = mod.title;
             document.getElementById('course-body').innerHTML = mod.course;
+            document.getElementById('btn-to-practice').onclick = () => gameState && gameState.modId === id ? resumeGame(id) : startGame(id);
 
-            // Configuration boutons
-            document.getElementById('btn-to-practice').onclick = () => 
-                (gameState && gameState.modId === id) ? resumeGame(id) : startGame(id);
-
+            // Gestion des chevrons
             const prevBtn = document.getElementById('btn-prev-mod');
             const nextBtn = document.getElementById('btn-next-mod');
-            prevBtn.style.visibility = idx > 0 ? "visible" : "hidden";
-            if (idx > 0) prevBtn.onclick = () => showCourse(keys[idx - 1]);
-            nextBtn.style.visibility = idx < keys.length - 1 ? "visible" : "hidden";
-            if (idx < keys.length - 1) nextBtn.onclick = () => showCourse(keys[idx + 1]);
 
-            // Affichage écran
-            const screens = ['screen-menu', 'screen-course', 'screen-game', 'screen-result', 'screen-history', 'screen-search'];
-            screens.forEach(sid => document.getElementById(sid)?.classList.add('hidden'));
+            if (idx > 0) {
+                prevBtn.style.visibility = "visible";
+                prevBtn.onclick = () => showCourse(keys[idx - 1]);
+            } else {
+                prevBtn.style.visibility = "hidden";
+            }
+
+            if (idx < keys.length - 1) {
+                nextBtn.style.visibility = "visible";
+                nextBtn.onclick = () => showCourse(keys[idx + 1]);
+            } else {
+                nextBtn.style.visibility = "hidden";
+            }
+
+            document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden'));
             document.getElementById('screen-course').classList.remove('hidden');
-
-            // Initialisations dynamiques
+            applyDarkModeStyles();
             initializeAccordion();
             initializeTables();
-            applyDarkModeStyles();
-
-            // GESTION AUTO-DÉPLIAGE (si provient de la recherche)
-            if (queryToHighlight) {
-                setTimeout(() => {
-                    const sections = document.querySelectorAll('.course-section');
-                    let firstFound = null;
-                    sections.forEach(sec => {
-                        if (sec.innerText.toLowerCase().includes(queryToHighlight.toLowerCase())) {
-                            sec.classList.remove('collapsed');
-                            sec.previousElementSibling?.classList.remove('collapsed');
-                            if (!firstFound) firstFound = sec.previousElementSibling;
-                        }
-                    });
-                    if (firstFound) firstFound.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 200);
-            } else {
-                window.scrollTo(0, 0);
-            }
+            updateTableVisibility();  // Initialiser la visibilité des lignes au chargement
+            updateTableGenderVisibility();  // Initialiser la visibilité des tables par genre
+            window.scrollTo(0, 0);
         }
-
-        /* --- 3. ACCORDÉON & TABLES --- */
-        function initializeAccordion() {
-            const headings = document.querySelectorAll('#course-body h2, #course-body h3');
-            headings.forEach(h => {
-                h.classList.add('collapsed');
-                const section = document.createElement('div');
-                section.className = 'course-section collapsed';
-                let next = h.nextElementSibling;
-                while (next && next.tagName !== 'H2' && next.tagName !== 'H3') {
-                    const toMove = next;
-                    next = next.nextElementSibling;
-                    section.appendChild(toMove);
-                }
-                h.parentElement.insertBefore(section, h.nextElementSibling);
-                h.onclick = () => {
-                    h.classList.toggle('collapsed');
-                    section.classList.toggle('collapsed');
-                };
-            });
-        }
-
-        function initializeTables() {
-            const mascTable = document.getElementById('masculineTable');
-            const femTable = document.getElementById('feminineTable');
-            const selector = document.getElementById('wordSelector');
-            if (!mascTable || !selector) return;
-
-            originalMascTableHTML = mascTable.innerHTML;
-            originalFemTableHTML = femTable ? femTable.innerHTML : '';
-
-            selector.onchange = function() {
-                wordRadical = this.value;
-                const m = document.getElementById('masculineTable');
-                const f = document.getElementById('feminineTable');
-                if(m) m.innerHTML = originalMascTableHTML.replace(/مُسْلِم/g, wordRadical);
-                if(f) f.innerHTML = originalFemTableHTML.replace(/مُسْلِم/g, wordRadical);
-                updateTableVisibility();
-            };
-
-            document.querySelectorAll('input[name="wordState"], input[name="wordGender"]').forEach(r => {
-                r.onchange = () => { updateTableVisibility(); updateTableGenderVisibility(); };
-            });
-            updateTableVisibility();
-        }
-
-        function updateTableVisibility() {
-            const state = document.querySelector('input[name="wordState"]:checked')?.value || 'nakirah';
-            const filter = (rows) => rows.forEach((r, i) => {
-                const show = (state === 'nakirah' && i % 3 === 0) || (state === 'marifah' && i % 3 === 1) || (state === 'moudaf' && i % 3 === 2);
-                r.style.display = show ? 'table-row' : 'none';
-            });
-            filter(document.querySelectorAll('#masculineTable tbody tr'));
-            filter(document.querySelectorAll('#feminineTable tbody tr'));
-        }
-
-        function updateTableGenderVisibility() {
-            const gender = document.querySelector('input[name="wordGender"]:checked')?.value;
-            const m = document.getElementById('masculineTableContainer');
-            const f = document.getElementById('feminineTableContainer');
-            if(m) m.style.display = gender === 'masculine' ? 'block' : 'none';
-            if(f) f.style.display = gender === 'feminine' ? 'block' : 'none';
-        }
-
-        /* --- 4. LOGIQUE DE JEU (DRAG & DROP) --- */
-        function startGame(id) {
-            currentModId = id; currentIdx = 0; score = 0; gameState = null;
-            showMenu(); document.getElementById('screen-menu').classList.add('hidden');
-            document.getElementById('screen-game').classList.remove('hidden');
-            loadExercise();
-        }
-
-        function resumeGame(id) {
-            currentModId = gameState.modId; currentIdx = gameState.currentIdx;
-            score = gameState.score; userAnswers = [...gameState.userAnswers];
-            showMenu(); document.getElementById('screen-menu').classList.add('hidden');
-            document.getElementById('screen-game').classList.remove('hidden');
-            loadExercise();
-        }
-
+        function startGame(id) { currentModId = id; currentIdx = 0; score = 0; userAnswers = []; gameState = null; loadedExerciseIdx = -1; document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-game').classList.remove('hidden'); loadExercise(); }
+        function resumeGame(id) { if (gameState && gameState.modId === id) { currentModId = gameState.modId; currentIdx = gameState.currentIdx; score = gameState.score; userAnswers = JSON.parse(JSON.stringify(gameState.userAnswers)); loadedExerciseIdx = currentIdx; } document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-game').classList.remove('hidden'); loadExercise(); }
         function loadExercise() {
             const mod = modulesData[currentModId], ex = mod.exercises[currentIdx];
-            state = 'playing'; loadedExerciseIdx = currentIdx;
-            userAnswers = new Array(ex.phrase.length).fill(null);
-
+            state = 'playing';
+            // Réinitialiser userAnswers si c'est un nouvel exercice
+            if (loadedExerciseIdx !== currentIdx) {
+                userAnswers = new Array(ex.phrase.length).fill(null);
+                loadedExerciseIdx = currentIdx;
+            }
             document.getElementById('game-mod-title').innerText = mod.title;
             document.getElementById('game-progress').innerText = `DÉFI ${currentIdx + 1} / ${mod.exercises.length}`;
             document.getElementById('game-translation').innerText = ex.translation;
@@ -4232,204 +4799,563 @@
             document.getElementById('game-rule').classList.add('hidden');
             document.getElementById('btn-action').innerText = "VÉRIFIER";
             document.getElementById('btn-action').disabled = true;
-
-            const wCont = document.getElementById('game-words'); wCont.innerHTML = '';
+            const wordCont = document.getElementById('game-words'); wordCont.innerHTML = '';
             ex.phrase.forEach((w, i) => {
-                const div = document.createElement('div');
-                div.className = "flex-1 flex flex-col items-center gap-2";
-                div.innerHTML = `<div class="arabic bg-white dark:bg-slate-800 w-full py-6 rounded-2xl border text-center shadow-sm">${w}</div><div id="slot-${i}" class="drop-zone w-full">Placer</div>`;
-                wCont.appendChild(div);
+                const div = document.createElement('div'); div.className = "flex-1 flex flex-col items-center gap-4";
+                div.innerHTML = `<div class="arabic text-3xl font-bold w-full py-10 rounded-[2.5rem] shadow-sm border text-center" style="background-color: var(--bg-card); border-color: var(--border-color); color: var(--text-main);">${w}</div><div id="slot-${i}" class="drop-zone w-full">Placer ici</div>`;
+                wordCont.appendChild(div);
             });
-
-            const lCont = document.getElementById('game-labels'); lCont.innerHTML = '';
-            [...ex.opts].sort(() => Math.random() - 0.5).forEach(o => {
-                const el = document.createElement('div'); el.className = "draggable-label"; el.innerText = o;
+            const labelCont = document.getElementById('game-labels'); labelCont.innerHTML = '';
+            ex.opts.forEach((o, idx) => {
+                const el = document.createElement('div'); el.innerText = o; el.className = "draggable-label";
                 el.onmousedown = (e) => startDrag(e, o, el); el.ontouchstart = (e) => startDrag(e, o, el);
-                lCont.appendChild(el);
+                labelCont.appendChild(el);
             });
+            
+            // Restaurer l'état visuel des réponses précédentes
+            userAnswers.forEach((answer, i) => {
+                if (answer) {
+                    const slot = document.getElementById(`slot-${i}`);
+                    slot.innerText = answer;
+                    slot.className = "drop-zone w-full slot-filled";
+                    slot.onclick = () => { if (state === 'playing') { userAnswers[i] = null; slot.innerText = "Placer ici"; slot.className = "drop-zone w-full"; document.querySelectorAll('.draggable-label').forEach(l => { if (l.innerText === answer) l.classList.remove('disabled'); }); document.getElementById('btn-action').disabled = true; } };
+                    // Désactiver le label correspondant
+                    document.querySelectorAll('.draggable-label').forEach(label => {
+                        if (label.innerText === answer) label.classList.add('disabled');
+                    });
+                    // Activer le bouton si tous les slots sont remplis
+                    document.getElementById('btn-action').disabled = false;
+                }
+            });
+            
             applyDarkModeStyles();
         }
-
-        function startDrag(e, label, origin) {
-            if (state !== 'playing' || origin.classList.contains('disabled')) return;
+        function startDrag(e, label, originalEl) {
+            if (state !== 'playing') return;
+            if (originalEl.classList.contains('disabled')) return;
             if (e.cancelable) e.preventDefault();
-            const t = e.touches ? e.touches[0] : e;
+            const touch = e.touches ? e.touches[0] : e;
             dragGhost = document.createElement('div'); dragGhost.innerText = label; dragGhost.className = 'drag-ghost';
+            dragGhost.style.width = originalEl.offsetWidth + 'px'; dragGhost.style.height = originalEl.offsetHeight + 'px';
             document.body.appendChild(dragGhost);
-
-            const move = (ev) => {
-                const p = ev.touches ? ev.touches[0] : ev;
-                dragGhost.style.left = (p.clientX - dragGhost.offsetWidth/2) + 'px';
-                dragGhost.style.top = (p.clientY - dragGhost.offsetHeight/2) + 'px';
-                const el = document.elementFromPoint(p.clientX, p.clientY);
-                document.querySelectorAll('.drop-zone').forEach(dz => dz.classList.remove('drag-over'));
-                if (el?.classList.contains('drop-zone')) el.classList.add('drag-over');
+            const moveAt = (clientX, clientY) => {
+                dragGhost.style.left = clientX - dragGhost.offsetWidth / 2 + 'px';
+                dragGhost.style.top = clientY - dragGhost.offsetHeight / 2 + 'px';
             };
-
-            const end = (ev) => {
-                const p = ev.changedTouches ? ev.changedTouches[0] : ev;
-                const el = document.elementFromPoint(p.clientX, p.clientY);
-                if (el?.classList.contains('drop-zone')) {
-                    const idx = parseInt(el.id.split('-')[1]);
-                    userAnswers[idx] = label; el.innerText = label; el.classList.add('slot-filled');
-                    origin.classList.add('disabled');
+            const onMove = (event) => {
+                const moveTouch = event.touches ? event.touches[0] : event;
+                moveAt(moveTouch.clientX, moveTouch.clientY);
+                const elUnder = document.elementFromPoint(moveTouch.clientX, moveTouch.clientY);
+                document.querySelectorAll('.drop-zone').forEach(dz => dz.classList.remove('drag-over'));
+                if (elUnder && elUnder.classList.contains('drop-zone')) elUnder.classList.add('drag-over');
+            };
+            const onEnd = (event) => {
+                const endTouch = event.changedTouches ? event.changedTouches[0] : (event.touches ? event.touches[0] : event);
+                const elUnder = document.elementFromPoint(endTouch.clientX, endTouch.clientY);
+                if (elUnder && elUnder.classList.contains('drop-zone')) {
+                    const slotIdx = parseInt(elUnder.id.split('-')[1]);
+                    const prevLabel = userAnswers[slotIdx];
+                    userAnswers[slotIdx] = label;
+                    const slot = document.getElementById(`slot-${slotIdx}`);
+                    slot.innerText = label; slot.className = "drop-zone w-full slot-filled";
+                    slot.onclick = () => { if (state === 'playing') { userAnswers[slotIdx] = null; slot.innerText = "Placer ici"; slot.className = "drop-zone w-full"; document.querySelectorAll('.draggable-label').forEach(l => { if (l.innerText === label) l.classList.remove('disabled'); }); document.getElementById('btn-action').disabled = true; } };
+                    originalEl.classList.add('disabled');
+                    if (prevLabel) document.querySelectorAll('.draggable-label').forEach(l => { if (l.innerText === prevLabel) l.classList.remove('disabled'); });
                 }
                 document.querySelectorAll('.drop-zone').forEach(dz => dz.classList.remove('drag-over'));
-                dragGhost.remove();
+                if (dragGhost) { dragGhost.remove(); dragGhost = null; }
                 document.getElementById('btn-action').disabled = userAnswers.includes(null);
-                document.removeEventListener('mousemove', move); document.removeEventListener('mouseup', end);
-                document.removeEventListener('touchmove', move); document.removeEventListener('touchend', end);
+                document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onEnd);
+                document.removeEventListener('touchmove', onMove); document.removeEventListener('touchend', onEnd);
             };
-            document.addEventListener('mousemove', move); document.addEventListener('mouseup', end);
-            document.addEventListener('touchmove', move, { passive: false }); document.addEventListener('touchend', end);
+            moveAt(touch.clientX, touch.clientY);
+            document.addEventListener('mousemove', onMove); document.addEventListener('mouseup', onEnd);
+            document.addEventListener('touchmove', onMove, { passive: false }); document.addEventListener('touchend', onEnd);
         }
-
         function handleAction() {
-            const mod = modulesData[currentModId], ex = mod.exercises[currentIdx];
-            if (state === 'playing') {
-                const correct = userAnswers.every((v, i) => v === ex.correct[i]);
-                state = 'checked';
-                document.getElementById('game-feedback').classList.remove('hidden');
-                userAnswers.forEach((v, i) => {
-                    document.getElementById(`slot-${i}`).className = "drop-zone w-full slot-filled " + (v === ex.correct[i] ? "slot-correct" : "slot-wrong");
-                });
-                if (correct) { 
-                    score++; 
-                    document.getElementById('game-feedback').className = "mb-4 p-5 rounded-2xl bg-green-600 text-white flex justify-between items-center";
-                    document.getElementById('game-feedback-text').innerText = "Exact !";
-                } else {
-                    document.getElementById('game-feedback').className = "mb-4 p-5 rounded-2xl bg-red-600 text-white flex justify-between items-center";
-                    document.getElementById('game-feedback-text').innerText = "Erreur d'analyse";
-                }
-                document.getElementById('btn-action').innerText = "SUIVANT";
-            } else {
-                if (currentIdx < mod.exercises.length - 1) { currentIdx++; loadExercise(); }
-                else {
-                    saveScoreToHistory(mod.title, score, mod.exercises.length);
-                    showMenu(); document.getElementById('screen-menu').classList.add('hidden');
-                    document.getElementById('screen-result').classList.remove('hidden');
-                    document.getElementById('result-title').innerText = mod.title;
-                    document.getElementById('result-score').innerText = `${score} / ${mod.exercises.length}`;
-                    if (score === mod.exercises.length) confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                }
-            }
-        }
+    const mod = modulesData[currentModId];
+    const ex = mod.exercises[currentIdx];
 
-        /* --- 5. RECHERCHE & SURLIGNAGE --- */
-        function highlightText(text, q) {
-            if (!q) return text;
-            const regex = new RegExp(`(${q.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
-            return text.replace(regex, '<span class="search-highlight">$1</span>');
-        }
+    if (state === 'playing') {
+        // --- ÉTAPE 1 : ON VÉRIFIE LA RÉPONSE ---
+        const isCorrect = userAnswers.every((v, i) => v === ex.correct[i]);
+        state = 'checked';
+        
+        const fdb = document.getElementById('game-feedback');
+        const fdbT = document.getElementById('game-feedback-text');
+        fdb.classList.remove('hidden');
 
-        function showSearch() {
-            showMenu(); document.getElementById('screen-menu').classList.add('hidden');
-            document.getElementById('screen-search').classList.remove('hidden');
-            document.getElementById('search-input').value = '';
-            document.getElementById('search-results').innerHTML = '<p class="text-center py-10 opacity-50 italic">Tapez un mot-clé...</p>';
-            setTimeout(() => document.getElementById('search-input').focus(), 100);
-        }
-
-        function performSearch() {
-            const q = document.getElementById('search-input').value.toLowerCase().trim();
-            const resCont = document.getElementById('search-results');
-            if (q.length < 2) return;
-
-            let matches = [];
-            Object.values(modulesData).forEach(m => {
-                if (m.title.toLowerCase().includes(q) || m.summary.toLowerCase().includes(q)) matches.push({ type: 'Cours', modId: m.id, title: m.title, text: m.summary });
-                m.exercises.forEach(ex => { if (ex.rule.toLowerCase().includes(q)) matches.push({ type: 'Règle', modId: m.id, title: ex.translation, text: ex.rule }); });
-            });
-
-            resCont.innerHTML = matches.map(res => `
-                <div onclick="showCourse('${res.modId}', '${q}')" class="card p-5 cursor-pointer mb-2 dark:bg-slate-800 active:scale-95 transition-all">
-                    <span class="text-[8px] font-black uppercase px-2 py-1 rounded bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">${res.type}</span>
-                    <h4 class="font-bold text-sm mt-2">${highlightText(res.title, q)}</h4>
-                    <p class="text-xs text-muted mt-1">${highlightText(res.text, q)}</p>
-                </div>`).join('');
-        }
-
-        /* --- 6. HISTORIQUE & PERSISTENCE --- */
-        function saveScoreToHistory(t, s, tot) {
-            const h = JSON.parse(localStorage.getItem('grammar_history') || '[]');
-            h.unshift({ date: new Date().toLocaleDateString('fr-FR'), title: t, score: s, total: tot });
-            localStorage.setItem('grammar_history', JSON.stringify(h.slice(0, 30)));
-        }
-
-        function showHistory() {
-            const h = JSON.parse(localStorage.getItem('grammar_history') || '[]');
-            const list = document.getElementById('history-list');
-            list.innerHTML = h.length ? h.map(e => `
-                <div class="card p-4 flex justify-between items-center dark:bg-slate-800 mb-2">
-                    <div><p class="text-[10px] uppercase text-muted">${e.date}</p><p class="font-bold text-sm">${e.title}</p></div>
-                    <p class="font-black text-lg ${e.score === e.total ? 'text-green-600' : 'text-blue-600'}">${e.score}/${e.total}</p>
-                </div>`).join('') : '<p class="text-center italic py-10 opacity-50">Aucun défi terminé.</p>';
-            showMenu(); document.getElementById('screen-menu').classList.add('hidden');
-            document.getElementById('screen-history').classList.remove('hidden');
-        }
-
-        function clearHistory() { if(confirm("Effacer tout ?")) { localStorage.removeItem('grammar_history'); showHistory(); } }
-
-        /* --- 7. THÈME & DARK MODE --- */
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-            document.getElementById('theme-btn').innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-            applyDarkModeStyles();
-        }
-
-        function applyDarkModeStyles() {
-            const isDark = document.body.classList.contains('dark-mode');
-            document.querySelectorAll('[style]').forEach(el => {
-                let s = el.getAttribute('style');
-                if (isDark) s = s.replace(/color:\s*#0066cc/g, 'color: var(--accent-blue)').replace(/background:\s*#e8f4f8/g, 'background: var(--note-bg)').replace(/background:\s*#ffffff/g, 'background: var(--bg-card)');
-                el.setAttribute('style', s);
-            });
-        }
-
-        /* --- 8. INITIALISATION & PWA --- */
-        function showCourseFromGame() { if (currentModId) showCourse(currentModId); }
-        function toggleRule() { const r = document.getElementById('game-rule'); r.innerText = modulesData[currentModId].exercises[currentIdx].rule; r.classList.toggle('hidden'); }
-        function dismissInstallBanner() { document.getElementById('pwa-install-banner').classList.add('hidden'); localStorage.setItem('pwa_refused', Date.now()); }
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault(); deferredPrompt = e;
-            const lastRefused = localStorage.getItem('pwa_refused');
-            if (!lastRefused || (Date.now() - lastRefused > 86400000 * 7)) document.getElementById('pwa-install-banner').classList.remove('hidden');
+        userAnswers.forEach((v, i) => {
+            const s = document.getElementById(`slot-${i}`);
+            s.className = "drop-zone w-full slot-filled " + (v === ex.correct[i] ? "slot-correct" : "slot-wrong");
         });
 
-        document.getElementById('btn-install-app').onclick = async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') document.getElementById('pwa-install-banner').classList.add('hidden');
-                deferredPrompt = null;
-            }
-        };
+        if (isCorrect) {
+            score++;
+            fdb.className = "mb-4 p-5 rounded-2xl flex bg-green-600 text-white shadow-xl";
+            fdbT.innerText = "Exact !";
+        } else {
+            fdb.className = "mb-4 p-5 rounded-2xl flex bg-red-600 text-white shadow-xl";
+            fdbT.innerText = "Erreur d'analyse";
+        }
+        document.getElementById('btn-action').innerText = "SUIVANT";
 
-        function updateApp() { if (newWorker) newWorker.postMessage({ type: 'SKIP_WAITING' }); else window.location.reload(); }
+    } else {
+        // --- ÉTAPE 2 : ON PASSE À LA SUITE OU ON TERMINE ---
+        
+        // On vérifie s'il reste des exercices
+        if (currentIdx < mod.exercises.length - 1) {
+            // S'il en reste, on passe au suivant
+            currentIdx++;
+            loadExercise();
+                
+        } else {
+            // SI C'EST LE DERNIER EXERCICE
+            saveScoreToHistory(mod.title, score, mod.exercises.length);
+            
+            document.getElementById('screen-game').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+            
+            document.getElementById('result-title').innerText = `${mod.name}: ${mod.title}`;
+            document.getElementById('result-score').innerText = `${score} / ${mod.exercises.length}`;
 
-        window.onload = () => {
+            // --- EFFET DE CONFETTIS SI SCORE PARFAIT ---
+            
+if (score === mod.exercises.length) {
+    let count = 0;
+    const interval = setInterval(() => {
+        confetti({ particleCount: 100, spread: 60, origin: { y: 0.6 }, zIndex: 100 });
+        count++;
+        if (count >= 3) clearInterval(interval);
+    }, 300);
+}
+
+            
+        }
+
+    }
+}
+
+        function toggleRule() { const box = document.getElementById('game-rule'); box.innerText = modulesData[currentModId].exercises[currentIdx].rule; box.classList.toggle('hidden'); }
+        window.onload = function () {
             const container = document.getElementById('module-container');
-            Object.values(modulesData).forEach(m => {
-                container.innerHTML += `<div class="card p-8 flex flex-col gap-4"><div><p class="text-[10px] font-black text-blue-600 uppercase mb-2">${m.name}</p><h3 class="text-lg font-bold border-none p-0 bg-transparent shadow-none">${m.title}</h3><p class="text-xs text-muted">${m.summary}</p></div><div class="grid grid-cols-2 gap-3"><button onclick="showCourse('${m.id}')" class="py-3 border-2 border-blue-100 text-blue-900 rounded-xl text-[9px] font-black uppercase">Cours</button><button onclick="startGame('${m.id}')" class="py-3 bg-blue-900 text-white rounded-xl text-[9px] font-black uppercase shadow-md">Défis</button></div></div>`;
+            Object.values(modulesData).forEach((m, index) => {
+                const card = document.createElement('div'); card.className = "w-full p-8 flex flex-col gap-6 rounded-3xl shadow-sm"; card.style.background = 'var(--bg-card)';
+                card.innerHTML = `<div><p style="font-size: 0.75rem; font-weight: 900; color: #0066cc; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0 0 1rem 0; line-height: 1;">${m.name}</p><p class="font-bold text-lg tracking-tight" style="color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.title}</p><p class="text-sm" style="color: var(--text-muted); min-height: 2.5em; line-height: 1.25;">${m.summary}</p></div><div class="grid grid-cols-2 gap-4"><button onclick="showCourse('${m.id}')" class="py-4 border-2 border-blue-100 text-blue-900 text-[10px] font-black rounded-[1.2rem] uppercase tracking-widest transition-all">Cours</button><button onclick="startGame('${m.id}')" class="py-4 bg-blue-900 text-white text-[10px] rounded-[1.2rem] shadow-lg uppercase tracking-widest active:scale-95 transition-all">Exercices</button></div>`;
+                container.appendChild(card);
             });
-            if (localStorage.getItem('theme') === 'dark') { document.body.classList.add('dark-mode'); document.getElementById('theme-btn').innerText = '☀️'; }
-            showMenu();
         };
+        // --- ENREGISTREMENT SERVICE WORKER ---
+        // --- GESTION DE LA MISE À JOUR (SERVICE WORKER) ---
+let newWorker;
 
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js').then(reg => {
-                reg.addEventListener('updatefound', () => {
-                    newWorker = reg.installing;
-                    newWorker.addEventListener('statechange', () => {
-                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) document.getElementById('update-toast').classList.remove('hidden');
-                    });
+function updateApp() {
+    console.log("Tentative de mise à jour...");
+    if (newWorker) {
+        newWorker.postMessage({ type: 'SKIP_WAITING' });
+    } else {
+        // Si le worker n'est pas capturé, on tente un refresh simple
+        window.location.reload();
+    }
+}
+
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').then(reg => {
+        // 1. Vérifie au démarrage s'il y a déjà une mise à jour en attente
+        if (reg.waiting) {
+            newWorker = reg.waiting;
+            document.getElementById('update-toast').classList.remove('hidden');
+        }
+
+        // 2. Surveille l'arrivée d'une nouvelle mise à jour
+        reg.addEventListener('updatefound', () => {
+            newWorker = reg.installing;
+            newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    document.getElementById('update-toast').classList.remove('hidden');
+                }
+            });
+        });
+    });
+
+    // 3. Écoute le changement de contrôle pour recharger proprement la page
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+            window.location.reload();
+            refreshing = true;
+        }
+    });
+}
+
+
+
+        // --- LOGIQUE MODE NUIT ---
+        function applyDarkModeStyles() {
+            const isDark = document.body.classList.contains('dark-mode');
+            
+            // Tous les éléments avec style
+            document.querySelectorAll('[style]').forEach(el => {
+                let style = el.getAttribute('style');
+                const originalStyle = style;
+                
+                if (isDark) {
+                    // Remplacer pour le mode dark
+                    style = style
+                        // COULEURS TEXTE - BLEU
+                        .replace(/color:\s*#0066cc/g, 'color: var(--accent-blue)')
+                        .replace(/color:\s*#00bfff/g, 'color: var(--accent-blue)')
+                        .replace(/color:\s*#004d99/g, 'color: var(--primary-blue)')
+                        .replace(/color:\s*#3b82f6/g, 'color: var(--accent-blue)')
+                        .replace(/color:\s*#1d4ed8/g, 'color: var(--accent-blue)')
+                        // COULEURS TEXTE - VERT
+                        .replace(/color:\s*#15803d/g, 'color: #4ade80')
+                        // COULEURS TEXTE - GRIS/NOIR
+                        .replace(/color:\s*#000/g, 'color: var(--text-main)')
+                        .replace(/color:\s*#1e293b/g, 'color: var(--text-main)')
+                        .replace(/color:\s*#1a1a1a/g, 'color: var(--text-main)')
+                        .replace(/color:\s*#64748b/g, 'color: var(--text-muted)')
+                        .replace(/color:\s*#475569/g, 'color: var(--text-muted)')
+                        .replace(/color:\s*#555/g, 'color: var(--text-muted)')
+                        .replace(/color:\s*#004d99/g, 'color: var(--text-muted)')
+                        // BORDURES - Gris
+                        .replace(/border:\s*1px solid\s*#cbd5e1/g, 'border: 1px solid var(--border-color)')
+                        .replace(/border:\s*1px solid\s*#ddd/g, 'border: 1px solid var(--border-color)')
+                        .replace(/border:\s*1px solid\s*#e2e8f0/g, 'border: 1px solid var(--border-color)')
+                        .replace(/border:\s*2px solid\s*#cbd5e1/g, 'border: 2px solid var(--border-color)')
+                        .replace(/border-color:\s*#cbd5e1/g, 'border-color: var(--border-color)')
+                        .replace(/border-color:\s*#ddd/g, 'border-color: var(--border-color)')
+                        .replace(/border-color:\s*#e2e8f0/g, 'border-color: var(--border-color)')
+                        // BORDURES - Bleu
+                        .replace(/border-left:\s*4px solid\s*#0066cc/g, 'border-left: 4px solid var(--accent-blue)')
+                        .replace(/border-left:\s*4px solid\s*#004d99/g, 'border-left: 4px solid var(--primary-blue)')
+                        .replace(/border-left:\s*4px solid\s*#00bfff/g, 'border-left: 4px solid var(--accent-blue)')
+                        // BORDURES - Orange
+                        .replace(/border-left:\s*4px solid\s*#ff9800/g, 'border-left: 4px solid #f97316')
+                        // BORDURES - Jaune
+                        .replace(/border-left:\s*4px solid\s*#fbc02d/g, 'border-left: 4px solid #ca8a04')
+                        // BACKGROUNDS - BLEU CLAIR (table headers)
+                        .replace(/background:\s*#dbeafe/g, 'background: #1e3a5f')
+                        .replace(/background:\s*#eff6ff/g, 'background: #1a2844')
+                        // BACKGROUNDS - VERT CLAIR (table)
+                        .replace(/background:\s*#dcfce7/g, 'background: #1a3a1a')
+                        // BACKGROUNDS - ROSE CLAIR (table)
+                        .replace(/background:\s*#fee7f0/g, 'background: #3a1a2a')
+                        // BACKGROUNDS - GRIS CLAIR (génériques)
+                        .replace(/background:\s*#f1f5f9/g, 'background: var(--bg-card)')
+                        .replace(/background:\s*#f8fafc/g, 'background: var(--bg-card)')
+                        .replace(/background:\s*#f5f5f5/g, 'background: var(--bg-card)')
+                        .replace(/background:\s*#f3f4f6/g, 'background: var(--bg-card)')
+                        .replace(/background:\s*#fafafa/g, 'background: var(--bg-card)')
+                        // BACKGROUNDS - BLEU CLAIR (génériques)
+                        .replace(/background:\s*#e8f4f8/g, 'background: var(--note-bg)')
+                        .replace(/background:\s*#e6f7ff/g, 'background: var(--note-bg)')
+                        .replace(/background:\s*#f0f9ff/g, 'background: var(--note-bg)')
+                        // BACKGROUNDS - ORANGE CLAIR
+                        .replace(/background:\s*#fff3e0/g, 'background: #1a1410')
+                        .replace(/background:\s*#fffbf0/g, 'background: #1a1410')
+                        // BACKGROUNDS - JAUNE CLAIR (avec gradient)
+                        .replace(/background:\s*linear-gradient\(135deg,\s*#fff305\s*0%,\s*#ffeb3b\s*100%\)/g, 'background: linear-gradient(135deg, #4a4410 0%, #5a5420 100%)')
+                        .replace(/background:\s*#fff305/g, 'background: #4a4410')
+                        .replace(/background:\s*#ffeb3b/g, 'background: #5a5420')
+                        // BACKGROUNDS - BLANC
+                        .replace(/background:\s*white/g, 'background: var(--bg-card)')
+                        .replace(/background:\s*#fff/g, 'background: var(--bg-card)')
+                        .replace(/background:\s*#ffffff/g, 'background: var(--bg-card)');
+                }
+                
+                if (style !== originalStyle) {
+                    el.setAttribute('style', style);
+                }
+            });
+        }
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            document.getElementById('theme-btn').innerText = isDark ? '☀️' : '🌙';
+            applyDarkModeStyles();
+        }
+        // Chargement du thème
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('theme-btn').innerText = '☀️';
+        }
+        // Appliquer les styles dark mode une fois que le DOM est chargé
+        document.addEventListener('DOMContentLoaded', () => {
+            if (document.body.classList.contains('dark-mode')) {
+                applyDarkModeStyles();
+            }
+        });
+        // Aussi appliquer au chargement complet de la page
+        window.addEventListener('load', () => {
+            if (document.body.classList.contains('dark-mode')) {
+                applyDarkModeStyles();
+            }
+        });
+
+        // Variables globales pour stocker les templates originaux
+        let originalMascTableHTML = '';
+        let originalFemTableHTML = '';
+
+        // Fonction pour initialiser les tables
+        function initializeTables() {
+            console.log('initializeTables appelé');
+            const mascTable = document.getElementById('masculineTable');
+            const femTable = document.getElementById('feminineTable');
+            const wordSelector = document.getElementById('wordSelector');
+            
+            console.log('mascTable:', mascTable ? 'trouvé' : 'NON trouvé');
+            console.log('femTable:', femTable ? 'trouvé' : 'NON trouvé');
+            console.log('wordSelector:', wordSelector ? 'trouvé' : 'NON trouvé');
+            
+            if (!mascTable || !femTable || !wordSelector) {
+                console.log('Éléments manquants, abandon');
+                return;
+            }
+            
+            // Toujours recapturer les templates originaux
+            originalMascTableHTML = mascTable.innerHTML;
+            originalFemTableHTML = femTable.innerHTML;
+            
+            console.log('Templates capturés, length:', originalMascTableHTML.length, originalFemTableHTML.length);
+            console.log('Contient مُسْلِم?', originalMascTableHTML.includes('مُسْلِم'));
+            
+            // Supprimer les anciens listeners en clonant
+            const newSelector = wordSelector.cloneNode(true);
+            wordSelector.parentNode.replaceChild(newSelector, wordSelector);
+            
+            // Ajouter le nouvel event listener
+            newSelector.addEventListener('change', function(e) {
+                console.log('Change event déclenché, valeur:', this.value);
+                wordRadical = this.value;
+                console.log('wordRadical défini à:', wordRadical);
+                updateTerminationTables();
+            });
+            
+            console.log('Event listener attaché');
+            
+            // Ajouter les event listeners pour les boutons radio d'état
+            const radioButtons = document.querySelectorAll('input[name="wordState"]');
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    updateTableVisibility();
                 });
             });
-            navigator.serviceWorker.addEventListener('controllerchange', () => window.location.reload());
-        }          
+            
+            // Ajouter les event listeners pour les boutons radio de genre
+            const genderRadioButtons = document.querySelectorAll('input[name="wordGender"]');
+            genderRadioButtons.forEach((radio, idx) => {
+                radio.addEventListener('change', function() {
+                    updateTableGenderVisibility();
+                });
+            });
+        }
+
+        function updateTerminationTables() {
+            console.log('updateTerminationTables appelé avec wordRadical:', wordRadical);
+            const mascTable = document.getElementById('masculineTable');
+            const femTable = document.getElementById('feminineTable');
+            
+            console.log('mascTable:', mascTable ? 'trouvé' : 'NON trouvé');
+            console.log('femTable:', femTable ? 'trouvé' : 'NON trouvé');
+            console.log('originalMascTableHTML length:', originalMascTableHTML.length);
+            console.log('originalFemTableHTML length:', originalFemTableHTML.length);
+            
+            if (mascTable && originalMascTableHTML) {
+                const newHTML = originalMascTableHTML.replace(/مُسْلِم/g, wordRadical);
+                console.log('Mise à jour masculineTable, remplacements effectués?', newHTML !== originalMascTableHTML);
+                mascTable.innerHTML = newHTML;
+            }
+            
+            if (femTable && originalFemTableHTML) {
+                const newHTML = originalFemTableHTML.replace(/مُسْلِم/g, wordRadical);
+                console.log('Mise à jour feminineTable, remplacements effectués?', newHTML !== originalFemTableHTML);
+                femTable.innerHTML = newHTML;
+            }
+            
+            // Appliquer le filtre d'état
+            updateTableVisibility();
+        }
+        
+        function updateTableVisibility() {
+            const selectedState = document.querySelector('input[name="wordState"]:checked')?.value || 'nakirah';
+            const mascTable = document.getElementById('masculineTable');
+            const femTable = document.getElementById('feminineTable');
+            
+            console.log('updateTableVisibility appelé, état sélectionné:', selectedState);
+            
+            if (mascTable) {
+                const rows = mascTable.querySelectorAll('tbody tr');
+                rows.forEach((row, index) => {
+                    if (selectedState === 'nakirah') {
+                        // Afficher les lignes nakirah (indices 0, 3, 6, 9...)
+                        row.style.display = (index % 3 === 0) ? 'table-row' : 'none';
+                    } else if (selectedState === 'marifah') {
+                        // Afficher les lignes marifah (indices 1, 4, 7, 10...)
+                        row.style.display = (index % 3 === 1) ? 'table-row' : 'none';
+                    } else if (selectedState === 'moudaf') {
+                        // Afficher les lignes moudaf (indices 2, 5, 8, 11...)
+                        row.style.display = (index % 3 === 2) ? 'table-row' : 'none';
+                    }
+                });
+            }
+            
+            if (femTable) {
+                const rows = femTable.querySelectorAll('tbody tr');
+                rows.forEach((row, index) => {
+                    if (selectedState === 'nakirah') {
+                        // Afficher les lignes nakirah (indices 0, 3, 6, 9...)
+                        row.style.display = (index % 3 === 0) ? 'table-row' : 'none';
+                    } else if (selectedState === 'marifah') {
+                        // Afficher les lignes marifah (indices 1, 4, 7, 10...)
+                        row.style.display = (index % 3 === 1) ? 'table-row' : 'none';
+                    } else if (selectedState === 'moudaf') {
+                        // Afficher les lignes moudaf (indices 2, 5, 8, 11...)
+                        row.style.display = (index % 3 === 2) ? 'table-row' : 'none';
+                    }
+                });
+            }
+        }
+
+        function updateTableGenderVisibility() {
+            const selectedGender = document.querySelector('input[name="wordGender"]:checked');
+            if (!selectedGender) return;
+            
+            const gender = selectedGender.value;
+            const mascContainer = document.getElementById('masculineTableContainer');
+            const femContainer = document.getElementById('feminineTableContainer');
+            
+            if (mascContainer) {
+                mascContainer.style.setProperty('display', gender === 'masculine' ? 'block' : 'none', 'important');
+            }
+            if (femContainer) {
+                femContainer.style.setProperty('display', gender === 'feminine' ? 'block' : 'none', 'important');
+            }
+        }
+let deferredPrompt;
+const installBanner = document.getElementById('pwa-install-banner');
+
+function checkInstallEligibility() {
+    // Si l'utilisateur a déjà refusé l'installation il y a moins de 7 jours, on ne montre rien
+    const lastDismissed = localStorage.getItem('pwa_install_dismissed');
+    if (lastDismissed) {
+        const daysSince = (Date.now() - parseInt(lastDismissed)) / (1000 * 60 * 60 * 24);
+        if (daysSince < 7) return false; // On attend 7 jours avant de reproposer
+    }
+    return true;
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // On n'affiche la bannière que si les conditions de discrétion sont remplies
+    if (checkInstallEligibility()) {
+        installBanner.classList.remove('hidden');
+        installBanner.classList.add('flex');
+    }
+});
+
+function dismissInstallBanner() {
+    installBanner.classList.add('hidden');
+    installBanner.classList.remove('flex');
+    // On enregistre la date du refus
+    localStorage.setItem('pwa_install_dismissed', Date.now().toString());
+}
+
+document.getElementById('btn-install-app').addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            installBanner.classList.add('hidden');
+        } else {
+            // S'ils cliquent sur "Annuler" dans le menu du téléphone, on cache aussi la bannière
+            dismissInstallBanner();
+        }
+        deferredPrompt = null;
+    }
+});
+function showSearch() {
+    // 1. On cache tout
+    document.querySelectorAll('body > div').forEach(d => {
+        if (!['theme-btn', 'update-toast'].includes(d.id)) d.classList.add('hidden');
+    });
+    // 2. On affiche l'écran recherche
+    document.getElementById('screen-search').classList.remove('hidden');
+    document.getElementById('search-input').value = '';
+    document.getElementById('search-results').innerHTML = '<p class="text-center text-muted italic py-10">Tapez un mot-clé pour trouver une règle.</p>';
+    // 3. Focus sur l'input
+    setTimeout(() => document.getElementById('search-input').focus(), 100);
+}
+
+function performSearch() {
+    const query = document.getElementById('search-input').value.toLowerCase().trim();
+    const resultsCont = document.getElementById('search-results');
+    
+    if (query.length < 2) {
+        resultsCont.innerHTML = '<p class="text-center text-muted italic py-10">Tapez au moins 2 lettres...</p>';
+        return;
+    }
+
+    let matches = [];
+
+    // Recherche dans les modules (Titre et résumé)
+    Object.values(modulesData).forEach(m => {
+        if (m.title.toLowerCase().includes(query) || m.summary.toLowerCase().includes(query)) {
+            matches.push({
+                type: 'Cours',
+                title: m.title,
+                text: m.summary,
+                action: () => showCourse(m.id)
+            });
+        }
+
+        // Recherche dans les règles des exercices
+        m.exercises.forEach(ex => {
+            if (ex.rule.toLowerCase().includes(query) || ex.translation.toLowerCase().includes(query)) {
+                matches.push({
+                    type: 'Règle',
+                    title: ex.translation,
+                    text: ex.rule,
+                    action: () => showCourse(m.id) // Renvoie au cours correspondant
+                });
+            }
+        });
+    });
+
+    // Affichage des résultats
+    if (matches.length === 0) {
+        resultsCont.innerHTML = '<p class="text-center py-10">Aucun résultat trouvé pour "' + query + '"</p>';
+        return;
+    }
+
+    resultsCont.innerHTML = matches.map((res, index) => `
+        <div onclick="executeSearchAction(${index})" class="card p-4 hover:border-blue-500 cursor-pointer transition-all active:scale-95">
+            <div class="flex justify-between items-start mb-2">
+                <span class="text-[9px] font-black uppercase px-2 py-1 rounded bg-blue-100 text-blue-800">${res.type}</span>
+            </div>
+            <h4 class="font-bold text-sm mb-1">${res.title}</h4>
+            <p class="text-xs text-muted line-clamp-2">${res.text}</p>
+        </div>
+    `).join('');
+
+    // Stocker temporairement les actions pour les clics
+    window.currentSearchMatches = matches;
+}
+
+function executeSearchAction(index) {
+    const match = window.currentSearchMatches[index];
+    if (match && match.action) {
+        match.action();
+    }
+}
+
+
     </script>
 </body>
 
 </html>
+
+
