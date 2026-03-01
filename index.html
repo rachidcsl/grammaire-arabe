@@ -4611,30 +4611,100 @@
                 });
             });
         }
+        // --- NAVIGATION ET AFFICHAGE ---
         function showMenu() {
-    // Liste de tous les écrans de votre application
-    const screens = [
-        'screen-menu', 
-        'screen-course', 
-        'screen-game', 
-        'screen-result', 
-        'screen-history'
-    ];
-    
-    // On cache TOUT
-    screens.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('hidden');
-    });
+            // Liste complète des écrans à masquer
+            const screens = ['screen-menu', 'screen-course', 'screen-game', 'screen-result', 'screen-history'];
+            screens.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
 
-    // On affiche uniquement le menu principal
-    const menu = document.getElementById('screen-menu');
-    if (menu) {
-        menu.classList.remove('hidden');
-    }
+            // Afficher le menu
+            const menu = document.getElementById('screen-menu');
+            if (menu) menu.classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
 
-    window.scrollTo(0, 0);
-}
+        function showCourseFromGame() {
+            if (currentModId) showCourse(currentModId);
+        }
+
+        // --- INITIALISATION AU CHARGEMENT ---
+        window.onload = function () {
+            const container = document.getElementById('module-container');
+            if (!container) return;
+            
+            Object.values(modulesData).forEach((m) => {
+                const card = document.createElement('div'); 
+                card.className = "w-full p-8 flex flex-col gap-6 rounded-3xl shadow-sm"; 
+                card.style.background = 'var(--bg-card)';
+                card.innerHTML = `
+                    <div>
+                        <p style="font-size: 0.75rem; font-weight: 900; color: #0066cc; text-transform: uppercase; margin: 0 0 1rem 0;">${m.name}</p>
+                        <p class="font-bold text-lg tracking-tight" style="color: var(--text-main);">${m.title}</p>
+                        <p class="text-sm" style="color: var(--text-muted); min-height: 2.5em;">${m.summary}</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="showCourse('${m.id}')" class="py-4 border-2 border-blue-100 text-blue-900 text-[10px] font-black rounded-[1.2rem] uppercase tracking-widest transition-all">Cours</button>
+                        <button onclick="startGame('${m.id}')" class="py-4 bg-blue-900 text-white text-[10px] rounded-[1.2rem] shadow-lg uppercase tracking-widest active:scale-95 transition-all">Exercices</button>
+                    </div>`;
+                container.appendChild(card);
+            });
+            showMenu(); // Afficher le menu au départ
+        };
+
+        // --- GESTION DE L'HISTORIQUE ---
+        function saveScoreToHistory(modTitle, score, total) {
+            const history = JSON.parse(localStorage.getItem('grammar_history') || '[]');
+            const newEntry = {
+                date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }),
+                title: modTitle,
+                score: score,
+                total: total
+            };
+            history.unshift(newEntry);
+            localStorage.setItem('grammar_history', JSON.stringify(history.slice(0, 50)));
+        }
+
+        function showHistory() {
+            const history = JSON.parse(localStorage.getItem('grammar_history') || '[]');
+            const listCont = document.getElementById('history-list');
+            listCont.innerHTML = '';
+
+            if (history.length === 0) {
+                listCont.innerHTML = '<p class="text-center text-muted py-10 italic">Aucun défi terminé.</p>';
+            } else {
+                history.forEach(entry => {
+                    const item = document.createElement('div');
+                    item.className = "card p-4 flex justify-between items-center mb-2";
+                    const percent = Math.round((entry.score / entry.total) * 100);
+                    const color = percent >= 80 ? 'text-green-600' : (percent >= 50 ? 'text-orange-500' : 'text-red-500');
+                    item.innerHTML = `
+                        <div>
+                            <p class="text-[10px] font-bold text-muted uppercase">${entry.date}</p>
+                            <p class="font-bold text-sm">${entry.title}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-black text-lg ${color}">${entry.score} / ${entry.total}</p>
+                        </div>`;
+                    listCont.appendChild(item);
+                });
+            }
+            // Masquer tout sauf l'historique
+            document.querySelectorAll('body > div').forEach(d => {
+                if (!['theme-btn', 'update-toast'].includes(d.id)) d.classList.add('hidden');
+            });
+            document.getElementById('screen-history').classList.remove('hidden');
+        }
+
+        function clearHistory() {
+            if(confirm("Effacer tous les résultats ?")) {
+                localStorage.removeItem('grammar_history');
+                showHistory();
+            }
+        }
+        
 
 function showCourse(id) {
             // Sauvegarder l'état du jeu s'il y a une partie en cours
@@ -4686,7 +4756,6 @@ function showCourse(id) {
         }
         function startGame(id) { currentModId = id; currentIdx = 0; score = 0; userAnswers = []; gameState = null; loadedExerciseIdx = -1; document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-game').classList.remove('hidden'); loadExercise(); }
         function resumeGame(id) { if (gameState && gameState.modId === id) { currentModId = gameState.modId; currentIdx = gameState.currentIdx; score = gameState.score; userAnswers = JSON.parse(JSON.stringify(gameState.userAnswers)); loadedExerciseIdx = currentIdx; } document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-game').classList.remove('hidden'); loadExercise(); }
-        function showCourseFromGame() { if (currentModId) showCourse(currentModId); }
         function loadExercise() {
             const mod = modulesData[currentModId], ex = mod.exercises[currentIdx];
             state = 'playing';
@@ -5137,104 +5206,8 @@ if ('serviceWorker' in navigator) {
             }
         }
 
-        // --- DONNÉES & NAVIGATION ---
-        //function showMenu() {
-      //      document.querySelectorAll('body > div').forEach(d => d.id !== 'theme-btn' && d.classList.add('hidden'));
-     //       document.getElementById('screen-menu').classList.remove('hidden');
-   //         window.scrollTo(0,0);
-      //  }
-   function showMenu() {
-    // On cache tous les écrans principaux
-    const screens = ['screen-menu', 'screen-course', 'screen-game'];
-    screens.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('hidden');
-    });
 
-    // On affiche uniquement le menu
-    const menu = document.getElementById('screen-menu');
-    if (menu) menu.classList.remove('hidden');
-
-    // On s'assure que le bouton de thème et le toast de mise à jour restent accessibles
-    // (Ils ne doivent pas être dans la liste des éléments à cacher)
-    window.scrollTo(0, 0);
-}
-
-        // Fonction pour sauvegarder un score (à appeler à la fin d'un module)
-function saveScoreToHistory(modTitle, score, total) {
-    const history = JSON.parse(localStorage.getItem('grammar_history') || '[]');
-    const newEntry = {
-        date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }),
-        title: modTitle,
-        score: score,
-        total: total
-    };
-    history.unshift(newEntry); // Ajoute au début pour voir le plus récent d'abord
-    localStorage.setItem('grammar_history', JSON.stringify(history.slice(0, 50))); // On garde les 50 derniers
-}
-
-// Fonction pour afficher l'écran historique
-function showHistory() {
-    const history = JSON.parse(localStorage.getItem('grammar_history') || '[]');
-    const listCont = document.getElementById('history-list');
-    listCont.innerHTML = '';
-
-    if (history.length === 0) {
-        listCont.innerHTML = '<p class="text-center text-muted py-10 italic">Aucun défi terminé pour le moment.</p>';
-    } else {
-        history.forEach(entry => {
-            const item = document.createElement('div');
-            item.className = "card p-4 flex justify-between items-center";
-            const percent = Math.round((entry.score / entry.total) * 100);
-            const color = percent >= 80 ? 'text-green-600' : (percent >= 50 ? 'text-orange-500' : 'text-red-500');
-            
-            item.innerHTML = `
-                <div>
-                    <p class="text-[10px] font-bold text-muted uppercase">${entry.date}</p>
-                    <p class="font-bold text-sm">${entry.title}</p>
-                </div>
-                <div class="text-right">
-                    <p class="font-black text-lg ${color}">${entry.score} / ${entry.total}</p>
-                    <p class="text-[9px] font-bold uppercase">${percent}%</p>
-                </div>
-            `;
-            listCont.appendChild(item);
-        });
-    }
-
-    document.querySelectorAll('body > div').forEach(d => d.id !== 'theme-btn' && d.id !== 'update-toast' && d.classList.add('hidden'));
-    document.getElementById('screen-history').classList.remove('hidden');
-}
-
-function clearHistory() {
-    if(confirm("Voulez-vous vraiment effacer tous vos résultats ?")) {
-        localStorage.removeItem('grammar_history');
-        showHistory();
-    }
-}
-
-
-
-        
     </script>
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
