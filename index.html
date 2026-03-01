@@ -4734,7 +4734,7 @@
         }
         
 
-function showCourse(id) {
+function showCourse(id, queryToOpen = null) {
             // Sauvegarder l'état du jeu s'il y a une partie en cours
             if (currentModId === id && state === 'playing') {
                 gameState = {
@@ -4775,6 +4775,19 @@ function showCourse(id) {
 
             document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden'));
             document.getElementById('screen-course').classList.remove('hidden');
+    
+            if (queryToOpen) {
+                setTimeout(() => {
+                    const sections = document.querySelectorAll('.course-section');
+                    sections.forEach(s => {
+                        if (s.innerText.toLowerCase().includes(queryToOpen.toLowerCase())) {
+                            s.classList.remove('collapsed');
+                            s.previousElementSibling.classList.remove('collapsed');
+                        }
+                    });
+                }, 200);
+            }
+   
             applyDarkModeStyles();
             initializeAccordion();
             initializeTables();
@@ -5308,7 +5321,7 @@ function performSearch() {
                 type: 'Cours',
                 title: m.title,
                 text: m.summary,
-                action: () => showCourse(m.id)
+                action: () => showCourse(m.id, query)
             });
         }
 
@@ -5319,7 +5332,7 @@ function performSearch() {
                     type: 'Règle',
                     title: ex.translation,
                     text: ex.rule,
-                    action: () => showCourse(m.id) // Renvoie au cours correspondant
+                    action: () => showCourse(m.id, query) // Renvoie au cours correspondant
                 });
             }
         });
@@ -5357,5 +5370,6 @@ function executeSearchAction(index) {
 </body>
 
 </html>
+
 
 
