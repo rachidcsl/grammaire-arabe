@@ -4612,20 +4612,30 @@
             });
         }
         function showMenu() {
-    // Liste exhaustive de TOUS vos écrans
-    const screens = ['screen-menu', 'screen-course', 'screen-game', 'screen-result', 'screen-history'];
+    // Liste de tous les écrans de votre application
+    const screens = [
+        'screen-menu', 
+        'screen-course', 
+        'screen-game', 
+        'screen-result', 
+        'screen-history'
+    ];
     
+    // On cache TOUT
     screens.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
     });
 
-    // On affiche uniquement le menu
+    // On affiche uniquement le menu principal
     const menu = document.getElementById('screen-menu');
-    if (menu) menu.classList.remove('hidden');
+    if (menu) {
+        menu.classList.remove('hidden');
+    }
 
     window.scrollTo(0, 0);
 }
+
 function showCourse(id) {
             // Sauvegarder l'état du jeu s'il y a une partie en cours
             if (currentModId === id && state === 'playing') {
@@ -5210,6 +5220,7 @@ function clearHistory() {
 </body>
 
 </html>
+
 
 
 
