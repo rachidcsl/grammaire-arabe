@@ -632,6 +632,20 @@
 
 <body class="bg-slate-50" style="background-color: var(--bg-main); transition: background-color 0.3s ease;">
     <div id="screen-menu" class="p-6 max-w-5xl mx-auto">
+<div id="pwa-install-banner" class="hidden mb-6 p-4 bg-blue-100 border-2 border-blue-200 rounded-2xl flex items-center justify-between shadow-sm relative">
+    <div class="flex items-center gap-3">
+        <span class="text-2xl">📱</span>
+        <div>
+            <p class="text-xs font-black text-blue-900 uppercase">Installer l'app ?</p>
+            <p class="text-[9px] text-blue-700">Accès rapide et sans connexion</p>
+        </div>
+    </div>
+    <div class="flex items-center gap-2">
+        <button id="btn-install-app" class="bg-blue-900 text-white px-3 py-2 rounded-xl text-[10px] font-black uppercase">Installer</button>
+        <button onclick="dismissInstallBanner()" class="text-blue-400 hover:text-blue-900 p-1 text-lg font-bold">&times;</button>
+    </div>
+</div>
+
 <header class="flex justify-between items-center border-b-4 border-blue-900/10 mb-10 gap-4 p-4">
     <svg width="70" height="80" viewBox="0 0 437 275" fill="none" xmlns="http://www.w3.org/2000/svg" class="shrink-0">
         <defs>
@@ -5205,9 +5219,54 @@ if ('serviceWorker' in navigator) {
                 femContainer.style.setProperty('display', gender === 'feminine' ? 'block' : 'none', 'important');
             }
         }
+let deferredPrompt;
+const installBanner = document.getElementById('pwa-install-banner');
+
+function checkInstallEligibility() {
+    // Si l'utilisateur a déjà refusé l'installation il y a moins de 7 jours, on ne montre rien
+    const lastDismissed = localStorage.getItem('pwa_install_dismissed');
+    if (lastDismissed) {
+        const daysSince = (Date.now() - parseInt(lastDismissed)) / (1000 * 60 * 60 * 24);
+        if (daysSince < 7) return false; // On attend 7 jours avant de reproposer
+    }
+    return true;
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // On n'affiche la bannière que si les conditions de discrétion sont remplies
+    if (checkInstallEligibility()) {
+        installBanner.classList.remove('hidden');
+        installBanner.classList.add('flex');
+    }
+});
+
+function dismissInstallBanner() {
+    installBanner.classList.add('hidden');
+    installBanner.classList.remove('flex');
+    // On enregistre la date du refus
+    localStorage.setItem('pwa_install_dismissed', Date.now().toString());
+}
+
+document.getElementById('btn-install-app').addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            installBanner.classList.add('hidden');
+        } else {
+            // S'ils cliquent sur "Annuler" dans le menu du téléphone, on cache aussi la bannière
+            dismissInstallBanner();
+        }
+        deferredPrompt = null;
+    }
+});
 
 
     </script>
 </body>
 
 </html>
+
