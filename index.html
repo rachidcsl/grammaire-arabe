@@ -13,8 +13,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        /* --- CORRECTIF BLOQUAGE --- */
-        .hidden { display: none !important; }
+        /* --- FORÇAGE NAVIGATION --- */
+        .hidden { display: none !important; visibility: hidden !important; pointer-events: none !important; }
 
         :root {
             --bg-main: #ffffff; --bg-card: #ffffff; --text-main: #1e293b; --text-muted: #64748b;
@@ -30,28 +30,21 @@
 
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); transition: all 0.3s ease; overflow-x: hidden; touch-action: none; }
 
-        /* --- VISUEL & TITRES --- */
+        /* --- VISUEL --- */
         .arabic { font-family: 'Lateef', serif; direction: rtl; font-size: 2.8rem; font-weight: 700; }
         .arabic-table { font-family: 'Lateef', serif; font-size: 2rem; font-weight: 700; line-height: 1; }
-        h1 { color: var(--primary-blue); border-bottom: 4px solid var(--primary-blue); text-align: center; font-weight: 900; }
-        #course-body h2 { font-size: 1.7rem; color: var(--accent-blue); border-left: 8px solid var(--accent-blue); padding: 15px; margin-top: 3rem; background: var(--bg-card); box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; }
+        h1 { color: var(--primary-blue); font-weight: 900; }
 
         /* --- DRAG & DROP NATUREL --- */
-        .drop-zone { border: 2px dashed var(--text-muted); border-radius: 15px; height: 5.5rem; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; background: var(--bg-card); transition: 0.2s; text-transform: uppercase; color: var(--text-muted); }
-        .drop-zone.active-target { border-color: var(--accent-blue); background-color: var(--note-bg); border-style: solid; }
-        .slot-filled { border: 3px solid var(--primary-blue); background: var(--note-bg); color: var(--primary-blue); font-family: 'Lateef'; font-size: 2rem; font-weight: 700; border-radius: 15px; }
+        .drop-zone { border: 2px dashed var(--text-muted); border-radius: 15px; height: 5.5rem; display: flex; align-items: center; justify-content: center; background: var(--bg-card); transition: 0.2s; text-transform: uppercase; color: var(--text-muted); font-weight: 700; font-size: 0.75rem; }
+        .drop-zone.active-target { border-color: var(--accent-blue); background-color: var(--note-bg); border-style: solid; transform: scale(1.02); }
+        .slot-filled { border: 3px solid var(--primary-blue); background: var(--note-bg); color: var(--primary-blue); font-family: 'Lateef'; font-size: 2.2rem; font-weight: 700; border-radius: 15px; }
         .slot-correct { border: 4px solid #22c55e !important; background: #f0fdf4 !important; color: #166534 !important; }
         .slot-wrong { border: 4px solid #ef4444 !important; background: #fef2f2 !important; color: #991b1b !important; }
-        .draggable-label { font-family: 'Lateef', serif; font-size: 2rem; font-weight: 700; background: var(--bg-card); border: 2px solid var(--primary-blue); border-radius: 20px; padding: 12px 20px; cursor: grab; user-select: none; display: inline-flex; align-items: center; justify-content: center; min-height: 4.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .drag-ghost { position: fixed; pointer-events: none; z-index: 9999; opacity: 0.95; transform: translate(-50%, -50%); background: var(--bg-card); border: 3px solid var(--primary-blue); border-radius: 20px; padding: 12px 20px; font-family: 'Lateef'; font-size: 2.2rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2); color: var(--text-main); }
+        .draggable-label { font-family: 'Lateef', serif; font-size: 2rem; font-weight: 700; background: var(--bg-card); border: 2px solid var(--primary-blue); border-radius: 20px; padding: 10px 24px; cursor: grab; user-select: none; display: inline-flex; align-items: center; justify-content: center; min-height: 4.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .drag-ghost { position: fixed; pointer-events: none; z-index: 9999; opacity: 0.95; transform: translate(-50%, -50%); background: var(--bg-card); border: 3px solid var(--primary-blue); border-radius: 20px; padding: 10px 24px; font-family: 'Lateef'; font-size: 2.2rem; box-shadow: 0 20px 40px rgba(0,0,0,0.3); color: var(--text-main); }
 
-        /* --- TABLEAUX --- */
-        .table-container { width: 100%; overflow-x: auto; margin: 25px 0; border: 1px solid var(--primary-blue); border-radius: 12px; background: var(--bg-card); }
-        table { width: 100%; border-collapse: collapse; min-width: 800px; }
-        th { color: white; background: var(--table-header); padding: 15px 10px; border: 1px solid var(--border-color); font-size: 0.8rem; text-transform: uppercase; }
-        td { padding: 12px 10px; border: 1px solid var(--border-color); text-align: center; font-size: 0.95rem; color: var(--text-main); }
-
-        /* --- UI COMPONENTS --- */
+        /* --- UI --- */
         #settings-drawer { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: var(--bg-card); z-index: 1000; transition: 0.4s; padding: 2rem; box-shadow: 10px 0 50px rgba(0,0,0,0.1); }
         #settings-drawer.open { left: 0; }
         #drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; z-index: 900; backdrop-filter: blur(2px); }
@@ -74,23 +67,23 @@
     
     <aside id="settings-drawer" class="dark:bg-slate-900">
         <div class="flex justify-between items-center mb-10">
-            <h2 class="text-xl font-black uppercase italic tracking-tighter">Réglages</h2>
+            <h2 class="text-xl font-black uppercase italic">Menu</h2>
             <button onclick="UI.toggleDrawer()" class="text-2xl opacity-20">✕</button>
         </div>
         <div id="drawer-profile-info" class="mb-10 p-4 bg-blue-50 dark:bg-slate-800 rounded-3xl flex items-center gap-3"></div>
         <div class="space-y-6">
-            <div class="flex items-center justify-between"><span class="font-bold text-sm">Mode Jour</span><button onclick="UI.toggleDark()" id="dark-mode-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-xl">☀️</button></div>
+            <div class="flex items-center justify-between"><span class="font-bold text-sm">Mode Jour</span><button onclick="UI.toggleDark()" id="dark-mode-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-xl shadow-sm">☀️</button></div>
         </div>
         <button onclick="Profiles.reset()" class="w-full mt-24 py-4 text-slate-400 font-bold text-[10px] uppercase border border-slate-100 dark:border-slate-800 rounded-2xl">Déconnexion / Changer</button>
     </aside>
 
     <section id="screen-profiles" class="fixed inset-0 bg-white dark:bg-slate-950 z-[500] flex flex-col items-center justify-center p-8">
-        <div class="text-7xl mb-8 animate-pulse text-blue-900 dark:text-blue-500">🌟</div>
+        <div class="text-7xl mb-8 text-blue-900 dark:text-blue-500">🌟</div>
         <h2 class="text-3xl font-black mb-10 text-center dark:text-white uppercase tracking-tighter">Falah Academy</h2>
         <div id="profiles-list" class="grid grid-cols-2 gap-4 w-full max-w-sm mb-8"></div>
         <div class="w-full max-w-sm flex flex-col gap-3">
-            <button onclick="Profiles.add()" class="py-5 bg-blue-900 text-white rounded-3xl font-black uppercase text-[10px] tracking-widest shadow-xl active:scale-95 transition-all">Créer un profil</button>
-            <button onclick="Profiles.skip()" class="py-3 text-slate-400 font-black uppercase text-[10px] text-center underline">Continuer en Invité</button>
+            <button onclick="Profiles.add()" class="py-5 bg-blue-900 text-white rounded-3xl font-black uppercase text-[10px] tracking-widest shadow-xl">Créer un profil</button>
+            <button onclick="Profiles.skip()" class="py-3 text-slate-400 font-bold uppercase text-[9px] text-center underline">Continuer en Invité</button>
         </div>
     </section>
 
@@ -105,7 +98,7 @@
             </svg>
 
             <div class="text-center flex-1">
-                <h1 id="user-welcome" class="text-lg font-black dark:text-white uppercase italic leading-none border-none"></h1>
+                <h1 id="user-welcome" class="text-lg font-black dark:text-white uppercase italic leading-none"></h1>
                 <div id="points-val" class="text-[9px] font-bold text-blue-500 uppercase mt-2 tracking-widest">💎 0 Points</div>
             </div>
             
@@ -124,14 +117,11 @@
 
     <section id="screen-course" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-40 flex flex-col overflow-y-auto">
         <nav class="p-4 border-b flex justify-between items-center sticky top-0 bg-white/95 dark:bg-slate-900/95 z-50">
-            <button onclick="UI.show('screen-menu')" class="font-black text-blue-900 dark:text-sky-400 text-xs uppercase">← Retour</button>
-            <h2 id="course-title-header" class="text-[10px] font-black uppercase text-slate-400"></h2>
+            <button onclick="UI.show('screen-menu')" class="font-black text-blue-900 dark:text-sky-400 text-xs uppercase">← Menu</button>
+            <h2 id="course-title" class="text-[10px] font-black uppercase text-slate-400"></h2>
             <button id="btn-course-action" class="bg-blue-900 text-white px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase">Défi</button>
         </nav>
-        <div class="p-6 md:p-12 max-w-6xl mx-auto w-full pb-32">
-            <h1 id="course-title-main" class="text-3xl font-black mb-10 pb-4 border-b-8 border-blue-50 dark:border-slate-800"></h1>
-            <div id="course-body"></div>
-        </div>
+        <div class="p-6 md:p-12 max-w-6xl mx-auto w-full pb-32" id="course-body"></div>
     </section>
 
     <section id="screen-game" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-50 flex flex-col overflow-hidden">
@@ -154,7 +144,7 @@
         </footer>
     </section>
 
-    <section id="screen-result" class="hidden fixed inset-0 bg-slate-950 z-[200] flex flex-col items-center justify-center p-8 text-white text-center">
+    <section id="screen-result" class="hidden fixed inset-0 bg-slate-950 z-[300] flex flex-col items-center justify-center p-8 text-white text-center">
         <div class="text-8xl mb-8 animate-bounce">🏆</div>
         <h2 class="text-3xl font-black mb-10 uppercase italic">Félicitations !</h2>
         <div class="bg-blue-900 p-16 rounded-[4rem] mb-12 w-full max-w-xs shadow-2xl">
@@ -3961,6 +3951,8 @@
         
         };
 
+        /** * LOGIQUE PROFILS - FIXÉE POUR ÉVITER LE BLOCAGE
+         */
         const Profiles = {
             current: null,
             init() {
@@ -3977,7 +3969,7 @@
                 UI.show('screen-profiles');
             },
             add() {
-                const name = prompt("Nom :");
+                const name = prompt("Prénom :");
                 if (!name) return;
                 const profiles = JSON.parse(localStorage.getItem('falah_profiles') || '[]');
                 const id = 'p' + Date.now();
@@ -3988,46 +3980,51 @@
             skip() {
                 this.current = { id: 'guest', name: 'Invité', emoji: '🔓', points: 0 };
                 localStorage.setItem('falah_last_profile', 'guest');
-                UI.show('screen-menu');
+                UI.show('screen-menu'); // Force l'ouverture
             },
             select(id) {
                 const profiles = JSON.parse(localStorage.getItem('falah_profiles') || '[]');
                 this.current = profiles.find(p => p.id === id);
                 localStorage.setItem('falah_last_profile', id);
-                UI.show('screen-menu');
-            },
-            delete(id, e) {
-                e.stopPropagation();
-                if (!confirm("Supprimer ?")) return;
-                const profiles = JSON.parse(localStorage.getItem('falah_profiles') || '[]').filter(x => x.id !== id);
-                localStorage.setItem('falah_profiles', JSON.stringify(profiles));
-                this.renderList();
+                UI.show('screen-menu'); // Force l'ouverture
             },
             renderList() {
                 const profiles = JSON.parse(localStorage.getItem('falah_profiles') || '[]');
-                document.getElementById('profiles-list').innerHTML = profiles.map(p => `
-                    <div onclick="Profiles.select('${p.id}')" class="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-lg text-center relative border border-slate-100">
-                        <button onclick="Profiles.delete('${p.id}', event)" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-6 h-6 text-xs">✕</button>
-                        <div class="text-3xl mb-1">👤</div>
-                        <p class="font-black dark:text-white text-[10px] uppercase truncate">${p.name}</p>
-                    </div>`).join('');
+                const list = document.getElementById('profiles-list');
+                if (list) {
+                    list.innerHTML = profiles.map(p => `
+                        <div onclick="Profiles.select('${p.id}')" class="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-lg text-center relative border border-slate-100">
+                            <div class="text-3xl mb-1">👤</div>
+                            <p class="font-black dark:text-white text-[10px] uppercase truncate">${p.name}</p>
+                        </div>`).join('');
+                }
             },
             reset() { localStorage.removeItem('falah_last_profile'); location.reload(); }
         };
 
+        /**
+         * MOTEUR UI - NAVIGATION FORCÉE
+         */
         const UI = {
             show(id) {
-                // NETTOYAGE AGRESSIF : On cible chaque ID possible
+                // Masquage absolu par ID
                 const screens = ['screen-profiles', 'screen-menu', 'screen-search', 'screen-course', 'screen-game', 'screen-result'];
                 screens.forEach(s => {
                     const el = document.getElementById(s);
-                    if(el) el.classList.add('hidden');
+                    if(el) {
+                        el.classList.add('hidden');
+                        el.style.display = 'none'; // Double sécurité
+                    }
                 });
 
                 const target = document.getElementById(id);
                 if (target) {
                     target.classList.remove('hidden');
-                    if (id === 'screen-menu') this.renderModules();
+                    target.style.display = (id === 'screen-menu' || id === 'screen-profiles') ? 'flex' : 'flex';
+                    if (id === 'screen-menu') {
+                        target.style.display = 'block'; // Menu est un block
+                        this.renderModules();
+                    }
                 }
                 window.scrollTo(0,0);
                 applyDarkModeStyles();
@@ -4060,15 +4057,13 @@
             },
             showCourse(id, q = null) {
                 const m = DATA.modules[id];
-                document.getElementById('course-title-header').innerText = m.title;
-                document.getElementById('course-title-main').innerText = m.title;
+                document.getElementById('course-title').innerText = m.title;
                 let c = m.course; if(q) c = Search.highlight(c, q);
                 document.getElementById('course-body').innerHTML = c;
                 document.getElementById('btn-course-action').onclick = () => Game.start(id);
                 this.show('screen-course');
-                document.querySelectorAll('#course-body h2').forEach(h => { const s = h.nextElementSibling; h.classList.add('collapsed'); s.classList.add('course-section'); h.onclick = () => { h.classList.toggle('open'); s.classList.toggle('active'); }; });
             },
-            toggleAccordion(el) { el.classList.toggle('open'); el.nextElementSibling.classList.toggle('active'); }
+            toggleAccordion(el) { el.nextElementSibling.classList.toggle('active'); }
         };
 
         const Game = {
@@ -4079,12 +4074,11 @@
                 const ex = this.exercises[this.currentIdx];
                 this.userAnswers = new Array(ex.phrase.length).fill(null);
                 this.state = 'playing';
-                document.getElementById('game-progress-dots').innerHTML = this.exercises.map((_, i) => `<div class="w-2 h-2 rounded-full ${i <= this.currentIdx ? 'bg-blue-900 dark:bg-sky-400' : 'bg-slate-200 dark:bg-slate-700'}"></div>`).join('');
                 document.getElementById('game-translation').innerText = ex.translation;
                 document.getElementById('game-phrase').innerHTML = ex.phrase.map((w, i) => `
                     <div class="flex items-center gap-3 w-full">
-                        <div class="arabic flex-1 bg-white dark:bg-slate-800 p-8 rounded-[2rem] shadow-sm border text-center" style="background-color: var(--bg-card); color: var(--text-main);">${w}</div>
-                        <div id="slot-${i}" class="drop-zone flex-1">Déposer</div>
+                        <div class="arabic flex-1 bg-white dark:bg-slate-800 p-4 rounded-3xl border shadow-sm text-center" style="background-color: var(--bg-card); color: var(--text-main);">${w}</div>
+                        <div id="slot-${i}" class="drop-zone flex-1">Placer</div>
                     </div>`).join('');
                 const optCont = document.getElementById('game-options'); optCont.innerHTML = '';
                 ex.opts.forEach(o => {
@@ -4135,7 +4129,6 @@
                     const fb = document.getElementById('game-feedback'); fb.classList.remove('hidden');
                     fb.innerText = win ? "✨ EXCELLENT !" : "❌ RÉESSAYE !";
                     fb.className = `mb-4 p-5 rounded-3xl font-black block ${win?'bg-green-600':'bg-red-600'}`;
-                    this.userAnswers.forEach((a, i) => document.getElementById(`slot-${i}`).classList.add(a === this.exercises[this.currentIdx].correct[i] ? 'slot-correct' : 'slot-wrong'));
                     if(win) { this.score++; confetti({ particleCount: 30, origin:{y:0.8}}); }
                     document.getElementById('btn-check').innerText = "CONTINUER";
                 } else {
@@ -4149,13 +4142,13 @@
                 const res = document.getElementById('search-results');
                 if (!q || q.length < 2) { res.innerHTML = ''; return; }
                 const val = q.toLowerCase().trim();
-                const matches = Object.values(DATA.modules).filter(m => m.title.toLowerCase().includes(val) || m.tags.some(t => t.includes(val)));
+                const matches = Object.values(DATA.modules).filter(m => m.title.toLowerCase().includes(val));
                 res.innerHTML = matches.map(m => `<div onclick="UI.showCourse('${m.id}', '${val}')" class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-lg border-l-8 border-blue-500 cursor-pointer font-bold dark:text-white">${m.title}</div>`).join('');
             },
             highlight(text, q) { const regex = new RegExp(`(${q})`, 'gi'); return text.replace(regex, '<mark class="search-highlight">$1</mark>'); }
         };
 
-        const SmartTutor = { toggle() { document.getElementById('ai-chat').classList.toggle('hidden'); document.getElementById('ai-chat').innerText = "🤖 Astuce : Analyse bien les voyelles finales (Damma, Fatha, Kasra) pour trouver l'état du nom !"; } };
+        const SmartTutor = { toggle() { document.getElementById('ai-chat').classList.toggle('hidden'); document.getElementById('ai-chat').innerText = "🤖 Astuce : Analyse les voyelles finales !"; } };
 
         function applyDarkModeStyles() {
             const isDark = document.body.classList.contains('dark-mode');
@@ -4166,18 +4159,18 @@
             });
         }
 
-        // --- SERVICE WORKER LOGIC ---
+        // --- SERVICE WORKER ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js').then(reg => {
-                    reg.addEventListener('updatefound', () => {
+                    reg.onupdatefound = () => {
                         const newWorker = reg.installing;
-                        newWorker.addEventListener('statechange', () => {
+                        newWorker.onstatechange = () => {
                             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                                 document.getElementById('update-toast').classList.remove('hidden');
                             }
-                        });
-                    });
+                        };
+                    };
                 });
             });
         }
