@@ -2452,7 +2452,7 @@
                     },
                                         {
                         translation: "La maison est grande",
-                        phrase: [, "كَبِيرٌ", "الْبَيْتُ"],
+                        phrase: ["كَبِيرٌ", "الْبَيْتُ"],
                         correct: ["خَبَرٌ", "مُبْتَدَأٌ"],
                         opts: ["مُبْتَدَأٌ", "خَبَرٌ", "مُضَافٌ", "مُضَافٌ إِلَيْهِ"],
                         rule: "Le Moubtada (Le sujet) et le Khabar (L'information) s'accordent en genre et en nombre. Ici, les deux sont au singulier masculin."
@@ -4661,8 +4661,6 @@
         // --- INITIALISATION AU CHARGEMENT ---
         window.onload = function () {
             const container = document.getElementById('module-container');
-            if (!container) return;
-            
             Object.values(modulesData).forEach((m) => {
                 const card = document.createElement('div'); 
                 card.className = "w-full p-8 flex flex-col gap-6 rounded-3xl shadow-sm"; 
@@ -4679,7 +4677,13 @@
                     </div>`;
                 container.appendChild(card);
             });
-            showMenu(); // Afficher le menu au départ
+
+            // --- AJOUTEZ CES LIGNES ICI ---
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-btn').innerText = '☀️';
+            }
+            showMenu(); 
         };
 
         // --- GESTION DE L'HISTORIQUE ---
@@ -4734,7 +4738,7 @@
         }
         
 
-function showCourse(id) {
+        function showCourse(id, queryToOpen = null) {
             // Sauvegarder l'état du jeu s'il y a une partie en cours
             if (currentModId === id && state === 'playing') {
                 gameState = {
@@ -4775,12 +4779,30 @@ function showCourse(id) {
 
             document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden'));
             document.getElementById('screen-course').classList.remove('hidden');
+
+            // --- CET ORDRE EST CRUCIAL ---
+            initializeAccordion(); // 1. On crée les sections HTML d'abord
+            initializeTables();    // 2. On prépare les tableaux
+
+            if (queryToOpen) {     // 3. SEULEMENT MAINTENANT on peut déplier
+                setTimeout(() => {
+                    const sections = document.querySelectorAll('.course-section');
+                    sections.forEach(s => {
+                        if (s.innerText.toLowerCase().includes(queryToOpen.toLowerCase())) {
+                            s.classList.remove('collapsed');
+                            s.previousElementSibling.classList.remove('collapsed');
+                            s.previousElementSibling.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    });
+                }, 300);
+            } else {
+                window.scrollTo(0, 0);
+            }
+        
             applyDarkModeStyles();
-            initializeAccordion();
-            initializeTables();
-            updateTableVisibility();  // Initialiser la visibilité des lignes au chargement
-            updateTableGenderVisibility();  // Initialiser la visibilité des tables par genre
-            window.scrollTo(0, 0);
+            updateTableVisibility();
+            updateTableGenderVisibility();
+
         }
         function startGame(id) { currentModId = id; currentIdx = 0; score = 0; userAnswers = []; gameState = null; loadedExerciseIdx = -1; document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-game').classList.remove('hidden'); loadExercise(); }
         function resumeGame(id) { if (gameState && gameState.modId === id) { currentModId = gameState.modId; currentIdx = gameState.currentIdx; score = gameState.score; userAnswers = JSON.parse(JSON.stringify(gameState.userAnswers)); loadedExerciseIdx = currentIdx; } document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden')); document.getElementById('screen-game').classList.remove('hidden'); loadExercise(); }
@@ -4937,14 +4959,7 @@ if (score === mod.exercises.length) {
 }
 
         function toggleRule() { const box = document.getElementById('game-rule'); box.innerText = modulesData[currentModId].exercises[currentIdx].rule; box.classList.toggle('hidden'); }
-        window.onload = function () {
-            const container = document.getElementById('module-container');
-            Object.values(modulesData).forEach((m, index) => {
-                const card = document.createElement('div'); card.className = "w-full p-8 flex flex-col gap-6 rounded-3xl shadow-sm"; card.style.background = 'var(--bg-card)';
-                card.innerHTML = `<div><p style="font-size: 0.75rem; font-weight: 900; color: #0066cc; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0 0 1rem 0; line-height: 1;">${m.name}</p><p class="font-bold text-lg tracking-tight" style="color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.title}</p><p class="text-sm" style="color: var(--text-muted); min-height: 2.5em; line-height: 1.25;">${m.summary}</p></div><div class="grid grid-cols-2 gap-4"><button onclick="showCourse('${m.id}')" class="py-4 border-2 border-blue-100 text-blue-900 text-[10px] font-black rounded-[1.2rem] uppercase tracking-widest transition-all">Cours</button><button onclick="startGame('${m.id}')" class="py-4 bg-blue-900 text-white text-[10px] rounded-[1.2rem] shadow-lg uppercase tracking-widest active:scale-95 transition-all">Exercices</button></div>`;
-                container.appendChild(card);
-            });
-        };
+
         // --- ENREGISTREMENT SERVICE WORKER ---
         // --- GESTION DE LA MISE À JOUR (SERVICE WORKER) ---
 let newWorker;
@@ -5308,7 +5323,7 @@ function performSearch() {
                 type: 'Cours',
                 title: m.title,
                 text: m.summary,
-                action: () => showCourse(m.id)
+                action: () => showCourse(m.id, query)
             });
         }
 
@@ -5319,7 +5334,7 @@ function performSearch() {
                     type: 'Règle',
                     title: ex.translation,
                     text: ex.rule,
-                    action: () => showCourse(m.id) // Renvoie au cours correspondant
+                    action: () => showCourse(m.id, query) // Renvoie au cours correspondant
                 });
             }
         });
@@ -5352,9 +5367,12 @@ function executeSearchAction(index) {
     }
 }
 
-
+function highlightText(text, q) {
+    if (!q) return text;
+    const regex = new RegExp(`(${q.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+    return text.replace(regex, '<span class="search-highlight">$1</span>');
+}
     </script>
 </body>
 
 </html>
-
