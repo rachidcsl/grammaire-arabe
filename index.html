@@ -12,15 +12,13 @@
     <style>
         /* --- THÈMES --- */
         :root {
-            --bg-main: #ffffff;         /* Blanc pur */
+            --bg-main: #ffffff;         /* Blanc Pur */
             --bg-card: #ffffff;
-            --text-main: #1e293b;       /* Slate 800 */
+            --text-main: #0f172a;       /* Texte très sombre pour contraste max */
             --text-muted: #64748b;
-            --primary-blue: #0284c7;    /* Sky 600 */
-            --accent-blue: #38bdf8;
-            --border-color: #f1f5f9;    /* Gris très clair */
-            --note-bg: #f8fafc;
-            --slot-bg: #f8fafc;
+            --primary-blue: #0284c7;    /* Bleu ciel */
+            --border-color: #f1f5f9;    /* Bordure très légère */
+            --slot-bg: #f8fafc;         /* Fond de zone de dépôt très clair */
         }
 
         body.dark-mode {
@@ -29,9 +27,7 @@
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
             --primary-blue: #38bdf8;
-            --accent-blue: #7dd3fc;
             --border-color: #334155;
-            --note-bg: #1e293b;
             --slot-bg: #0f172a;
         }
 
@@ -40,49 +36,51 @@
             background-color: var(--bg-main); 
             color: var(--text-main); 
             transition: background 0.3s ease;
-            touch-action: none; /* Empêche le scroll pendant le drag */
+            overflow: hidden; /* Empêche le rebond élastique sur mobile */
         }
 
         .arabic { font-family: 'Lateef', serif; direction: rtl; font-size: 2.8rem; line-height: 1.1; }
 
-        /* --- UI COMPONENTS --- */
+        /* --- ZONES DE JEU --- */
         .drop-zone { 
             border: 2px dashed var(--border-color); 
-            border-radius: 1.25rem; min-height: 5rem; 
+            border-radius: 1.25rem; min-height: 5.5rem; 
             display: flex; align-items: center; justify-content: center; 
-            background: var(--slot-bg);
+            background: var(--slot-bg); 
             transition: all 0.2s;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
         }
-        .drop-zone.active-target { border-color: var(--primary-blue); background: var(--note-bg); transform: scale(1.02); }
+        .drop-zone.active-target { border-color: var(--primary-blue); background: white; transform: scale(1.02); }
         
         .slot-filled { 
             border: 2px solid var(--primary-blue); 
             background: var(--bg-card); 
             font-family: 'Lateef'; font-size: 2.2rem; font-weight: bold; color: var(--primary-blue);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
         .slot-correct { border-color: #22c55e !important; background: #f0fdf4 !important; color: #166534 !important; }
         .slot-wrong { border-color: #ef4444 !important; background: #fef2f2 !important; color: #991b1b !important; }
 
         .draggable-label { 
             background: var(--bg-card); 
-            border: 1.5px solid var(--border-color); 
-            padding: 10px 20px; border-radius: 1rem; 
+            border: 2px solid var(--border-color); 
+            padding: 12px 24px; border-radius: 1rem; 
             cursor: grab; font-family: 'Lateef'; font-size: 1.8rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             touch-action: none;
             user-select: none;
         }
-        .draggable-label.dragging { opacity: 0; }
-        .draggable-label.disabled { opacity: 0.2; filter: grayscale(1); pointer-events: none; }
 
         .drag-ghost {
             position: fixed; pointer-events: none; z-index: 9999;
-            background: var(--bg-card); border: 2px solid var(--primary-blue); 
-            color: var(--primary-blue); border-radius: 1rem;
-            padding: 10px 20px; font-family: 'Lateef'; font-size: 2rem;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-            transform: translate(-50%, -120%); /* Positionne au-dessus du doigt */
+            background: var(--bg-card); border: 3px solid var(--primary-blue); 
+            color: var(--primary-blue); border-radius: 1.2rem;
+            padding: 12px 24px; font-family: 'Lateef'; font-size: 2.2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform: translate(-50%, -130%);
         }
 
         /* --- ACCORDÉON --- */
@@ -95,126 +93,104 @@
             box-shadow: 10px 0 50px rgba(0,0,0,0.1);
         }
         #settings-drawer.open { left: 0; }
-        #drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; z-index: 900; backdrop-filter: blur(2px); }
+        #drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); display: none; z-index: 900; backdrop-filter: blur(2px); }
 
-        mark.search-highlight { background: #fef08a; border-radius: 4px; padding: 0 2px; }
         ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 
 <body class="dark-mode"> <div id="drawer-overlay" onclick="UI.toggleDrawer()"></div>
     
-    <aside id="settings-drawer">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-xl font-black uppercase italic">Menu</h2>
-            <button onclick="UI.toggleDrawer()" class="text-2xl">✕</button>
+    <aside id="settings-drawer" class="dark:bg-slate-900">
+        <div class="flex justify-between items-center mb-10">
+            <h2 class="text-xl font-black uppercase italic tracking-tighter">Réglages</h2>
+            <button onclick="UI.toggleDrawer()" class="text-3xl opacity-20">✕</button>
         </div>
-        <div id="drawer-profile-info" class="mb-6 p-4 bg-blue-50 dark:bg-slate-800 rounded-2xl flex items-center gap-3 font-bold"></div>
-        <div class="space-y-6">
+        <div id="drawer-profile-info" class="mb-10 p-5 bg-blue-50 dark:bg-slate-800 rounded-3xl flex items-center gap-4 border border-blue-100 dark:border-slate-700"></div>
+        <div class="space-y-8">
             <div class="flex items-center justify-between">
-                <span class="font-bold">Mode Sombre</span>
-                <button onclick="UI.toggleDark()" id="dark-mode-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-xl">☀️</button>
+                <span class="font-bold text-sm">Mode Jour / Nuit</span>
+                <button onclick="UI.toggleDark()" id="dark-mode-btn" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">☀️</button>
             </div>
-            <div class="flex items-center justify-between">
-                <span class="font-bold">IA Tutor</span>
+            <div class="flex items-center justify-between opacity-50">
+                <span class="font-bold text-sm">Sons et Audio</span>
                 <div class="w-10 h-5 bg-blue-500 rounded-full"></div>
             </div>
         </div>
-        <button onclick="Profiles.reset()" class="w-full mt-20 py-4 border-2 border-slate-100 text-slate-500 rounded-2xl font-black text-[10px] uppercase">Changer de Profil</button>
+        <button onclick="Profiles.reset()" class="w-full mt-24 py-4 text-slate-400 font-bold text-[10px] uppercase border border-slate-100 dark:border-slate-700 rounded-2xl">Changer de profil</button>
     </aside>
 
     <section id="screen-profiles" class="fixed inset-0 bg-white dark:bg-slate-950 z-[500] flex flex-col items-center justify-center p-8">
-        <h2 class="text-3xl font-black mb-8 text-center dark:text-white uppercase tracking-tight">Falah Academy</h2>
-        <div id="profiles-list" class="grid grid-cols-2 gap-4 w-full max-w-sm mb-8"></div>
+        <div class="w-16 h-16 bg-blue-900 rounded-2xl flex items-center justify-center shadow-2xl mb-8 rotate-3">
+            <span class="text-white font-black text-3xl">ف</span>
+        </div>
+        <h2 class="text-3xl font-black mb-10 text-center dark:text-white uppercase tracking-tighter">Falah Academy</h2>
+        <div id="profiles-list" class="grid grid-cols-2 gap-4 w-full max-w-sm mb-10"></div>
         <div class="flex flex-col gap-3 w-full max-w-sm">
-            <button onclick="Profiles.add()" class="py-4 bg-blue-900 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl">Créer un profil</button>
+            <button onclick="Profiles.add()" class="py-5 bg-blue-900 text-white rounded-3xl font-black uppercase text-[11px] tracking-widest shadow-xl active:scale-95 transition-transform">Créer un profil</button>
             <button onclick="Profiles.skip()" class="py-3 text-slate-400 font-bold uppercase text-[9px] tracking-widest text-center">Mode Invité</button>
         </div>
     </section>
 
-    <main id="screen-menu" class="hidden p-4 max-w-5xl mx-auto pb-24">
-        <header class="flex justify-between items-center py-6">
-            <button onclick="UI.toggleDrawer()" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-50 dark:border-slate-800">☰</button>
+    <main id="screen-menu" class="hidden min-h-screen p-4 max-w-5xl mx-auto overflow-y-auto">
+        <header class="flex justify-between items-center py-8 mb-4">
+            <button onclick="UI.toggleDrawer()" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-50 dark:border-slate-800 text-xl">☰</button>
             <div class="text-center">
-                <h1 id="user-welcome" class="text-lg font-black dark:text-white uppercase italic"></h1>
-                <div id="points-val" class="text-[10px] font-bold text-blue-500 uppercase mt-1">💎 0 Pts</div>
+                <h1 id="user-welcome" class="text-xl font-black dark:text-white uppercase italic"></h1>
+                <div id="points-val" class="text-[9px] font-bold text-blue-500 uppercase mt-1 tracking-widest">💎 0 Points</div>
             </div>
-            <button onclick="UI.show('screen-search')" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-50 dark:border-slate-800">🔍</button>
+            <div class="w-10"></div>
         </header>
         <div id="module-container" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-4"></div>
     </main>
 
-    <section id="screen-search" class="hidden fixed inset-0 bg-white dark:bg-slate-950 z-[100] flex flex-col p-6 overflow-y-auto">
-        <div class="flex items-center gap-4 mb-6">
-            <button onclick="UI.show('screen-menu')" class="text-2xl font-bold">←</button>
-            <input type="text" id="search-input" oninput="Search.query(this.value)" placeholder="Chercher une règle..." class="flex-1 p-5 rounded-[2rem] bg-slate-50 dark:bg-slate-800 outline-none">
-        </div>
-        <div id="search-results" class="flex flex-col gap-3"></div>
-    </section>
-
     <section id="screen-course" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-40 flex flex-col overflow-y-auto">
-        <nav class="p-4 border-b flex justify-between items-center sticky top-0 bg-white dark:bg-slate-900 z-50">
-            <button onclick="UI.show('screen-menu')" class="font-black text-blue-900 dark:text-sky-400 text-xs">← MENU</button>
+        <nav class="p-4 border-b flex justify-between items-center sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md z-50">
+            <button onclick="UI.show('screen-menu')" class="font-black text-blue-900 dark:text-sky-400 text-xs uppercase">← Menu</button>
             <h2 id="course-title" class="text-[10px] font-black uppercase text-slate-400"></h2>
             <button id="btn-course-action" class="bg-blue-900 text-white px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase">Défi</button>
         </nav>
         <div class="p-6 md:p-12 max-w-4xl mx-auto w-full pb-32" id="course-body"></div>
     </section>
 
-    <section id="screen-game" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-[60] flex flex-col overflow-hidden">
+    <section id="screen-game" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-50 flex flex-col overflow-hidden">
         <nav class="p-4 border-b dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900">
             <button onclick="UI.show('screen-menu')" class="font-bold text-blue-900 dark:text-sky-400 text-sm">Quitter</button>
             <div id="game-progress-dots" class="flex gap-1.5"></div>
-            <button onclick="UI.showCourseFromGame()" class="text-blue-900 dark:text-sky-400 font-black text-xs uppercase">Cours</button>
+            <div class="w-10"></div>
         </nav>
-        
         <div class="flex-1 p-4 flex flex-col items-center overflow-y-auto">
             <div id="game-translation" class="w-full max-w-md p-8 bg-blue-50 dark:bg-slate-800/50 rounded-[3rem] text-center italic text-blue-900 dark:text-blue-100 mb-10 border border-blue-100 dark:border-slate-700"></div>
             <div id="game-phrase" class="w-full max-w-md flex flex-col gap-6 mb-12"></div>
             <div id="game-options" class="w-full max-w-md flex flex-wrap justify-center gap-3 mt-auto pb-12"></div>
         </div>
-
         <footer class="p-6 bg-white dark:bg-slate-900 border-t dark:border-slate-800 shadow-xl">
-            <div id="game-feedback" class="hidden mb-4 p-5 rounded-[2rem] text-white font-black text-center"></div>
-            <button id="btn-check" onclick="Game.handleAction()" class="w-full py-6 bg-blue-900 text-white rounded-[2.5rem] font-black uppercase tracking-[0.3em] shadow-xl disabled:opacity-20">VÉRIFIER</button>
+            <div id="game-feedback" class="hidden mb-4 p-5 rounded-[2rem] text-white font-black text-center shadow-lg transition-all"></div>
+            <button id="btn-check" onclick="Game.handleAction()" class="w-full py-6 bg-blue-900 dark:bg-sky-500 text-white dark:text-slate-900 rounded-[2.5rem] font-black uppercase tracking-[0.3em] shadow-xl disabled:opacity-20 active:scale-95">VÉRIFIER</button>
         </footer>
     </section>
 
-    <div id="screen-result" class="hidden fixed inset-0 bg-slate-950 z-[200] flex flex-col items-center justify-center p-8 text-white text-center">
+    <section id="screen-result" class="hidden fixed inset-0 bg-slate-950 z-[200] flex flex-col items-center justify-center p-8 text-white text-center">
         <div class="text-8xl mb-8 animate-bounce">🏆</div>
-        <h2 class="text-3xl font-black mb-6 italic uppercase tracking-tighter">Mabrouk !</h2>
-        <div class="bg-white/5 px-12 py-16 rounded-[4rem] border border-white/20 mb-12 w-full max-w-xs">
+        <h2 class="text-3xl font-black mb-10 uppercase tracking-tighter italic">Félicitations !</h2>
+        <div class="bg-white/10 px-12 py-16 rounded-[4rem] border border-white/20 mb-12 w-full max-w-xs shadow-2xl">
             <div class="text-7xl font-black italic" id="result-score-val">0</div>
-            <p class="text-[10px] uppercase font-bold opacity-40 mt-2">Nouveaux Points</p>
+            <p class="text-[10px] uppercase font-bold opacity-40 mt-3 tracking-widest">Points récoltés</p>
         </div>
-        <button onclick="UI.show('screen-menu')" class="w-full max-w-xs py-6 bg-sky-500 text-slate-900 rounded-full font-black uppercase tracking-widest">Continuer</button>
-    </div>
+        <button onclick="UI.show('screen-menu')" class="w-full max-w-xs py-6 bg-sky-500 text-slate-900 rounded-full font-black uppercase tracking-widest shadow-xl">Retour au Menu</button>
+    </section>
 
     <script>
-        /**
-         * 1. DONNÉES COMPLÈTES MODULE 1
-         */
         const DATA = {
             modules: {
                 'm1': { 
                     id: 'm1', title: "Le Nom (Ism)", summary: "Fondations : les 3 types de mots et les 4 propriétés du Ism.",
                     course: `
-                        <h2 onclick="UI.toggleAccordion(this)">I. Les 3 types de mots ▸</h2>
+                        <h2 class="font-black text-lg mb-4" onclick="UI.toggleAccordion(this)">I. Les 3 types de mots ▸</h2>
                         <div class="course-section space-y-4">
-                            <p>En arabe, tout mot appartient à l'une de ces 3 catégories :</p>
-                            <div class="p-5 bg-blue-50 dark:bg-slate-800 rounded-3xl border-l-8 border-blue-400"><b>1. اسم (Ism) :</b> Mot intemporel (personne, objet, adjectif...).</div>
+                            <div class="p-5 bg-blue-50 dark:bg-slate-800 rounded-3xl border-l-8 border-blue-400"><b>1. اسم (Ism) :</b> Un mot intemporel (personne, objet...).</div>
                             <div class="p-5 bg-green-50 dark:bg-slate-800 rounded-3xl border-l-8 border-green-400"><b>2. فِعْل (Fi’l) :</b> Action liée au temps.</div>
                             <div class="p-5 bg-red-50 dark:bg-slate-800 rounded-3xl border-l-8 border-red-400"><b>3. حَرْف (Harf) :</b> Particule (dans, vers...).</div>
-                        </div>
-                        <h2 onclick="UI.toggleAccordion(this)">II. Les 4 propriétés du Ism ▸</h2>
-                        <div class="course-section space-y-4 text-sm">
-                            <p>Pour analyser un nom, on identifie toujours ses 4 propriétés :</p>
-                            <ul class="list-disc pl-5 space-y-2">
-                                <li><b>L'État (I'rab) :</b> Sa terminaison selon son rôle (Raf', Nasb, Jarr).</li>
-                                <li><b>Le Genre :</b> Masculin ou Féminin.</li>
-                                <li><b>Le Nombre :</b> Singulier, Duel ou Pluriel.</li>
-                                <li><b>Le Type :</b> Défini ou Indéfini.</li>
-                            </ul>
                         </div>`,
                     exercises: [ 
                         { phrase: ["رَبٌّ"], correct: ["رَفْعٌ"], opts: ["رَفْعٌ", "نَصْبٌ", "جَرٌّ"], translation: "Un Seigneur", rule: "La damma finale indique l'état Raf'." },
@@ -224,200 +200,49 @@
             }
         };
 
-        /**
-         * 2. MOTEUR DE PROFILS
-         */
         const Profiles = {
             current: null,
             getAll() { return JSON.parse(localStorage.getItem('falah_profiles') || '[]'); },
-            saveAll(p) { localStorage.setItem('falah_profiles', JSON.stringify(p)); },
-
             init() {
                 const profiles = this.getAll();
                 const lastId = localStorage.getItem('falah_last_profile');
                 if (lastId && (lastId === 'guest' || profiles.find(p => p.id === lastId))) this.select(lastId);
                 else { this.renderList(); UI.show('screen-profiles'); }
             },
-
             add() {
                 const name = prompt("Prénom de l'élève :");
                 if (!name || name.trim() === "") return;
                 const profiles = this.getAll();
                 const newP = { id: 'p' + Date.now(), name: name.trim(), emoji: '👤' };
                 profiles.push(newP);
-                this.saveAll(profiles);
+                localStorage.setItem('falah_profiles', JSON.stringify(profiles));
                 this.renderList();
             },
-
             skip() { this.select('guest'); },
-
             select(id) {
                 if (id === 'guest') this.current = { id: 'guest', name: 'Invité', emoji: '🔓' };
                 else this.current = this.getAll().find(p => p.id === id);
-                
                 localStorage.setItem('falah_last_profile', id);
-                document.getElementById('screen-profiles').classList.add('hidden');
                 UI.show('screen-menu');
             },
-
-            delete(id, e) {
-                e.stopPropagation();
-                if (!confirm("Supprimer ce profil ?")) return;
-                const p = this.getAll().filter(x => x.id !== id);
-                this.saveAll(p); this.renderList();
-            },
-
             renderList() {
                 const profiles = this.getAll();
                 document.getElementById('profiles-list').innerHTML = profiles.map(p => `
-                    <div onclick="Profiles.select('${p.id}')" class="bg-white dark:bg-slate-900 p-4 rounded-3xl shadow-lg text-center relative border-2 border-transparent">
-                        <button onclick="Profiles.delete('${p.id}', event)" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-6 h-6 text-xs">✕</button>
-                        <div class="text-3xl mb-1">${p.emoji}</div>
-                        <p class="font-black text-[10px] truncate uppercase">${p.name}</p>
+                    <div onclick="Profiles.select('${p.id}')" class="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-lg text-center relative active:scale-95 transition-transform">
+                        <div class="text-3xl mb-2">${p.emoji}</div>
+                        <p class="font-black text-[10px] truncate uppercase dark:text-white">${p.name}</p>
                     </div>`).join('');
             },
-
             reset() { localStorage.removeItem('falah_last_profile'); location.reload(); },
             getData() { return JSON.parse(localStorage.getItem(`data_${this.current.id}`) || '{"points":0}'); },
             saveData(d) { localStorage.setItem(`data_${this.current.id}`, JSON.stringify(d)); }
         };
 
-        /**
-         * 3. GAME ENGINE (NOUVEAU DRAG & DROP TACTILE)
-         */
-        const Game = {
-            modId: null, exercises: [], currentIdx: 0, userAnswers: [], score: 0, state: 'playing',
-            draggedVal: null, ghost: null,
-
-            start(id) {
-                this.modId = id; this.exercises = DATA.modules[id].exercises;
-                this.currentIdx = 0; this.score = 0; this.loadExercise();
-                UI.show('screen-game');
-            },
-
-            loadExercise() {
-                const ex = this.exercises[this.currentIdx];
-                this.userAnswers = new Array(ex.phrase.length).fill(null);
-                this.state = 'playing';
-                
-                document.getElementById('game-translation').innerText = ex.translation;
-                document.getElementById('game-progress-dots').innerHTML = this.exercises.map((_, i) => `<div class="w-2 h-2 rounded-full ${i <= this.currentIdx ? 'bg-blue-900 dark:bg-sky-400' : 'bg-slate-200 dark:bg-slate-700'}"></div>`).join('');
-                
-                document.getElementById('game-phrase').innerHTML = ex.phrase.map((w, i) => `
-                    <div class="flex items-center gap-3 w-full">
-                        <div class="arabic flex-1 bg-white dark:bg-slate-800 p-4 rounded-3xl border shadow-sm text-center">${w}</div>
-                        <div id="slot-${i}" class="drop-zone flex-1 uppercase text-[9px] font-black opacity-30">Déposer</div>
-                    </div>`).join('');
-                
-                const optCont = document.getElementById('game-options');
-                optCont.innerHTML = '';
-                ex.opts.forEach(o => {
-                    const btn = document.createElement('div');
-                    btn.className = "draggable-label dark:bg-slate-800 dark:border-slate-700 dark:text-white";
-                    btn.innerText = o;
-                    // Événements tactiles et souris
-                    btn.onmousedown = (e) => this.startDrag(e, o, btn);
-                    btn.ontouchstart = (e) => this.startDrag(e, o, btn);
-                    optCont.appendChild(btn);
-                });
-
-                document.getElementById('game-feedback').classList.add('hidden');
-                document.getElementById('btn-check').innerText = "VÉRIFIER";
-                document.getElementById('btn-check').disabled = true;
-            },
-
-            startDrag(e, val, el) {
-                if (this.state !== 'playing') return;
-                e.preventDefault();
-                this.draggedVal = val;
-                
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-                this.ghost = document.createElement('div');
-                this.ghost.className = 'drag-ghost';
-                this.ghost.innerText = val;
-                document.body.appendChild(this.ghost);
-                this.moveGhost(clientX, clientY);
-
-                const onMove = (ev) => {
-                    const x = ev.touches ? ev.touches[0].clientX : ev.clientX;
-                    const y = ev.touches ? ev.touches[0].clientY : ev.clientY;
-                    this.moveGhost(x, y);
-                    
-                    // Highlight de la zone survolée
-                    document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('active-target'));
-                    const target = document.elementFromPoint(x, y);
-                    if (target && target.classList.contains('drop-zone')) target.classList.add('active-target');
-                };
-
-                const onEnd = (ev) => {
-                    const x = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
-                    const y = ev.changedTouches ? ev.changedTouches[0].clientY : ev.clientY;
-                    const target = document.elementFromPoint(x, y);
-
-                    if (target && target.classList.contains('drop-zone')) {
-                        const idx = parseInt(target.id.split('-')[1]);
-                        this.userAnswers[idx] = this.draggedVal;
-                        target.innerText = this.draggedVal;
-                        target.className = "drop-zone flex-1 slot-filled";
-                        target.onclick = () => { if(this.state==='playing') { this.userAnswers[idx]=null; target.innerText="Déposer"; target.className="drop-zone flex-1"; this.updateBtn(); }};
-                        if(navigator.vibrate) navigator.vibrate(10);
-                    }
-
-                    this.ghost.remove();
-                    this.updateBtn();
-                    window.removeEventListener('mousemove', onMove);
-                    window.removeEventListener('mouseup', onEnd);
-                    window.removeEventListener('touchmove', onMove);
-                    window.removeEventListener('touchend', onEnd);
-                };
-
-                window.addEventListener('mousemove', onMove);
-                window.addEventListener('mouseup', onEnd);
-                window.addEventListener('touchmove', onMove, { passive: false });
-                window.addEventListener('touchend', onEnd);
-            },
-
-            moveGhost(x, y) {
-                if (this.ghost) {
-                    this.ghost.style.left = x + 'px';
-                    this.ghost.style.top = y + 'px';
-                }
-            },
-
-            updateBtn() { document.getElementById('btn-check').disabled = this.userAnswers.includes(null); },
-
-            handleAction() {
-                if(this.state === 'playing') {
-                    const win = this.userAnswers.every((a, i) => a === this.exercises[this.currentIdx].correct[i]);
-                    this.state = 'checked';
-                    const fb = document.getElementById('game-feedback');
-                    fb.innerText = win ? "✨ EXCELLENT !" : "❌ RÉESSAYE !";
-                    fb.className = `mb-4 p-5 rounded-3xl font-black block ${win?'bg-green-600':'bg-red-600'}`;
-                    fb.classList.remove('hidden');
-                    this.userAnswers.forEach((a, i) => document.getElementById(`slot-${i}`).classList.add(a === this.exercises[this.currentIdx].correct[i] ? 'slot-correct' : 'slot-wrong'));
-                    if(win) { this.score++; confetti({ particleCount: 30, origin:{y:0.8}}); }
-                    document.getElementById('btn-check').innerText = "CONTINUER";
-                } else {
-                    if(++this.currentIdx < this.exercises.length) this.loadExercise(); else this.finish();
-                }
-            },
-
-            finish() {
-                const d = Profiles.getData(); d.points += (this.score * 10); Profiles.saveData(d);
-                document.getElementById('result-score-val').innerText = `+${this.score * 10}`;
-                UI.show('screen-result');
-            }
-        };
-
-        /**
-         * 4. UI ENGINE
-         */
         const UI = {
             show(id) {
                 document.querySelectorAll('section, main').forEach(s => s.classList.add('hidden'));
-                document.getElementById(id).classList.remove('hidden');
+                const target = document.getElementById(id);
+                if (target) target.classList.remove('hidden');
                 if (id === 'screen-menu') this.renderModules();
                 window.scrollTo(0,0);
             },
@@ -426,7 +251,7 @@
                 const v = d.classList.toggle('open');
                 document.getElementById('drawer-overlay').style.display = v ? 'block' : 'none';
                 if(v) {
-                    document.getElementById('drawer-profile-info').innerHTML = `<span>${Profiles.current.emoji}</span> <span>${Profiles.current.name}</span>`;
+                    document.getElementById('drawer-profile-info').innerHTML = `<div class="text-2xl">${Profiles.current.emoji}</div> <div><p class="font-black text-sm">${Profiles.current.name}</p><p class="text-[8px] uppercase font-bold text-blue-500">Apprenti Falah</p></div>`;
                     document.getElementById('dark-mode-btn').innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
                 }
             },
@@ -436,14 +261,14 @@
                 document.getElementById('dark-mode-btn').innerText = isDark ? '☀️' : '🌙';
             },
             renderModules() {
+                if(!Profiles.current) return;
                 const d = Profiles.getData();
                 document.getElementById('user-welcome').innerText = `Salam, ${Profiles.current.name}`;
                 document.getElementById('points-val').innerText = `💎 ${d.points} Points`;
                 document.getElementById('module-container').innerHTML = Object.entries(DATA.modules).map(([id, m]) => `
-                    <div class="bg-white dark:bg-slate-800 p-8 rounded-[3rem] shadow-sm border border-transparent flex flex-col group transition-all">
-                        <span class="text-[9px] font-black text-blue-500 uppercase mb-2">Module ${id.replace('m','')}</span>
-                        <h3 class="font-black text-lg mb-6 leading-tight dark:text-white">${m.title}</h3>
-                        <div class="flex gap-2 mt-auto">
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-[3rem] shadow-sm flex flex-col border border-slate-50 dark:border-slate-700">
+                        <h3 class="font-black text-lg mb-6 dark:text-white leading-tight">${m.title}</h3>
+                        <div class="flex gap-3 mt-auto">
                             <button onclick="UI.showCourse('${id}')" class="flex-1 py-4 bg-slate-50 dark:bg-slate-700 rounded-2xl font-bold text-[10px] uppercase">Cours</button>
                             <button onclick="Game.start('${id}')" class="flex-1 py-4 bg-blue-900 text-white rounded-2xl font-black text-[10px] uppercase shadow-lg">Défi</button>
                         </div>
@@ -456,20 +281,106 @@
                 document.getElementById('btn-course-action').onclick = () => Game.start(id);
                 this.show('screen-course');
             },
-            showCourseFromGame() { if(Game.modId) this.showCourse(Game.modId); },
             toggleAccordion(el) { el.nextElementSibling.classList.toggle('active'); }
         };
 
-        const Search = {
-            query(q) {
-                const res = document.getElementById('search-results');
-                if (q.length < 2) { res.innerHTML = ''; return; }
-                const matches = Object.values(DATA.modules).filter(m => m.title.toLowerCase().includes(q.toLowerCase()));
-                res.innerHTML = matches.map(m => `<div onclick="UI.showCourse('${m.id}')" class="p-6 bg-white dark:bg-slate-800 rounded-3xl shadow-lg cursor-pointer font-bold dark:text-white">${m.title}</div>`).join('');
+        const Game = {
+            modId: null, exercises: [], currentIdx: 0, userAnswers: [], score: 0, state: 'playing',
+            draggedVal: null, ghost: null,
+            start(id) {
+                this.modId = id; this.exercises = DATA.modules[id].exercises;
+                this.currentIdx = 0; this.score = 0; this.loadExercise();
+                UI.show('screen-game');
+            },
+            loadExercise() {
+                const ex = this.exercises[this.currentIdx];
+                this.userAnswers = new Array(ex.phrase.length).fill(null);
+                this.state = 'playing';
+                document.getElementById('game-progress-dots').innerHTML = this.exercises.map((_, i) => `<div class="w-2 h-2 rounded-full ${i <= this.currentIdx ? 'bg-blue-900 dark:bg-sky-400' : 'bg-slate-200 dark:bg-slate-700'}"></div>`).join('');
+                document.getElementById('game-translation').innerText = ex.translation;
+                document.getElementById('game-phrase').innerHTML = ex.phrase.map((w, i) => `
+                    <div class="flex items-center gap-3 w-full">
+                        <div class="arabic flex-1 bg-white dark:bg-slate-800 p-4 rounded-3xl border shadow-sm text-center">${w}</div>
+                        <div id="slot-${i}" class="drop-zone flex-1">Placer</div>
+                    </div>`).join('');
+                const optCont = document.getElementById('game-options');
+                optCont.innerHTML = '';
+                ex.opts.forEach(o => {
+                    const btn = document.createElement('div');
+                    btn.className = "draggable-label dark:bg-slate-800 dark:border-slate-700 dark:text-white";
+                    btn.innerText = o;
+                    btn.onmousedown = (e) => this.startDrag(e, o);
+                    btn.ontouchstart = (e) => this.startDrag(e, o);
+                    optCont.appendChild(btn);
+                });
+                document.getElementById('game-feedback').classList.add('hidden');
+                document.getElementById('btn-check').innerText = "VÉRIFIER";
+                document.getElementById('btn-check').disabled = true;
+            },
+            startDrag(e, val) {
+                if (this.state !== 'playing') return;
+                this.draggedVal = val;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                this.ghost = document.createElement('div');
+                this.ghost.className = 'drag-ghost';
+                this.ghost.innerText = val;
+                document.body.appendChild(this.ghost);
+                this.moveGhost(clientX, clientY);
+                const onMove = (ev) => {
+                    const x = ev.touches ? ev.touches[0].clientX : ev.clientX;
+                    const y = ev.touches ? ev.touches[0].clientY : ev.clientY;
+                    this.moveGhost(x, y);
+                    document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('active-target'));
+                    const target = document.elementFromPoint(x, y);
+                    if (target && target.classList.contains('drop-zone')) target.classList.add('active-target');
+                };
+                const onEnd = (ev) => {
+                    const x = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
+                    const y = ev.changedTouches ? ev.changedTouches[0].clientY : ev.clientY;
+                    const target = document.elementFromPoint(x, y);
+                    if (target && target.classList.contains('drop-zone')) {
+                        const idx = parseInt(target.id.split('-')[1]);
+                        this.userAnswers[idx] = this.draggedVal;
+                        target.innerText = this.draggedVal;
+                        target.className = "drop-zone flex-1 slot-filled";
+                        document.getElementById('btn-check').disabled = this.userAnswers.includes(null);
+                    }
+                    this.ghost.remove();
+                    window.removeEventListener('mousemove', onMove);
+                    window.removeEventListener('mouseup', onEnd);
+                    window.removeEventListener('touchmove', onMove);
+                    window.removeEventListener('touchend', onEnd);
+                };
+                window.addEventListener('mousemove', onMove);
+                window.addEventListener('mouseup', onEnd);
+                window.addEventListener('touchmove', onMove, { passive: false });
+                window.addEventListener('touchend', onEnd);
+            },
+            moveGhost(x, y) { if (this.ghost) { this.ghost.style.left = x + 'px'; this.ghost.style.top = y + 'px'; } },
+            handleAction() {
+                if(this.state === 'playing') {
+                    const win = this.userAnswers.every((a, i) => a === this.exercises[this.currentIdx].correct[i]);
+                    this.state = 'checked';
+                    const fb = document.getElementById('game-feedback');
+                    fb.innerText = win ? "✨ EXCELLENT !" : "❌ RÉESSAYE !";
+                    fb.className = `mb-4 p-5 rounded-3xl font-black block shadow-lg ${win?'bg-green-600':'bg-red-600'}`;
+                    fb.classList.remove('hidden');
+                    this.userAnswers.forEach((a, i) => document.getElementById(`slot-${i}`).classList.add(a === this.exercises[this.currentIdx].correct[i] ? 'slot-correct' : 'slot-wrong'));
+                    if(win) { this.score++; confetti({ particleCount: 30, origin:{y:0.8}}); }
+                    document.getElementById('btn-check').innerText = "CONTINUER";
+                } else {
+                    if(++this.currentIdx < this.exercises.length) this.loadExercise(); 
+                    else this.finish();
+                }
+            },
+            finish() {
+                const d = Profiles.getData(); d.points += (this.score * 10); Profiles.saveData(d);
+                document.getElementById('result-score-val').innerText = `+${this.score * 10}`;
+                UI.show('screen-result');
             }
         };
 
-        // --- INIT ---
         document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('theme') !== 'light') document.body.classList.add('dark-mode');
             Profiles.init();
