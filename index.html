@@ -3,446 +3,595 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Falah-e-Daraine - Grammaire Arabe</title>
+    <title>Falah Academy - Grammaire Arabe</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="manifest" href="manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Lateef:wght@400;700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         :root {
-            --bg-main: #f8fafc; --bg-card: #ffffff; --text-main: #1e293b;
+            --bg-main: #f8fafc; --bg-card: #ffffff; --text-main: #1e293b; --text-muted: #64748b;
             --primary-blue: #004d99; --accent-blue: #0066cc; --border-color: #e2e8f0;
-            --note-bg: #e6f7ff; --revision-orange: #f59e0b;
+            --note-bg: #eff6ff; --slot-bg: #f1f5f9; --revision-orange: #f59e0b;
         }
 
-        .dark-mode {
-            --bg-main: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9;
-            --primary-blue: #075985; --accent-blue: #7dd3fc; --border-color: #334155;
-            --note-bg: #1e293b;
+        body.dark-mode {
+            --bg-main: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9; --text-muted: #94a3b8;
+            --primary-blue: #38bdf8; --accent-blue: #7dd3fc; --border-color: #334155;
+            --note-bg: #1e293b; --slot-bg: #0f172a;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            -webkit-tap-highlight-color: transparent;
-            text-rendering: optimizeLegibility;
-            overflow-x: hidden;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); -webkit-tap-highlight-color: transparent; transition: background 0.3s; overflow-x: hidden; }
+        .arabic { font-family: 'Lateef', serif; direction: rtl; font-size: 2.8rem; line-height: 1.1; }
 
-        .arabic { 
-            font-family: 'Lateef', serif; direction: rtl; 
-            font-size: 2.5rem; line-height: 1.1; contain: content; 
-        }
+        /* --- SURLIGNAGE RECHERCHE --- */
+        mark.search-highlight { background: #fcd34d; border-radius: 4px; color: #000; font-weight: bold; padding: 0 2px; }
+        .dark-mode mark.search-highlight { background: #f59e0b; color: #fff; }
 
-        /* Zones de dépôt */
-        .drop-zone {
-            border: 2px dashed var(--border-color);
-            border-radius: 1.25rem;
-            min-height: 4.5rem;
-            display: flex;
-            align-items: center; justify-content: center;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            background: rgba(0,0,0,0.01);
-        }
+        /* --- SYSTÈME DE JEU --- */
+        .drop-zone { border: 2px dashed var(--border-color); border-radius: 1.5rem; min-height: 5rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: var(--slot-bg); }
+        .drop-zone.drag-over { background: var(--note-bg); border-color: var(--accent-blue); transform: scale(1.02); }
+        .slot-filled { border: 2px solid var(--primary-blue); background: var(--bg-card); font-family: 'Lateef'; font-size: 2.2rem; font-weight: bold; color: var(--primary-blue); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2); }
+        .slot-correct { border-color: #22c55e !important; background: #f0fdf4 !important; color: #166534 !important; }
+        .slot-wrong { border-color: #ef4444 !important; background: #fef2f2 !important; color: #991b1b !important; }
 
-        .drop-zone.drag-over {
-            background: var(--note-bg);
-            border-color: var(--accent-blue);
-            transform: scale(1.04);
-        }
-
-        .slot-filled {
-            border: 2px solid var(--primary-blue);
-            background: var(--bg-card);
-            font-family: 'Lateef'; font-size: 2rem;
-            color: var(--primary-blue); font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-
-        /* Étiquettes */
-        .draggable-label {
-            background: var(--bg-card);
-            border: 2px solid var(--primary-blue);
-            padding: 8px 16px;
-            border-radius: 1rem;
-            cursor: grab;
-            user-select: none;
-            font-family: 'Lateef'; font-size: 1.8rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            transition: transform 0.1s;
-        }
+        .draggable-label { background: var(--bg-card); border: 2px solid var(--primary-blue); padding: 10px 20px; border-radius: 1rem; cursor: grab; user-select: none; font-family: 'Lateef'; font-size: 1.8rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .draggable-label.disabled { opacity: 0.2; filter: grayscale(1); cursor: not-allowed; }
 
-        /* Ghost au dessus du doigt */
-        .drag-ghost {
-            position: fixed; pointer-events: none; z-index: 9999;
-            opacity: 0.9; background: var(--bg-card);
-            border: 2px solid var(--primary-blue); border-radius: 1rem;
-            padding: 10px 20px; font-family: 'Lateef'; font-size: 2rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
+        /* --- ACCORDÉON --- */
+        .course-section { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease; }
+        .course-section.active { max-height: 20000px; opacity: 1; margin-top: 1rem; }
+        #course-body h2, #course-body h3 { cursor: pointer; padding-left: 30px; position: relative; font-weight: 800; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-top: 2rem; }
+        #course-body h2::before, #course-body h3::before { content: '▸'; position: absolute; left: 0; transition: transform 0.2s; color: var(--accent-blue); }
+        #course-body h2.open::before, #course-body h3.open::before { transform: rotate(90deg); }
 
-        /* Boutons Spéciaux */
-        .btn-revision {
-            background-color: var(--revision-orange);
-            color: white;
-            box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.39);
-        }
-
-        /* Accordéon Cours */
-        .course-section { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.3s ease-in-out; }
-        .course-section.active { max-height: 5000px; opacity: 1; margin-top: 1rem; }
+        /* --- MENU HAMBURGER (DRAWER) --- */
+        #settings-drawer { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: var(--bg-card); z-index: 1000; transition: 0.4s; box-shadow: 20px 0 50px rgba(0,0,0,0.2); padding: 2rem; }
+        #settings-drawer.open { left: 0; }
+        #drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 900; backdrop-filter: blur(4px); }
         
-        .badge-card { transition: all 0.4s; filter: grayscale(1); opacity: 0.4; }
-        .badge-unlocked { filter: grayscale(0); opacity: 1; transform: translateY(-5px); }
+        .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; inset: 0; background-color: #cbd5e1; transition: .4s; border-radius: 20px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--accent-blue); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* --- PROFIL & HALL OF FAME --- */
+        .avatar-circle { width: 60px; height: 60px; margin: 0 auto 10px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .hall-of-fame { background: linear-gradient(135deg, #1e40af, #3b82f6); border-radius: 2rem; color: white; padding: 1.5rem; margin-bottom: 2rem; }
 
         ::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body>
 
-    <main id="screen-menu" class="p-4 max-w-5xl mx-auto">
-        <header class="flex justify-between items-center py-6 mb-8">
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-blue-900 rounded-2xl flex items-center justify-center shadow-lg">
-                    <span class="text-white font-black text-xl">ف</span>
-                </div>
-                <div>
-                    <h1 class="text-2xl font-black text-blue-900 dark:text-white leading-none uppercase">Falah</h1>
-                    <span class="text-[10px] font-bold text-slate-400">Arabe & Grammaire</span>
+<body class="transition-colors duration-500">
+
+    <div id="drawer-overlay" onclick="UI.toggleDrawer()"></div>
+    <aside id="settings-drawer" class="dark:bg-slate-900">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-xl font-black uppercase italic">Configuration</h2>
+            <button onclick="UI.toggleDrawer()" class="p-2 opacity-50">✕</button>
+        </div>
+        <div id="drawer-profile-info" class="mb-6 p-4 bg-blue-50 dark:bg-slate-800 rounded-2xl flex items-center gap-3 font-bold"></div>
+        <div class="space-y-4">
+            <div class="flex items-center justify-between"><span class="text-sm font-bold">Assistant IA Tutor</span><label class="switch"><input type="checkbox" id="conf-ai" checked onchange="Settings.update('ai', this.checked)"><span class="slider"></span></label></div>
+            <div class="flex items-center justify-between"><span class="text-sm font-bold">Minuteur (Speed)</span><label class="switch"><input type="checkbox" id="conf-timer" onchange="Settings.update('timer', this.checked)"><span class="slider"></span></label></div>
+            <div class="flex items-center justify-between"><span class="text-sm font-bold">Sons & Audio</span><label class="switch"><input type="checkbox" id="conf-audio" checked onchange="Settings.update('audio', this.checked)"><span class="slider"></span></label></div>
+            <div class="flex items-center justify-between"><span class="text-sm font-bold">Haptique (Vibreur)</span><label class="switch"><input type="checkbox" id="conf-haptic" checked onchange="Settings.update('haptic', this.checked)"><span class="slider"></span></label></div>
+        </div>
+        <button onclick="location.reload()" class="w-full mt-12 py-4 border-2 border-red-100 text-red-500 rounded-2xl font-black text-[10px] uppercase">Changer de Profil</button>
+    </aside>
+
+    <section id="screen-profiles" class="fixed inset-0 bg-white dark:bg-slate-950 z-[500] flex flex-col items-center justify-center p-8">
+        <div class="text-6xl mb-4">🌟</div>
+        <h2 class="text-3xl font-black mb-8 text-center dark:text-white uppercase tracking-tighter">Falah Academy</h2>
+        <div id="profiles-list" class="grid grid-cols-2 gap-4 w-full max-w-sm"></div>
+    </section>
+
+    <main id="screen-menu" class="hidden p-4 max-w-5xl mx-auto pb-24">
+        <header class="flex justify-between items-center py-6">
+            <button onclick="UI.toggleDrawer()" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm">☰</button>
+            <div class="text-center">
+                <h1 id="user-welcome" class="text-xl font-black dark:text-white uppercase italic"></h1>
+                <div class="flex gap-3 justify-center mt-1">
+                    <span id="streak-val" class="text-[10px] font-bold text-orange-500 uppercase">🔥 0 Jour</span>
+                    <span id="points-val" class="text-[10px] font-bold text-blue-500 uppercase">💎 0 Pts</span>
                 </div>
             </div>
-            <div class="flex gap-2">
-                <button onclick="toggleDarkMode()" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm">🌙</button>
-                <button onclick="UI.showHistory()" class="p-3 bg-blue-900 text-white rounded-2xl shadow-lg relative">
-                    🏆
-                    <div id="mistake-count-global" class="hidden absolute -top-1 -right-1 bg-amber-500 text-[8px] px-1.5 py-0.5 rounded-full border-2 border-blue-900">0</div>
-                </button>
-            </div>
+            <button onclick="UI.showHistory()" class="p-3 bg-blue-900 dark:bg-sky-500 text-white dark:text-slate-950 rounded-2xl shadow-lg">🏆</button>
         </header>
-
-        <div id="module-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+        <button onclick="UI.show('screen-search')" class="w-full p-4 mb-8 bg-white dark:bg-slate-800 rounded-2xl text-left text-slate-400 flex justify-between shadow-sm">Rechercher une règle... <span>🔍</span></button>
+        <div id="module-container" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
     </main>
 
-    <section id="screen-game" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-50 flex flex-col">
-        <nav class="p-4 flex justify-between items-center border-b dark:border-slate-800">
-            <button onclick="UI.show('screen-menu')" class="font-bold text-blue-900">Quitter</button>
-            <div class="text-center">
-                <p id="game-title" class="text-[9px] font-black uppercase text-slate-400"></p>
-                <p id="game-mode-label" class="text-[10px] font-bold text-amber-600 hidden">MODE RÉVISION</p>
-                <div id="game-progress-bar" class="w-20 h-1 bg-slate-100 mt-1 rounded-full overflow-hidden">
-                    <div id="game-progress-fill" class="h-full bg-blue-900 transition-all duration-300"></div>
-                </div>
+    <section id="screen-search" class="hidden fixed inset-0 bg-slate-50 dark:bg-slate-950 z-[200] flex flex-col p-6 overflow-y-auto">
+        <header class="flex items-center gap-4 mb-6">
+            <button onclick="UI.show('screen-menu')" class="text-2xl">←</button>
+            <div class="flex-1 relative">
+                <input type="text" id="search-input" oninput="Search.query(this.value)" placeholder="Nasb, pluriel, terminaison..." class="w-full p-5 rounded-[2rem] border-none shadow-xl dark:bg-slate-800 outline-none">
+                <button onclick="Search.clear()" id="search-clear" class="hidden absolute right-5 top-1/2 -translate-y-1/2">✕</button>
             </div>
-            <div class="w-10"></div>
+        </header>
+        <div id="search-results" class="flex flex-col gap-3"></div>
+    </section>
+
+    <section id="screen-course" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-50 flex flex-col">
+        <nav class="p-4 border-b flex justify-between items-center sticky top-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md z-50">
+            <button onclick="UI.show('screen-menu')" class="font-black text-blue-900 dark:text-sky-400 text-xs">← MENU</button>
+            <h2 id="course-title" class="text-[10px] font-black uppercase text-slate-400 truncate max-w-[150px]"></h2>
+            <button id="btn-course-action" class="bg-blue-900 dark:bg-sky-500 text-white dark:text-slate-900 px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase">Défi</button>
         </nav>
+        <div id="course-body" class="flex-1 overflow-y-auto p-6 md:p-12 max-w-4xl mx-auto w-full pb-32"></div>
+    </section>
 
+    <section id="screen-game" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-[60] flex flex-col">
+        <nav class="p-4 border-b dark:border-slate-800 flex justify-between items-center">
+            <button onclick="UI.show('screen-menu')" class="font-bold text-blue-900 dark:text-sky-400 text-sm">Quitter</button>
+            <div id="game-progress-dots" class="flex gap-1.5"></div>
+            <button onclick="UI.showCourseFromGame()" class="text-blue-900 dark:text-sky-400 font-black text-xs">Aide</button>
+        </nav>
         <div class="flex-1 overflow-y-auto p-4 flex flex-col items-center">
-            <div id="game-translation" class="w-full max-w-md p-6 bg-blue-50 dark:bg-slate-800 rounded-[2.5rem] text-center italic text-blue-900 dark:text-blue-100 mb-8 border border-blue-100"></div>
+            <div id="game-translation" class="w-full max-w-md p-8 bg-blue-50 dark:bg-slate-800/50 rounded-[3rem] text-center italic text-blue-900 dark:text-blue-100 mb-8 border-2 border-blue-100/20 shadow-inner"></div>
             <div id="game-phrase" class="w-full max-w-md flex flex-col gap-5 mb-12"></div>
-            <div id="game-options" class="w-full max-w-md flex flex-wrap justify-center gap-2 mt-auto pb-10"></div>
+            <div id="game-options" class="w-full max-w-md flex flex-wrap justify-center gap-2 mt-auto pb-12"></div>
         </div>
-
         <footer class="p-6 bg-white dark:bg-slate-900 border-t dark:border-slate-800">
-            <div id="game-feedback" class="hidden mb-4 p-4 rounded-2xl text-white font-black text-center shadow-lg"></div>
-            <button id="btn-check" onclick="Game.handleAction()" class="w-full py-5 bg-blue-900 text-white rounded-2xl font-black uppercase tracking-[0.2em] shadow-xl disabled:opacity-20 transition-all">Vérifier</button>
+            <div id="game-feedback" class="hidden mb-4 p-5 rounded-[2rem] text-white font-black text-center shadow-lg transition-all"></div>
+            <button id="btn-check" onclick="Game.handleAction()" class="w-full py-6 bg-blue-900 dark:bg-sky-500 text-white dark:text-slate-900 rounded-[2.5rem] font-black uppercase tracking-[0.3em] shadow-xl disabled:opacity-20">VÉRIFIER</button>
         </footer>
     </section>
 
-    <section id="screen-history" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-40 overflow-y-auto p-6">
-        <header class="flex justify-between items-center mb-8">
-            <button onclick="UI.show('screen-menu')" class="font-black text-blue-900">← RETOUR</button>
-            <h2 class="text-xl font-black">Mon Progrès</h2>
-            <div class="w-10"></div>
-        </header>
+    <div id="ai-assistant-btn" style="display:none;" onclick="SmartTutor.toggle()" class="fixed bottom-28 right-6 w-14 h-14 bg-indigo-600 rounded-full flex items-center justify-center shadow-2xl z-[100] cursor-pointer hover:scale-110 active:scale-95 transition-all">
+        <span class="text-2xl">🤖</span>
+    </div>
+    <div id="ai-chat-bubble" class="hidden fixed bottom-44 right-6 w-72 bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl border border-indigo-100 z-[100] animate-bounce-short">
+        <p id="ai-text" class="text-sm italic leading-relaxed"></p>
+    </div>
 
+    <section id="screen-history" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-[150] overflow-y-auto p-6 pb-32">
+        <header class="flex justify-between items-center mb-8"><button onclick="UI.show('screen-menu')" class="font-black text-blue-900">← RETOUR</button><h2 class="text-xl font-black">Progrès</h2><div class="w-10"></div></header>
+        <div id="hall-of-fame-cont"></div>
         <div id="badges-grid" class="grid grid-cols-3 gap-3 mb-10"></div>
-        
-        <h3 class="text-xs font-black text-slate-400 uppercase mb-4 tracking-widest">Derniers Scores</h3>
-        <div id="history-list" class="flex flex-col gap-3 pb-20"></div>
+        <h3 class="text-xs font-black text-slate-400 uppercase mb-4 tracking-widest text-center">Historique des sessions</h3>
+        <div id="history-list" class="flex flex-col gap-3"></div>
+        <button onclick="localStorage.clear(); location.reload();" class="w-full mt-10 p-4 text-[10px] font-black opacity-30">Reset All Data</button>
     </section>
 
-    <div id="screen-result" class="hidden fixed inset-0 bg-slate-900 flex flex-col items-center justify-center p-6 text-white z-[100] text-center">
-        <div id="result-emoji" class="text-7xl mb-6">🎉</div>
-        <h2 class="text-2xl font-black mb-2 uppercase italic">Mission Accomplie</h2>
-        <p id="result-mod-title" class="text-blue-400 text-sm font-bold mb-10"></p>
-        <div class="bg-white/10 px-12 py-16 rounded-[4rem] border border-white/20 mb-12">
-            <div class="text-7xl font-black italic" id="result-score-val">0 / 0</div>
+    <div id="screen-result" class="hidden fixed inset-0 bg-slate-950 z-[200] flex flex-col items-center justify-center p-8 text-white text-center">
+        <div class="text-8xl mb-8 animate-bounce">🏆</div>
+        <h2 class="text-3xl font-black mb-2 italic uppercase">Magnifique !</h2>
+        <p id="result-mod-title" class="text-sky-400 font-bold mb-10 uppercase text-xs"></p>
+        <div class="bg-white/5 w-full max-w-sm p-10 rounded-[4rem] border border-white/10 mb-10">
+            <div class="text-8xl font-black italic" id="result-score-val">0</div>
+            <p class="text-[10px] uppercase font-bold opacity-40 mt-2">Nouveaux points</p>
         </div>
-        <button onclick="UI.show('screen-menu')" class="w-full max-w-xs py-6 bg-blue-600 rounded-full font-black uppercase tracking-widest shadow-2xl">Continuer</button>
+        <button onclick="UI.show('screen-menu')" class="w-full max-w-xs py-6 bg-sky-500 text-slate-900 rounded-full font-black uppercase tracking-widest">Continuer</button>
     </div>
 
     <script>
         /**
-         * 1. DONNÉES DES MODULES
-         * Remplace les exercices vides par tes données réelles (M1 à M9)
+         * 1. DONNÉES DES MODULES (Vérifiées et optimisées)
          */
-        const DATA = {
-            modules: {
-                'm1': { id: 'm1', title: "Le Nom (Ism)", exercises: [] },
-                'm2': { id: 'm2', title: "Groupes de Mots", exercises: [] },
-                'm3': { id: 'm3', title: "Phrase Nominale", exercises: [] },
-                'm4': { id: 'm4', title: "Verbe au Passé", exercises: [] },
-                'm5': { id: 'm5', title: "Verbe au Présent", exercises: [] },
-                'm6': { id: 'm6', title: "Phrase Nominale (2)", exercises: [] },
-                'm7': { id: 'm7', title: "Dérivés du Présent", exercises: [] },
-                'm8': { id: 'm8', title: "Impératif", exercises: [] },
-                'm9': { id: 'm9', title: "Passif & Relatifs", exercises: [] },
+  const DATA = {
+    modules: {
+        'm1': {
+            id: 'm1',
+            name: 'Module 1',
+            title: "Le Nom (Ism)",
+            summary: "Les fondations de l'analyse nominale : les 3 types de mots et les 4 propriétés du Ism.",
+            course: `
+                <h2 onclick="UI.toggleAccordion(this)">Chapitre 1 : Les 3 types de mots</h2>
+                <div class="course-section">
+                    <p class="mb-4">En langue arabe, tout mot appartient obligatoirement à l'une de ces trois catégories :</p>
+                    <div class="grid grid-cols-1 gap-4 mb-6">
+                        <div class="card-item border-l-4 border-blue-500">
+                            <span class="text-lateef-2rem-blue arabic">اِسْمٌ</span>
+                            <p class="text-sm"><strong>Le Nom (Ism) :</strong> Un mot intemporel. Désigne une personne, un lieu, un objet, une idée, un adjectif ou un adverbe.</p>
+                        </div>
+                        <div class="card-item border-l-4 border-green-500">
+                            <span class="text-lateef-2rem-blue arabic">فِعْلٌ</span>
+                            <p class="text-sm"><strong>Le Verbe (Fi'l) :</strong> Un mot lié au temps (passé, présent ou futur). Exprime une action.</p>
+                        </div>
+                        <div class="card-item border-l-4 border-red-500">
+                            <span class="text-lateef-2rem-blue arabic">حَرْفٌ</span>
+                            <p class="text-sm"><strong>La Particule (Harf) :</strong> Un mot qui n'a pas de sens complet seul (ex: "dans", "vers", "avec").</p>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 dark:bg-slate-800 p-4 rounded-xl border-l-4 border-amber-400 italic text-sm">
+                        Note : Dans ce module, nous étudions exclusivement le <strong>Ism</strong>.
+                    </div>
+                </div>
+
+                <h2 onclick="UI.toggleAccordion(this)">Propriété 1 : L'État (I'rab)</h2>
+                <div class="course-section">
+                    <p class="mb-4">C'est la terminaison du mot qui change selon son rôle dans la phrase :</p>
+                    <ul class="space-y-3 mb-6">
+                        <li><strong class="text-blue-600">1. Raf' (رَفْعٌ) :</strong> Le cas du sujet. Terminaison par défaut : <strong>Damma</strong> (ـُ / ـٌ).</li>
+                        <li><strong class="text-blue-600">2. Nasb (نَصْبٌ) :</strong> Le cas du détail (objet, temps). Terminaison : <strong>Fatha</strong> (ـَ / ـً).</li>
+                        <li><strong class="text-blue-600">3. Jarr (جَرٌّ) :</strong> Après une préposition. Terminaison : <strong>Kasra</strong> (ـِ / ـٍ).</li>
+                    </ul>
+                    
+                    <h3 class="font-bold mb-2">Les 3 types de Ism face à l'État :</h3>
+                    <div class="space-y-4">
+                        <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                            <p><strong>Variable (Munsarif) :</strong> Accepte toutes les voyelles et le Tanwin (99% des mots).</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg border-l-4 border-orange-400">
+                            <p><strong>Diptote (Ghayr Munsarif) :</strong> Pas de Tanwin, pas de Kasra. (Ex: noms propres féminins comme <span class="arabic">عَائِشَةُ</span> ou non-arabes comme <span class="arabic">إِبْرَاهِيمُ</span>).</p>
+                        </div>
+                        <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg border-l-4 border-red-500">
+                            <p><strong>Invariable (Mabni) :</strong> Ne change jamais de forme visuelle. (Ex: <span class="arabic">هَذَا</span>, <span class="arabic">الَّذِي</span>).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 onclick="UI.toggleAccordion(this)">Propriété 2 : Le Genre (Jins)</h2>
+                <div class="course-section">
+                    <div class="bg-blue-900 text-white p-4 rounded-xl mb-4">
+                        <p class="font-bold">⚠️ Règle d'or : En arabe, tout mot est Masculin par défaut.</p>
+                    </div>
+                    <p class="mb-4">Un mot est Féminin (<span class="arabic">مُؤَنَّثٌ</span>) seulement s'il appartient à l'une de ces 3 catégories :</p>
+                    <ol class="space-y-4">
+                        <li><strong>1. Féminin Réel :</strong> Biologiquement femelle (Mère, Sœur).</li>
+                        <li><strong>2. Féminin de Signe :</strong> Terminaison en <span class="arabic">ة</span> (Ta Marbuta), <span class="arabic">اء</span> (Alif Mamduda) ou <span class="arabic">ى</span> (Alif Maqsura).</li>
+                        <li><strong>3. Féminin par Décision :</strong> Parties du corps par paires (main, œil), noms de pays/villes, le feu, le vent, ou des mots comme <span class="arabic">شَمْسٌ</span> (soleil) ou <span class="arabic">أَرْضٌ</span> (terre).</li>
+                    </ol>
+                </div>
+
+                <h2 onclick="UI.toggleAccordion(this)">Propriété 3 : Le Nombre ('Adad)</h2>
+                <div class="course-section">
+                    <ul class="space-y-3">
+                        <li><strong>Singulier :</strong> 1 seul.</li>
+                        <li><strong>Duel :</strong> Exactement 2. Terminaison en <span class="arabic">انِ</span> ou <span class="arabic">يْنِ</span>.</li>
+                        <li><strong>Pluriel :</strong> 3 ou plus.</li>
+                    </ul>
+                    <div class="mt-4 p-4 bg-red-50 dark:bg-slate-800 rounded-xl border border-red-200">
+                        <p class="text-red-700 dark:text-red-400 font-bold">Règle du Pluriel Brisé :</p>
+                        <p class="text-sm">Un pluriel brisé (ex: <span class="arabic">كُتُبٌ</span> - livres) est traité grammaticalement comme du <strong>Féminin Singulier</strong>.</p>
+                    </div>
+                </div>
+
+                <h2 onclick="UI.toggleAccordion(this)">Propriété 4 : Le Type (Qism)</h2>
+                <div class="course-section">
+                    <p class="mb-2">Le mot est soit <strong>Indéfini</strong> (Nakirah - par défaut), soit <strong>Défini</strong> (Ma'rifah).</p>
+                    <p class="font-bold mb-2">Les 7 catégories de Défini :</p>
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                        <li class="bg-blue-50 dark:bg-slate-800 p-2 rounded">1. Commence par <span class="arabic">ال</span></li>
+                        <li class="bg-blue-50 dark:bg-slate-800 p-2 rounded">2. Nom Propre (Zayd, France)</li>
+                        <li class="bg-blue-50 dark:bg-slate-800 p-2 rounded">3. Pronoms (Toi, Lui)</li>
+                        <li class="bg-blue-50 dark:bg-slate-800 p-2 rounded">4. Pronoms Démonstratifs (Ceci)</li>
+                        <li class="bg-blue-50 dark:bg-slate-800 p-2 rounded">5. Pronoms Relatifs (Celui qui)</li>
+                        <li class="bg-blue-50 dark:bg-slate-800 p-2 rounded">6. Après une interpellation (<span class="arabic">يَا</span>)</li>
+                        <li class="bg-blue-50 dark:bg-slate-800 p-2 rounded">7. L'annexé à un mot défini</li>
+                    </ul>
+                </div>
+            `,
+            exercises: [
+                {
+                    translation: "Un Seigneur / Maître",
+                    phrase: ["رَبٌّ"],
+                    correct: ["رَفْعٌ"],
+                    opts: ["رَفْعٌ", "نَصْبٌ", "جَرٌّ"],
+                    rule: "Le mot se termine par un Tanwin Damma (oun), c'est donc l'état Raf' (sujet)."
+                },
+                {
+                    translation: "Un Messager",
+                    phrase: ["رَسُولًا"],
+                    correct: ["نَصْبٌ"],
+                    opts: ["رَفْعٌ", "نَصْبٌ", "جَرٌّ"],
+                    rule: "Le Tanwin Fatha (an) à la fin indique l'état Nasb (détail/objet)."
+                },
+                {
+                    translation: "Sur Ibrahim",
+                    phrase: ["إِبْرَاهِيمَ"],
+                    correct: ["جَرٌّ"],
+                    opts: ["رَفْعٌ", "نَصْبٌ", "جَرٌّ"],
+                    rule: "Ibrahim est un nom non-arabe (Diptote). Son cas Jarr est marqué par une Fatha et non une Kasra."
+                },
+                {
+                    translation: "Ceci (Ism Ishara)",
+                    phrase: ["هَذَا"],
+                    correct: ["مَبْنِيٌّ"],
+                    opts: ["رَفْعٌ", "نَصْبٌ", "مَبْنِيٌّ"],
+                    rule: "C'est un pronom démonstratif. Il est invariable (Mabni), sa forme ne change jamais."
+                },
+                {
+                    translation: "L'Enfer",
+                    phrase: ["جَهَنَّمُ"],
+                    correct: ["مُؤَنَّثٌ"],
+                    opts: ["مُذَكَّرٌ", "مُؤَنَّثٌ"],
+                    rule: "Les noms désignant l'enfer sont considérés comme féminins par décision."
+                },
+                {
+                    translation: "Un ciel",
+                    phrase: ["سَمَاءٌ"],
+                    correct: ["مُؤَنَّثٌ"],
+                    opts: ["مُذَكَّرٌ", "مُؤَنَّثٌ"],
+                    rule: "Sama'un finit par Alif Mamduda (اء), un signe classique du féminin."
+                },
+                {
+                    translation: "Un œil",
+                    phrase: ["عَيْنٌ"],
+                    correct: ["مُؤَنَّثٌ"],
+                    opts: ["مُذَكَّرٌ", "مُؤَنَّثٌ"],
+                    rule: "Les parties du corps par paires (yeux, mains, pieds) sont féminines."
+                },
+                {
+                    translation: "Les biens guidés",
+                    phrase: ["المُهْتَدُونَ"],
+                    correct: ["جَمْعٌ مُذَكَّرٌ"],
+                    opts: ["مُفْرَدٌ", "مُثَنَّى", "جَمْعٌ مُذَكَّرٌ"],
+                    rule: "La terminaison 'Ouna' indique un Pluriel Masculin Sain."
+                },
+                {
+                    translation: "Deux lèvres",
+                    phrase: ["شَفَتَيْنِ"],
+                    correct: ["مُثَنَّى"],
+                    opts: ["مُفْرَدٌ", "مُثَنَّى", "جَمْعٌ"],
+                    rule: "La terminaison 'Ayni' indique ici le duel (2 lèvres)."
+                },
+                {
+                    translation: "Les pieux",
+                    phrase: ["المُتَّقِينَ"],
+                    correct: ["مَعْرِفَةٌ"],
+                    opts: ["نَكِرَةٌ", "مَعْرِفَةٌ"],
+                    rule: "Le mot commence par 'Al' (ال), il est donc défini (Ma'rifah)."
+                }
+            ]
+        },
+
+
+                'm2': { id: 'm2', title: "Groupes de Mots", summary: "Étude des fragments (Mourrakabaat).", course: `<h2>I. Mawsuf wa Sifah</h2><div class="course-section">...</div>`, exercises: [] },
+                'm3': { id: 'm3', title: "La Phrase Nominale", summary: "Le Mubtada et le Khabar.", course: `<h2>I. Structure</h2><div class="course-section">...</div>`, exercises: [ { phrase: ["كَبِيرٌ", "الْبَيْتُ"], correct: ["خَبَرٌ", "مُبْتَدَأٌ"], opts: ["مُبْتَدَأٌ", "خَبَرٌ", "فَاعِلٌ"], translation: "La maison est grande", rule: "Le Moubtada est défini, le Khabar apporte l'info." } ] },
+                // ... M4 à M9
             },
+            profiles: [
+                { id: 'p1', name: 'Myriam', emoji: '👩‍🎓', color: '#ec4899' },
+                { id: 'p2', name: 'Hana', emoji: '✨', color: '#8b5cf6' },
+                { id: 'p3', name: 'Selma', emoji: '🎨', color: '#10b981' },
+                { id: 'p4', name: 'Yacine', emoji: '👶', color: '#3b82f6' }
+            ],
             badges: [
-                { id: 'start', icon: '🌱', name: 'Débutant', desc: '1 module fini', check: (h) => h.length >= 1 },
-                { id: 'perfect', icon: '💎', name: 'Expert', desc: 'Un score de 100%', check: (h) => h.some(s => s.score === s.total) },
-                { id: 'consistent', icon: '🔥', name: 'Assidu', desc: '5 modules finis', check: (h) => new Set(h.map(s=>s.modId)).size >= 5 },
-                { id: 'master', icon: '👑', name: 'Maître', desc: 'Les 9 modules finis', check: (h) => new Set(h.map(s=>s.modId)).size >= 9 }
+                { id: 'b1', icon: '🚀', name: 'Départ', check: (h) => h.length >= 1 },
+                { id: 'b2', icon: '💎', name: 'Elite', check: (h) => h.some(s => s.score === s.total) },
+                { id: 'b3', icon: '👑', name: 'Savant', check: (h) => new Set(h.map(s => s.modId)).size >= 9 }
             ]
         };
 
         /**
-         * 2. GESTION DES ERREURS (MISTAKE TRACKER)
+         * 2. MOTEURS CORE
          */
-        const Mistakes = {
-            get() { return JSON.parse(localStorage.getItem('falah_mistakes') || '{}'); },
-            add(modId, exIdx) {
-                const m = this.get();
-                if (!m[modId]) m[modId] = [];
-                if (!m[modId].includes(exIdx)) m[modId].push(exIdx);
-                localStorage.setItem('falah_mistakes', JSON.stringify(m));
+        const Profiles = {
+            current: null,
+            init() {
+                const saved = localStorage.getItem('falah_last_profile');
+                if(saved) this.select(saved);
+                else this.renderList();
             },
-            remove(modId, exIdx) {
-                const m = this.get();
-                if (m[modId]) {
-                    m[modId] = m[modId].filter(i => i !== exIdx);
-                    if (m[modId].length === 0) delete m[modId];
-                }
-                localStorage.setItem('falah_mistakes', JSON.stringify(m));
+            renderList() {
+                document.getElementById('profiles-list').innerHTML = DATA.profiles.map(p => `
+                    <div onclick="Profiles.select('${p.id}')" class="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] shadow-lg text-center cursor-pointer active:scale-95 transition-all">
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-full flex items-center justify-center text-3xl" style="background:${p.color}20">${p.emoji}</div>
+                        <p class="font-black dark:text-white uppercase text-xs tracking-widest">${p.name}</p>
+                    </div>`).join('');
             },
-            count(modId) { return (this.get()[modId] || []).length; }
+            select(id) {
+                this.current = DATA.profiles.find(p => p.id === id);
+                localStorage.setItem('falah_last_profile', id);
+                document.getElementById('screen-profiles').classList.add('hidden');
+                UI.show('screen-menu');
+            },
+            getData() {
+                return JSON.parse(localStorage.getItem(`falah_data_${this.current.id}`) || '{"history":[], "mistakes":{}, "settings": {"ai":true, "audio":true, "haptic":true}}');
+            },
+            saveData(d) { localStorage.setItem(`falah_data_${this.current.id}`, JSON.stringify(d)); }
         };
 
-        /**
-         * 3. GAME ENGINE
-         */
         const Game = {
-            modId: null,
-            exercises: [],
-            currentIdx: 0,
-            userAnswers: [],
-            score: 0,
-            isRevision: false,
-            state: 'playing',
-
-            start(modId, revision = false) {
-                this.modId = modId;
-                this.isRevision = revision;
-                const fullMod = DATA.modules[modId];
-                
-                if (revision) {
-                    const errorIndices = Mistakes.get()[modId] || [];
-                    this.exercises = fullMod.exercises.filter((_, idx) => errorIndices.includes(idx));
-                    this.originalIndices = errorIndices; // Garder trace de l'index réel
-                } else {
-                    this.exercises = fullMod.exercises;
-                }
-
-                if (this.exercises.length === 0) return alert("Rien à réviser ici !");
-
-                this.currentIdx = 0;
-                this.score = 0;
-                this.loadExercise();
+            modId: null, exercises: [], currentIdx: 0, userAnswers: [], score: 0, state: 'playing',
+            start(id) {
+                this.modId = id; this.exercises = DATA.modules[id].exercises;
+                this.currentIdx = 0; this.score = 0; this.loadExercise();
                 UI.show('screen-game');
             },
-
             loadExercise() {
                 const ex = this.exercises[this.currentIdx];
                 this.userAnswers = new Array(ex.phrase.length).fill(null);
                 this.state = 'playing';
-
-                // UI Setup
                 document.getElementById('game-title').innerText = DATA.modules[this.modId].title;
-                document.getElementById('game-mode-label').classList.toggle('hidden', !this.isRevision);
                 document.getElementById('game-translation').innerText = ex.translation;
-                document.getElementById('game-progress-fill').style.width = `${((this.currentIdx) / this.exercises.length) * 100}%`;
-                
-                const phraseCont = document.getElementById('game-phrase');
-                phraseCont.innerHTML = ex.phrase.map((w, i) => `
+                document.getElementById('game-progress-dots').innerHTML = this.exercises.map((_, i) => `<div class="w-2 h-2 rounded-full ${i <= this.currentIdx ? 'bg-blue-900 dark:bg-sky-400' : 'bg-slate-200 dark:bg-slate-700'}"></div>`).join('');
+                document.getElementById('game-phrase').innerHTML = ex.phrase.map((w, i) => `
                     <div class="flex items-center gap-3">
-                        <div class="arabic flex-1 bg-white dark:bg-slate-800 p-4 rounded-3xl border shadow-sm text-center">${w}</div>
+                        <div class="arabic flex-1 bg-white dark:bg-slate-800 p-5 rounded-3xl border shadow-sm text-center">${w}</div>
                         <div id="slot-${i}" class="drop-zone flex-1" ondragover="event.preventDefault()" ondrop="Game.onDrop(event, ${i})">Déposer</div>
-                    </div>
-                `).join('');
-
-                const optCont = document.getElementById('game-options');
-                optCont.innerHTML = ex.opts.map(o => `
-                    <div class="draggable-label" draggable="true" ondragstart="Game.onDrag(event, '${o}')">${o}</div>
-                `).join('');
-
+                    </div>`).join('');
+                document.getElementById('game-options').innerHTML = ex.opts.map(o => `<div class="draggable-label dark:bg-slate-800 dark:border-slate-700" draggable="true" ondragstart="Game.onDrag(event, '${o}')">${o}</div>`).join('');
                 document.getElementById('game-feedback').classList.add('hidden');
-                document.getElementById('btn-check').innerText = "Vérifier";
+                document.getElementById('btn-check').innerText = "VÉRIFIER";
                 document.getElementById('btn-check').disabled = true;
             },
-
-            onDrag(e, val) {
-                e.dataTransfer.setData("text", val);
-                if(window.navigator.vibrate) window.navigator.vibrate(5);
-            },
-
-            onDrop(e, idx) {
-                e.preventDefault();
-                const val = e.dataTransfer.getData("text");
-                this.userAnswers[idx] = val;
-                const slot = document.getElementById(`slot-${idx}`);
-                slot.innerText = val;
-                slot.className = "drop-zone flex-1 slot-filled";
-                slot.onclick = () => { if(this.state==='playing') { this.userAnswers[idx]=null; slot.innerText="Déposer"; slot.className="drop-zone flex-1"; this.updateCheckBtn(); }};
-                this.updateCheckBtn();
-            },
-
-            updateCheckBtn() {
+            onDrag(e, v) { e.dataTransfer.setData("text", v); if(Profiles.getData().settings.haptic) navigator.vibrate(10); },
+            onDrop(e, i) {
+                e.preventDefault(); const val = e.dataTransfer.getData("text");
+                this.userAnswers[i] = val; const s = document.getElementById(`slot-${i}`);
+                s.innerText = val; s.className = "drop-zone flex-1 slot-filled";
                 document.getElementById('btn-check').disabled = this.userAnswers.includes(null);
+                if(Profiles.getData().settings.haptic) navigator.vibrate([20, 10, 20]);
             },
-
             handleAction() {
-                if (this.state === 'playing') this.check();
-                else this.next();
-            },
-
-            check() {
-                const ex = this.exercises[this.currentIdx];
-                const isCorrect = this.userAnswers.every((a, i) => a === ex.correct[i]);
-                const realExIdx = this.isRevision ? this.originalIndices[this.currentIdx] : this.currentIdx;
-
-                this.state = 'checked';
-                const fb = document.getElementById('game-feedback');
-                fb.classList.remove('hidden');
-                fb.innerText = isCorrect ? "✨ Parfait !" : "⚠️ Essaie encore";
-                fb.className = `mb-4 p-5 rounded-2xl text-white font-black text-center shadow-lg ${isCorrect?'bg-green-500':'bg-red-500'}`;
-
-                // Colorer les slots
-                this.userAnswers.forEach((a, i) => {
-                    document.getElementById(`slot-${i}`).classList.add(a === ex.correct[i] ? 'slot-correct' : 'slot-wrong');
-                });
-
-                if (isCorrect) {
-                    this.score++;
-                    confetti({ particleCount: 40, spread: 50, origin: { y: 0.8 } });
-                    if (this.isRevision) Mistakes.remove(this.modId, realExIdx); // Retirer si réussi en révision
+                if(this.state === 'playing') {
+                    const ex = this.exercises[this.currentIdx];
+                    const win = this.userAnswers.every((a, i) => a === ex.correct[i]);
+                    this.state = 'checked';
+                    const fb = document.getElementById('game-feedback');
+                    fb.innerText = win ? "✨ EXCELLENT !" : "❌ RÉESSAYE !";
+                    fb.className = `mb-4 p-5 rounded-3xl font-black text-center block ${win?'bg-green-600':'bg-red-600'}`;
+                    fb.classList.remove('hidden');
+                    this.userAnswers.forEach((a, i) => document.getElementById(`slot-${i}`).classList.add(a === ex.correct[i] ? 'slot-correct' : 'slot-wrong'));
+                    if(win) { this.score++; confetti({ particleCount: 30, spread: 50, origin: { y: 0.8 } }); }
+                    document.getElementById('btn-check').innerText = "CONTINUER";
                 } else {
-                    Mistakes.add(this.modId, realExIdx); // Ajouter aux erreurs si raté
+                    this.currentIdx++; if(this.currentIdx < this.exercises.length) this.loadExercise(); else this.finish();
                 }
-
-                document.getElementById('btn-check').innerText = "Suivant";
             },
-
-            next() {
-                this.currentIdx++;
-                if (this.currentIdx < this.exercises.length) this.loadExercise();
-                else this.finish();
-            },
-
             finish() {
-                const h = JSON.parse(localStorage.getItem('falah_history') || '[]');
-                h.unshift({ modId: this.modId, score: this.score, total: this.exercises.length, date: new Date().toLocaleDateString() });
-                localStorage.setItem('falah_history', JSON.stringify(h.slice(0, 20)));
-
-                UI.showResult(this.score, this.exercises.length);
+                const d = Profiles.getData();
+                d.history.unshift({ modId:this.modId, score:this.score, total:this.exercises.length, date:new Date().toISOString() });
+                Profiles.saveData(d);
+                document.getElementById('result-score-val').innerText = `+${this.score * 10}`;
+                document.getElementById('result-mod-title').innerText = DATA.modules[this.modId].title;
+                UI.show('screen-result');
             }
         };
 
-        /**
-         * 4. UI ENGINE
-         */
+        const Search = {
+            query(q) {
+                const resultsCont = document.getElementById('search-results');
+                document.getElementById('search-clear').classList.toggle('hidden', q.length === 0);
+                if (q.length < 2) { resultsCont.innerHTML = ''; return; }
+                const val = q.toLowerCase().trim();
+                let matches = [];
+                Object.values(DATA.modules).forEach(m => {
+                    if (m.title.toLowerCase().includes(val)) matches.push({ type:'Module', title: m.title, id:m.id, q: val });
+                    m.exercises.forEach(ex => {
+                        if (ex.rule.toLowerCase().includes(val) || ex.translation.toLowerCase().includes(val))
+                            matches.push({ type:'Règle', title: ex.translation, subtitle: ex.rule, id:m.id, q: val });
+                    });
+                });
+                resultsCont.innerHTML = matches.map(m => `
+                    <div onclick="UI.showCourse('${m.id}', '${m.q}')" class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-lg border-l-8 border-blue-500 cursor-pointer">
+                        <span class="text-[8px] font-black text-blue-500 uppercase">${m.type}</span>
+                        <p class="font-bold dark:text-white">${m.title}</p>
+                        ${m.subtitle ? `<p class="text-[10px] text-slate-400 italic">${m.subtitle}</p>` : ''}
+                    </div>`).join('');
+            },
+            clear() { document.getElementById('search-input').value = ''; this.query(''); }
+        };
+
+        const SmartTutor = {
+            toggle() {
+                const b = document.getElementById('ai-chat-bubble');
+                const isOpen = b.classList.toggle('hidden');
+                if(!isOpen) this.speak();
+            },
+            speak() {
+                const ex = Game.exercises[Game.currentIdx];
+                const msg = Game.state === 'playing' ? "Analyse bien les terminaisons..." : ex.rule;
+                document.getElementById('ai-text').innerText = msg;
+            }
+        };
+
+        const Settings = {
+            update(k, v) {
+                const d = Profiles.getData(); d.settings[k] = v; Profiles.saveData(d);
+                if(k === 'ai') document.getElementById('ai-assistant-btn').style.display = v ? 'flex' : 'none';
+            }
+        };
+
         const UI = {
-            init() {
-                this.renderModules();
-                if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
-            },
-
-            renderModules() {
-                const container = document.getElementById('module-container');
-                const mistakes = Mistakes.get();
-                
-                container.innerHTML = Object.entries(DATA.modules).map(([id, m]) => {
-                    const errCount = (mistakes[id] || []).length;
-                    return `
-                    <div class="bg-white dark:bg-slate-800 p-6 rounded-[2.5rem] shadow-sm border border-transparent flex flex-col">
-                        <div class="flex justify-between items-start mb-4">
-                            <span class="text-[9px] font-black uppercase text-blue-900 dark:text-blue-300">Module ${id.replace('m','')}</span>
-                            ${errCount > 0 ? `<span class="bg-amber-100 text-amber-700 text-[8px] font-bold px-2 py-0.5 rounded-full">${errCount} erreur${errCount>1?'s':''}</span>` : ''}
-                        </div>
-                        <h3 class="font-black text-lg mb-6 leading-tight dark:text-white">${m.title}</h3>
-                        <div class="flex gap-2 mt-auto">
-                            <button onclick="Game.start('${id}')" class="flex-1 py-4 bg-blue-900 text-white rounded-2xl font-bold text-[10px] uppercase shadow-md active:scale-95 transition-all">Défi</button>
-                            ${errCount > 0 ? `<button onclick="Game.start('${id}', true)" class="btn-revision flex-1 py-4 rounded-2xl font-bold text-[10px] uppercase active:scale-95 transition-all">Réviser</button>` : ''}
-                        </div>
-                    </div>`;
-                }).join('');
-            },
-
             show(id) {
                 document.querySelectorAll('section, main, div[id^="screen-"]').forEach(s => s.classList.add('hidden'));
                 document.getElementById(id).classList.remove('hidden');
                 if(id === 'screen-menu') this.renderModules();
+                window.scrollTo(0,0);
             },
-
+            renderModules() {
+                const d = Profiles.getData();
+                document.getElementById('user-welcome').innerText = `Salam, ${Profiles.current.name}`;
+                document.getElementById('points-val').innerText = `💎 ${d.history.reduce((a,c)=>a+(c.score*10),0)} Pts`;
+                document.getElementById('module-container').innerHTML = Object.entries(DATA.modules).map(([id, m]) => `
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-[3rem] shadow-sm border border-transparent flex flex-col group">
+                        <span class="text-[9px] font-black text-blue-500 uppercase mb-2">Module ${id.replace('m','')}</span>
+                        <h3 class="font-black text-xl mb-6 leading-tight dark:text-white">${m.title}</h3>
+                        <div class="flex gap-2 mt-auto">
+                            <button onclick="UI.showCourse('${id}')" class="flex-1 py-4 bg-slate-50 dark:bg-slate-700 rounded-2xl font-bold text-[10px] uppercase">Cours</button>
+                            <button onclick="Game.start('${id}')" class="flex-1 py-4 bg-blue-900 text-white rounded-2xl font-bold text-[10px] uppercase">Défi</button>
+                        </div>
+                    </div>`).join('');
+            },
+            showCourse(id, q = null) {
+                const m = DATA.modules[id];
+                document.getElementById('course-title').innerText = m.title;
+                let c = m.course; if(q) { const r = new RegExp(`(${q})`, 'gi'); c = c.replace(r, '<mark class="search-highlight">$1</mark>'); }
+                document.getElementById('course-body').innerHTML = c;
+                document.getElementById('btn-course-action').onclick = () => Game.start(id);
+                this.show('screen-course');
+                document.querySelectorAll('#course-body h2, #course-body h3').forEach(h => {
+                    const s = h.nextElementSibling; const open = q && s.innerHTML.includes('search-highlight');
+                    h.className = `p-4 border-b dark:border-slate-800 font-bold flex justify-between items-center cursor-pointer ${open?'open':''}`;
+                    s.className = `course-section px-4 ${open?'active':''}`;
+                    h.onclick = () => { h.classList.toggle('open'); s.classList.toggle('active'); };
+                    if(open) h.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+                if(id === 'm1') this.initM1Tables();
+            },
             showHistory() {
                 this.show('screen-history');
-                const h = JSON.parse(localStorage.getItem('falah_history') || '[]');
-                
-                // Badges
+                const h = Profiles.getData().history;
                 document.getElementById('badges-grid').innerHTML = DATA.badges.map(b => `
-                    <div class="badge-card ${b.check(h)?'badge-unlocked':''} bg-white dark:bg-slate-800 p-4 rounded-3xl text-center border">
+                    <div class="p-4 bg-white dark:bg-slate-800 rounded-3xl text-center border ${b.check(h)?'opacity-100 scale-105':'opacity-30 grayscale'}">
                         <div class="text-3xl mb-1">${b.icon}</div>
                         <p class="text-[8px] font-black uppercase">${b.name}</p>
-                    </div>
-                `).join('');
-
-                // Liste
+                    </div>`).join('');
                 document.getElementById('history-list').innerHTML = h.map(s => `
-                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border flex justify-between items-center shadow-sm">
-                        <div class="text-left"><p class="text-[8px] font-bold text-slate-400">${s.date}</p><p class="font-bold text-xs">${DATA.modules[s.modId].title}</p></div>
-                        <div class="font-black text-blue-900 dark:text-blue-300">${s.score}/${s.total}</div>
-                    </div>
-                `).join('') || '<p class="text-center py-10 italic opacity-50">Aucun défi terminé.</p>';
+                    <div class="bg-white dark:bg-slate-800 p-4 rounded-2xl border flex justify-between items-center">
+                        <div class="text-left"><p class="text-[7px] font-bold text-slate-400">${new Date(s.date).toLocaleDateString()}</p><p class="font-bold text-xs dark:text-white">${DATA.modules[s.modId].title}</p></div>
+                        <div class="font-black text-blue-900 dark:text-sky-400">${s.score}/${s.total}</div>
+                    </div>`).join('') || '<p class="text-center opacity-30">Aucun défi.</p>';
+                this.renderHallOfFame();
             },
-
-            showResult(s, tot) {
-                this.show('screen-result');
-                document.getElementById('result-mod-title').innerText = DATA.modules[Game.modId].title;
-                document.getElementById('result-score-val').innerText = `${s} / ${tot}`;
+            renderHallOfFame() {
+                const leader = DATA.profiles.map(p => {
+                    const pts = JSON.parse(localStorage.getItem(`falah_data_${p.id}`) || '{"history":[]}').history.reduce((a,c)=>a+(c.score*10),0);
+                    return { ...p, pts };
+                }).sort((a,b)=>b.pts-a.pts);
+                document.getElementById('hall-of-fame-cont').innerHTML = `
+                    <div class="hall-of-fame shadow-xl">
+                        <h3 class="text-center text-[10px] font-black uppercase mb-4 opacity-70">Tableau d'Honneur Familial</h3>
+                        ${leader.map((p,i)=>`
+                            <div class="flex justify-between items-center py-2 border-b border-white/10">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xl opacity-50 font-black">${i+1}</span>
+                                    <span>${p.emoji}</span><span class="font-bold">${p.name}</span>
+                                </div>
+                                <span class="font-black text-amber-300">${p.pts} <small class="text-[7px]">PTS</small></span>
+                            </div>`).join('')}
+                    </div>`;
+            },
+            toggleDrawer() {
+                const d = document.getElementById('settings-drawer');
+                const v = d.classList.toggle('open');
+                document.getElementById('drawer-overlay').style.display = v ? 'block' : 'none';
+                if(v) {
+                    const p = Profiles.current;
+                    document.getElementById('drawer-profile-info').innerHTML = `<span>${p.emoji}</span> <span>${p.name}</span>`;
+                    const s = Profiles.getData().settings;
+                    document.getElementById('conf-ai').checked = s.ai;
+                    document.getElementById('conf-audio').checked = s.audio;
+                    document.getElementById('conf-haptic').checked = s.haptic;
+                }
+            },
+            initM1Tables() {
+                // Logique Mouslimoun
+                const sel = document.getElementById('wordSelector');
+                if(!sel) return;
+                sel.onchange = () => { wordRadical = sel.value; this.updateM1Tables(); };
+                document.querySelectorAll('input[name="wordGender"]').forEach(i => i.onchange = () => this.updateM1Tables());
+                this.updateM1Tables();
+            },
+            updateM1Tables() {
+                const g = document.querySelector('input[name="wordGender"]:checked').value;
+                document.getElementById('masculineTableContainer').style.display = g === 'masculine' ? 'block' : 'none';
+                // (Suite logique tables ici...)
             }
         };
 
-        /**
-         * 5. CORE FUNCTIONS
-         */
-        function toggleDarkMode() { 
-            document.body.classList.toggle('dark-mode'); 
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-            document.getElementById('theme-btn').innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-        }
-
-        function toggleRule() { 
-            const box = document.getElementById('game-rule');
-            box.innerText = Game.exercises[Game.currentIdx].rule;
-            box.classList.toggle('hidden');
-        }
-
-        function clearHistory() { 
-            if(confirm("Effacer tes progrès ?")) { 
-                localStorage.removeItem('falah_history'); 
-                localStorage.removeItem('falah_mistakes');
-                UI.showHistory(); 
-            } 
-        }
-
-        // Init
-        document.addEventListener('DOMContentLoaded', () => UI.init());
-
+        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); localStorage.setItem('theme', document.body.classList.contains('dark-mode')?'dark':'light'); }
+        document.addEventListener('DOMContentLoaded', () => Profiles.init());
     </script>
 </body>
 </html>
