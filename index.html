@@ -27,15 +27,16 @@
 
         /* --- UI COMPONENTS --- */
         .drop-zone { border: 2px dashed var(--border-color); border-radius: 1.5rem; min-height: 5rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: var(--slot-bg); }
-        .slot-filled { border: 2px solid var(--primary-blue); background: var(--bg-card); font-family: 'Lateef'; font-size: 2.2rem; font-weight: bold; color: var(--primary-blue); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2); }
+        .slot-filled { border: 2px solid var(--primary-blue); background: var(--bg-card); font-family: 'Lateef'; font-size: 2.2rem; font-weight: bold; color: var(--primary-blue); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .slot-correct { border-color: #22c55e !important; background: #f0fdf4 !important; color: #166534 !important; }
         .slot-wrong { border-color: #ef4444 !important; background: #fef2f2 !important; color: #991b1b !important; }
 
-        .draggable-label { background: var(--bg-card); border: 2px solid var(--primary-blue); padding: 10px 20px; border-radius: 1rem; cursor: grab; font-family: 'Lateef'; font-size: 1.8rem; }
+        .draggable-label { background: var(--bg-card); border: 2px solid var(--primary-blue); padding: 10px 20px; border-radius: 1rem; cursor: grab; user-select: none; font-family: 'Lateef'; font-size: 1.8rem; }
         
         .course-section { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease; }
         .course-section.active { max-height: 5000px; opacity: 1; margin-top: 1rem; }
         
+        /* --- DRAWER --- */
         #settings-drawer { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: var(--bg-card); z-index: 1000; transition: 0.4s; box-shadow: 20px 0 50px rgba(0,0,0,0.2); padding: 2rem; }
         #settings-drawer.open { left: 0; }
         #drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 900; backdrop-filter: blur(4px); }
@@ -56,23 +57,30 @@
     <div id="drawer-overlay" onclick="UI.toggleDrawer()"></div>
     <aside id="settings-drawer" class="dark:bg-slate-900">
         <div class="flex justify-between items-center mb-8">
-            <h2 class="text-xl font-black uppercase italic">Menu</h2>
+            <h2 class="text-xl font-black uppercase italic">Configuration</h2>
             <button onclick="UI.toggleDrawer()" class="p-2 opacity-50">✕</button>
         </div>
         <div id="drawer-profile-info" class="mb-6 p-4 bg-blue-50 dark:bg-slate-800 rounded-2xl flex items-center gap-3 font-bold"></div>
-        <div class="space-y-5">
+        <div class="space-y-4">
             <div class="flex items-center justify-between"><span class="text-sm font-bold">Mode Sombre</span><label class="switch"><input type="checkbox" id="conf-dark" onchange="toggleDarkMode()"><span class="slider"></span></label></div>
             <div class="flex items-center justify-between"><span class="text-sm font-bold">IA Tutor</span><label class="switch"><input type="checkbox" id="conf-ai" checked onchange="Settings.update('ai', this.checked)"><span class="slider"></span></label></div>
         </div>
-        <button onclick="Profiles.reset()" class="w-full mt-12 py-4 border-2 border-slate-100 text-slate-500 rounded-2xl font-black text-[10px] uppercase">Changer / Créer Profil</button>
+        <button onclick="Profiles.reset()" class="w-full mt-12 py-4 border-2 border-slate-100 text-slate-500 rounded-2xl font-black text-[10px] uppercase">Changer de Profil</button>
     </aside>
 
-    <section id="screen-profiles" class="fixed inset-0 bg-white dark:bg-slate-950 z-[500] flex flex-col items-center justify-center p-8">
-        <h2 class="text-3xl font-black mb-8 text-center dark:text-white uppercase">Falah Academy</h2>
+    <section id="screen-profiles" class="fixed inset-0 bg-white dark:bg-slate-950 z-[500] flex flex-col items-center justify-center p-8 text-center">
+        <div class="text-6xl mb-4">🌟</div>
+        <h2 class="text-3xl font-black mb-8 dark:text-white uppercase tracking-tighter">Falah Academy</h2>
+        
         <div id="profiles-list" class="grid grid-cols-2 gap-4 w-full max-w-sm mb-6"></div>
+        
         <div class="flex flex-col gap-3 w-full max-w-sm">
-            <button onclick="Profiles.add()" class="py-4 bg-blue-900 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest">Créer un profil</button>
-            <button onclick="Profiles.skip()" class="py-3 text-slate-400 font-bold uppercase text-[9px] tracking-widest">Continuer sans profil (Invité)</button>
+            <button onclick="Profiles.add()" class="py-4 bg-blue-900 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl">
+                Créer un profil
+            </button>
+            <button onclick="Profiles.skip()" class="py-3 text-slate-400 font-bold uppercase text-[9px] tracking-widest">
+                Continuer sans profil (Invité)
+            </button>
         </div>
     </section>
 
@@ -90,9 +98,9 @@
 
     <section id="screen-course" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-40 flex flex-col">
         <nav class="p-4 border-b flex justify-between items-center sticky top-0 bg-white dark:bg-slate-900 z-50">
-            <button onclick="UI.show('screen-menu')" class="font-black text-blue-900 dark:text-sky-400 text-xs">← MENU</button>
+            <button onclick="UI.show('screen-menu')" class="font-black text-blue-900 dark:text-sky-400 text-xs uppercase">← Menu</button>
             <h2 id="course-title" class="text-[10px] font-black uppercase text-slate-400"></h2>
-            <button id="btn-course-action" class="bg-blue-900 text-white px-5 py-2.5 rounded-2xl text-[10px] font-black">DÉFI</button>
+            <button id="btn-course-practice" class="bg-blue-900 text-white px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase">Défi</button>
         </nav>
         <div id="course-body" class="flex-1 overflow-y-auto p-6 md:p-12 max-w-4xl mx-auto w-full pb-32"></div>
     </section>
@@ -116,54 +124,33 @@
 
     <script>
         /**
-         * 1. DONNÉES COMPLÈTES MODULE 1
+         * 1. DONNÉES DU MODULE 1
          */
         const DATA = {
             modules: {
                 'm1': { 
                     id: 'm1', title: "Le Nom (Ism)", summary: "Fondations : les 3 types de mots et les 4 propriétés du Ism.",
                     course: `
-                        <h2 onclick="UI.toggleAccordion(this)">I. Les 3 types de mots</h2>
+                        <h2 class="font-black text-lg mb-4" onclick="UI.toggleAccordion(this)">I. Les 3 types de mots ▸</h2>
                         <div class="course-section space-y-4">
-                            <p>Il existe 3 types de mots en arabe :</p>
-                            <div class="p-4 bg-blue-50 dark:bg-slate-800 rounded-xl"><b>1. اسم (Ism) :</b> Mot intemporel (personne, lieu, objet, idée, adjectif...).</div>
-                            <div class="p-4 bg-green-50 dark:bg-slate-800 rounded-xl"><b>2. فِعْل (Fi’l) :</b> Exprime une action liée au temps (passé, présent, futur).</div>
-                            <div class="p-4 bg-red-50 dark:bg-slate-800 rounded-xl"><b>3. حَرْف (Harf) :</b> N'a aucun sens sans le Ism ou le Fi’l (ex: dans, à, pour...).</div>
+                            <div class="p-4 bg-blue-50 dark:bg-slate-800 rounded-xl border-l-4 border-blue-500"><b>1. اسم (Ism) :</b> Mot intemporel (personne, objet, adjectif...).</div>
+                            <div class="p-4 bg-green-50 dark:bg-slate-800 rounded-xl border-l-4 border-green-500"><b>2. فِعْل (Fi’l) :</b> Action liée au temps.</div>
+                            <div class="p-4 bg-red-50 dark:bg-slate-800 rounded-xl border-l-4 border-red-500"><b>3. حَرْف (Harf) :</b> Particule (dans, vers...).</div>
                         </div>
-
-                        <h2 onclick="UI.toggleAccordion(this)">II. Propriété 1 : L'État (I'rab)</h2>
+                        <h2 class="font-black text-lg mb-4 mt-6" onclick="UI.toggleAccordion(this)">II. Les 4 propriétés ▸</h2>
                         <div class="course-section space-y-4">
-                            <p>L'état est le changement de terminaison qui définit le rôle du nom :</p>
-                            <ul class="list-disc pl-5">
-                                <li><b>رفع (Raf') :</b> Le sujet qui fait l'action.</li>
-                                <li><b>نَصْب (Nasb) :</b> Détail sur l'action (quoi, où, quand...).</li>
-                                <li><b>جر (Jarr) :</b> Après "de/du" ou une préposition.</li>
-                            </ul>
-                            <p class="text-sm italic">Note: Les noms diptotes (Ghayr Munsarif) ne prennent pas de Kasra. Les noms invariables (Mabni) ne changent jamais de forme.</p>
-                        </div>
-
-                        <h2 onclick="UI.toggleAccordion(this)">III. Propriété 2 : Le Genre</h2>
-                        <div class="course-section space-y-4">
-                            <p>Un Ism est <b>Mudhakkar</b> (masculin) par défaut.</p>
-                            <p>Il est <b>Mu’annath</b> (féminin) s'il appartient à :</p>
-                            <ol class="list-decimal pl-5">
-                                <li><b>Féminin Réel :</b> Nature féminine biologique.</li>
-                                <li><b>Féminin de Signe :</b> Terminaison en ة, اء, ou ى.</li>
-                                <li><b>Féminin par décision :</b> Vents, enfer, pays/villes, ou parties paires du corps.</li>
-                            </ol>
+                            <p>Tout Ism possède 4 propriétés : <b>L'État</b> (I'rab), <b>Le Genre</b>, <b>Le Nombre</b> et <b>Le Type</b>.</p>
                         </div>
                     `,
                     exercises: [ 
-                        { phrase: ["رَبٌّ"], correct: ["رَفْعٌ"], opts: ["رَفْعٌ", "نَصْبٌ", "جَرٌّ"], translation: "Un Seigneur", rule: "La damma finale indique l'état Raf'." },
-                        { phrase: ["عَذَابٍ"], correct: ["جَرٌّ"], opts: ["رَفْعٌ", "جَرٌّ"], translation: "Un châtiment", rule: "La kasra finale indique l'état Jarr." },
-                        { phrase: ["هَذَا"], correct: ["مَبْنِيٌّ"], opts: ["رَفْعٌ", "مَبْنِيٌّ"], translation: "Ceci", rule: "Hadha est un pronom démonstratif, il est invariable (Mabni)." }
+                        { phrase: ["رَبٌّ"], correct: ["رَفْعٌ"], opts: ["رَفْعٌ", "نَصْبٌ", "جَرٌّ"], translation: "Un Seigneur", rule: "La damma finale indique l'état Raf'." }
                     ]
                 }
             }
         };
 
         /**
-         * 2. MOTEUR DE PROFILS FLEXIBLE
+         * 2. MOTEUR DE PROFILS (ROBUSTE)
          */
         const Profiles = {
             current: null,
@@ -171,36 +158,176 @@
             saveAll(p) { localStorage.setItem('falah_profiles', JSON.stringify(p)); },
 
             init() {
+                const lastId = localStorage.getItem('falah_last_profile');
                 const profiles = this.getAll();
-                const last = localStorage.getItem('falah_last_profile');
-                if (last && profiles.find(p => p.id === last)) this.select(last);
-                else { this.renderList(); UI.show('screen-profiles'); }
+                
+                if (lastId) {
+                    if (lastId === 'guest') { this.skip(); return; }
+                    const p = profiles.find(x => x.id === lastId);
+                    if (p) { this.select(p.id); return; }
+                }
+                
+                // Si rien n'est trouvé, afficher l'écran de sélection
+                this.renderList();
+                UI.show('screen-profiles');
             },
 
             add() {
-                const name = prompt("Nom du profil :");
-                if (!name) return;
+                const name = prompt("Nom du nouvel élève :");
+                if (!name || name.trim() === "") return;
                 const profiles = this.getAll();
-                const newP = { id: 'p' + Date.now(), name, emoji: '👤' };
+                const newP = { id: 'p' + Date.now(), name: name.trim(), emoji: '👤' };
                 profiles.push(newP);
                 this.saveAll(profiles);
-                this.renderList();
+                this.renderList(); // Rafraîchit les icônes à l'écran
             },
 
-            skip() { this.current = { id: 'guest', name: 'Invité', emoji: '🔓' }; this.finalizeSelection(); },
-
-            select(id) { 
-                const profiles = this.getAll();
-                this.current = profiles.find(p => p.id === id) || { id:'guest', name:'Invité', emoji:'🔓' };
-                this.finalizeSelection();
-            },
-
-            finalizeSelection() {
-                localStorage.setItem('falah_last_profile', this.current.id);
-                document.getElementById('screen-profiles').classList.add('hidden');
+            skip() {
+                this.current = { id: 'guest', name: 'Invité', emoji: '🔓' };
+                localStorage.setItem('falah_last_profile', 'guest');
                 UI.show('screen-menu');
+            },
+
+            select(id) {
+                const profiles = this.getAll();
+                const p = profiles.find(x => x.id === id);
+                if (p) {
+                    this.current = p;
+                    localStorage.setItem('falah_last_profile', id);
+                    UI.show('screen-menu');
+                }
             },
 
             delete(id, e) {
                 e.stopPropagation();
                 if (!confirm("Supprimer ce profil ?")) return;
+                const profiles = this.getAll().filter(x => x.id !== id);
+                this.saveAll(profiles);
+                this.renderList();
+            },
+
+            renderList() {
+                const list = document.getElementById('profiles-list');
+                const profiles = this.getAll();
+                if (profiles.length === 0) {
+                    list.innerHTML = '<p class="col-span-2 text-center text-slate-400 text-xs italic py-4">Aucun profil enregistré</p>';
+                } else {
+                    list.innerHTML = profiles.map(p => `
+                        <div onclick="Profiles.select('${p.id}')" class="bg-white dark:bg-slate-900 p-4 rounded-3xl shadow-lg text-center relative border-2 border-transparent hover:border-blue-500 transition-all cursor-pointer">
+                            <button onclick="Profiles.delete('${p.id}', event)" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-[10px] shadow-md">✕</button>
+                            <div class="text-3xl mb-1">${p.emoji}</div>
+                            <p class="font-black text-[10px] truncate">${p.name}</p>
+                        </div>`).join('');
+                }
+            },
+
+            reset() { localStorage.removeItem('falah_last_profile'); location.reload(); },
+            getData() { return JSON.parse(localStorage.getItem(`data_${this.current.id}`) || '{"points":0, "history":[], "settings":{"ai":true}}'); },
+            saveData(d) { localStorage.setItem(`data_${this.current.id}`, JSON.stringify(d)); }
+        };
+
+        /**
+         * 3. UI ENGINE
+         */
+        const UI = {
+            show(id) {
+                document.querySelectorAll('section, main').forEach(s => s.classList.add('hidden'));
+                const target = document.getElementById(id);
+                if (target) {
+                    target.classList.remove('hidden');
+                    if (id === 'screen-menu') this.renderModules();
+                }
+            },
+            toggleDrawer() {
+                const d = document.getElementById('settings-drawer');
+                const overlay = document.getElementById('drawer-overlay');
+                const isOpen = d.classList.toggle('open');
+                overlay.style.display = isOpen ? 'block' : 'none';
+                if(isOpen && Profiles.current) {
+                    document.getElementById('drawer-profile-info').innerHTML = `<span>${Profiles.current.emoji}</span> <span>${Profiles.current.name}</span>`;
+                    document.getElementById('conf-dark').checked = document.body.classList.contains('dark-mode');
+                }
+            },
+            renderModules() {
+                const d = Profiles.getData();
+                document.getElementById('user-welcome').innerText = `Salam, ${Profiles.current.name}`;
+                document.getElementById('points-val').innerText = `💎 ${d.points} Pts`;
+                document.getElementById('module-container').innerHTML = Object.entries(DATA.modules).map(([id, m]) => `
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-[2.5rem] shadow-sm border flex flex-col">
+                        <h3 class="font-black text-lg mb-4 dark:text-white">${m.title}</h3>
+                        <div class="flex gap-2 mt-auto">
+                            <button onclick="UI.showCourse('${id}')" class="flex-1 py-4 bg-slate-100 dark:bg-slate-700 rounded-2xl font-bold text-[10px] uppercase dark:text-white">Cours</button>
+                            <button onclick="Game.start('${id}')" class="flex-1 py-4 bg-blue-900 text-white rounded-2xl font-black text-[10px] uppercase shadow-lg">Défi</button>
+                        </div>
+                    </div>`).join('');
+            },
+            showCourse(id) {
+                const m = DATA.modules[id];
+                document.getElementById('course-title').innerText = m.title;
+                document.getElementById('course-body').innerHTML = m.course;
+                document.getElementById('btn-course-practice').onclick = () => Game.start(id);
+                this.show('screen-course');
+            },
+            toggleAccordion(el) { el.nextElementSibling.classList.toggle('active'); },
+            showHistory() { alert("Progression : " + Profiles.getData().points + " Pts"); }
+        };
+
+        /**
+         * 4. GAME ENGINE
+         */
+        const Game = {
+            modId: null, exercises: [], currentIdx: 0, userAnswers: [], score: 0, state: 'playing',
+            start(id) {
+                this.modId = id; this.exercises = DATA.modules[id].exercises;
+                this.currentIdx = 0; this.score = 0; this.loadExercise();
+                UI.show('screen-game');
+            },
+            loadExercise() {
+                const ex = this.exercises[this.currentIdx];
+                this.userAnswers = new Array(ex.phrase.length).fill(null);
+                this.state = 'playing';
+                document.getElementById('game-translation').innerText = ex.translation;
+                document.getElementById('game-phrase').innerHTML = ex.phrase.map((w, i) => `
+                    <div class="flex items-center gap-3 w-full">
+                        <div class="arabic flex-1 bg-white dark:bg-slate-800 p-5 rounded-3xl border shadow-sm text-center">${w}</div>
+                        <div id="slot-${i}" class="drop-zone flex-1 uppercase text-[9px] font-black opacity-30" ondragover="event.preventDefault()" ondrop="Game.onDrop(event, ${i})">Déposer</div>
+                    </div>`).join('');
+                document.getElementById('game-options').innerHTML = ex.opts.map(o => `<div class="draggable-label dark:bg-slate-800 dark:border-slate-700 dark:text-white" draggable="true" ondragstart="Game.onDrag(event, '${o}')">${o}</div>`).join('');
+                document.getElementById('game-feedback').classList.add('hidden');
+                document.getElementById('btn-check').innerText = "VÉRIFIER";
+                document.getElementById('btn-check').disabled = true;
+            },
+            onDrag(e, v) { e.dataTransfer.setData("text", v); },
+            onDrop(e, i) {
+                e.preventDefault(); const val = e.dataTransfer.getData("text");
+                this.userAnswers[i] = val; const s = document.getElementById(`slot-${i}`);
+                s.innerText = val; s.className = "drop-zone flex-1 slot-filled";
+                document.getElementById('btn-check').disabled = this.userAnswers.includes(null);
+            },
+            handleAction() {
+                if(this.state === 'playing') {
+                    const win = this.userAnswers.every((a, i) => a === this.exercises[this.currentIdx].correct[i]);
+                    this.state = 'checked';
+                    const fb = document.getElementById('game-feedback');
+                    fb.innerText = win ? "✨ EXCELLENT !" : "❌ RÉESSAYE !";
+                    fb.className = `mb-4 p-5 rounded-3xl font-black block ${win?'bg-green-600':'bg-red-600'}`;
+                    fb.classList.remove('hidden');
+                    if(win) { this.score++; confetti({ particleCount: 30, origin:{y:0.8}}); }
+                    document.getElementById('btn-check').innerText = "CONTINUER";
+                } else {
+                    if(++this.currentIdx < this.exercises.length) this.loadExercise(); else UI.show('screen-menu');
+                }
+            }
+        };
+
+        const Settings = { update(k, v) { const d = Profiles.getData(); d.settings[k] = v; Profiles.saveData(d); } };
+        function toggleDarkMode() { const isDark = document.body.classList.toggle('dark-mode'); localStorage.setItem('theme', isDark ? 'dark' : 'light'); }
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+            Profiles.init();
+        });
+    </script>
+</body>
+</html>
