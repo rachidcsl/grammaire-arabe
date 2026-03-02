@@ -3,149 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Falah Academy - Arabe</title>
+    <title>Falah Academy - Arabe Pro</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Lateef:wght@400;700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        /* --- THÈMES --- */
         :root {
-            --bg-main: #ffffff;         /* Blanc Pur */
-            --bg-card: #ffffff;
-            --text-main: #0f172a;       /* Texte très sombre pour contraste max */
-            --text-muted: #64748b;
-            --primary-blue: #0284c7;    /* Bleu ciel */
-            --border-color: #f1f5f9;    /* Bordure très légère */
-            --slot-bg: #f8fafc;         /* Fond de zone de dépôt très clair */
+            --bg-main: #ffffff; --bg-card: #ffffff; --text-main: #0f172a;
+            --primary-blue: #0284c7; --accent-blue: #38bdf8; --border-color: #f1f5f9;
+            --note-bg: #f8fafc; --slot-bg: #f8fafc;
         }
 
         body.dark-mode {
-            --bg-main: #0f172a;
-            --bg-card: #1e293b;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --primary-blue: #38bdf8;
-            --border-color: #334155;
-            --slot-bg: #0f172a;
+            --bg-main: #0f172a; --bg-card: #1e293b; --text-main: #f1f5f9;
+            --primary-blue: #38bdf8; --accent-blue: #7dd3fc; --border-color: #334155;
+            --note-bg: #1e293b; --slot-bg: #0f172a;
         }
 
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg-main); 
-            color: var(--text-main); 
-            transition: background 0.3s ease;
-            overflow: hidden; /* Empêche le rebond élastique sur mobile */
-        }
-
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); transition: background 0.3s ease; touch-action: none; overflow: hidden; }
         .arabic { font-family: 'Lateef', serif; direction: rtl; font-size: 2.8rem; line-height: 1.1; }
 
-        /* --- ZONES DE JEU --- */
-        .drop-zone { 
-            border: 2px dashed var(--border-color); 
-            border-radius: 1.25rem; min-height: 5.5rem; 
-            display: flex; align-items: center; justify-content: center; 
-            background: var(--slot-bg); 
-            transition: all 0.2s;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-        .drop-zone.active-target { border-color: var(--primary-blue); background: white; transform: scale(1.02); }
-        
-        .slot-filled { 
-            border: 2px solid var(--primary-blue); 
-            background: var(--bg-card); 
-            font-family: 'Lateef'; font-size: 2.2rem; font-weight: bold; color: var(--primary-blue);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
+        /* Zones de jeu */
+        .drop-zone { border: 2px dashed var(--border-color); border-radius: 1.25rem; min-height: 5rem; display: flex; align-items: center; justify-content: center; background: var(--slot-bg); transition: 0.2s; }
+        .drop-zone.active-target { border-color: var(--primary-blue); background: var(--note-bg); transform: scale(1.02); }
+        .slot-filled { border: 2px solid var(--primary-blue); background: var(--bg-card); font-family: 'Lateef'; font-size: 2.2rem; font-weight: bold; color: var(--primary-blue); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .slot-correct { border-color: #22c55e !important; background: #f0fdf4 !important; color: #166534 !important; }
         .slot-wrong { border-color: #ef4444 !important; background: #fef2f2 !important; color: #991b1b !important; }
 
-        .draggable-label { 
-            background: var(--bg-card); 
-            border: 2px solid var(--border-color); 
-            padding: 12px 24px; border-radius: 1rem; 
-            cursor: grab; font-family: 'Lateef'; font-size: 1.8rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            touch-action: none;
-            user-select: none;
-        }
-
-        .drag-ghost {
-            position: fixed; pointer-events: none; z-index: 9999;
-            background: var(--bg-card); border: 3px solid var(--primary-blue); 
-            color: var(--primary-blue); border-radius: 1.2rem;
-            padding: 12px 24px; font-family: 'Lateef'; font-size: 2.2rem;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            transform: translate(-50%, -130%);
-        }
-
-        /* --- ACCORDÉON --- */
-        .course-section { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease; }
-        .course-section.active { max-height: 10000px; opacity: 1; margin-top: 1rem; }
+        .draggable-label { background: var(--bg-card); border: 1.5px solid var(--border-color); padding: 10px 20px; border-radius: 1rem; cursor: grab; font-family: 'Lateef'; font-size: 1.8rem; touch-action: none; user-select: none; }
         
-        #settings-drawer { 
-            position: fixed; top: 0; left: -100%; width: 300px; height: 100%; 
-            background: var(--bg-card); z-index: 1000; transition: 0.4s; padding: 2rem; 
-            box-shadow: 10px 0 50px rgba(0,0,0,0.1);
-        }
+        .drag-ghost { position: fixed; pointer-events: none; z-index: 9999; background: var(--bg-card); border: 2px solid var(--primary-blue); color: var(--primary-blue); border-radius: 1rem; padding: 10px 20px; font-family: 'Lateef'; font-size: 2rem; box-shadow: 0 15px 30px rgba(0,0,0,0.3); transform: translate(-50%, -120%); }
+
+        /* Menu Latéral */
+        #settings-drawer { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: var(--bg-card); z-index: 1000; transition: 0.4s; padding: 2rem; box-shadow: 10px 0 50px rgba(0,0,0,0.1); }
         #settings-drawer.open { left: 0; }
-        #drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); display: none; z-index: 900; backdrop-filter: blur(2px); }
+        #drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; z-index: 900; backdrop-filter: blur(2px); }
+
+        /* Recherche & Tags */
+        mark.search-highlight { background: #fef08a; color: #854d0e; padding: 0 2px; border-radius: 4px; font-weight: bold; }
+        .tag-badge { font-size: 0.6rem; padding: 2px 8px; border-radius: 99px; background: var(--note-bg); border: 1px solid var(--border-color); color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+
+        .course-section { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease; }
+        .course-section.active { max-height: 5000px; opacity: 1; margin-top: 1rem; }
 
         ::-webkit-scrollbar { display: none; }
     </style>
 </head>
 
-<body class="dark-mode"> <div id="drawer-overlay" onclick="UI.toggleDrawer()"></div>
+<body class="dark-mode">
+
+    <div id="drawer-overlay" onclick="UI.toggleDrawer()"></div>
     
-    <aside id="settings-drawer" class="dark:bg-slate-900">
+    <aside id="settings-drawer">
         <div class="flex justify-between items-center mb-10">
-            <h2 class="text-xl font-black uppercase italic tracking-tighter">Réglages</h2>
-            <button onclick="UI.toggleDrawer()" class="text-3xl opacity-20">✕</button>
+            <h2 class="text-xl font-black uppercase italic">Configuration</h2>
+            <button onclick="UI.toggleDrawer()" class="text-2xl">✕</button>
         </div>
-        <div id="drawer-profile-info" class="mb-10 p-5 bg-blue-50 dark:bg-slate-800 rounded-3xl flex items-center gap-4 border border-blue-100 dark:border-slate-700"></div>
-        <div class="space-y-8">
+        <div id="drawer-profile-info" class="mb-8 p-4 bg-blue-50 dark:bg-slate-800 rounded-2xl flex items-center gap-3 font-bold"></div>
+        <div class="space-y-6">
             <div class="flex items-center justify-between">
-                <span class="font-bold text-sm">Mode Jour / Nuit</span>
-                <button onclick="UI.toggleDark()" id="dark-mode-btn" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700">☀️</button>
-            </div>
-            <div class="flex items-center justify-between opacity-50">
-                <span class="font-bold text-sm">Sons et Audio</span>
-                <div class="w-10 h-5 bg-blue-500 rounded-full"></div>
+                <span class="font-bold">Mode Sombre</span>
+                <button onclick="UI.toggleDark()" id="dark-mode-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-xl">☀️</button>
             </div>
         </div>
-        <button onclick="Profiles.reset()" class="w-full mt-24 py-4 text-slate-400 font-bold text-[10px] uppercase border border-slate-100 dark:border-slate-700 rounded-2xl">Changer de profil</button>
+        <button onclick="Profiles.reset()" class="w-full mt-20 py-4 border-2 border-red-100 text-red-500 rounded-2xl font-black text-[10px] uppercase">Se déconnecter</button>
     </aside>
 
     <section id="screen-profiles" class="fixed inset-0 bg-white dark:bg-slate-950 z-[500] flex flex-col items-center justify-center p-8">
-        <div class="w-16 h-16 bg-blue-900 rounded-2xl flex items-center justify-center shadow-2xl mb-8 rotate-3">
-            <span class="text-white font-black text-3xl">ف</span>
-        </div>
-        <h2 class="text-3xl font-black mb-10 text-center dark:text-white uppercase tracking-tighter">Falah Academy</h2>
-        <div id="profiles-list" class="grid grid-cols-2 gap-4 w-full max-w-sm mb-10"></div>
+        <h2 class="text-3xl font-black mb-8 text-center dark:text-white uppercase tracking-tight">Falah Academy</h2>
+        <div id="profiles-list" class="grid grid-cols-2 gap-4 w-full max-w-sm mb-8"></div>
         <div class="flex flex-col gap-3 w-full max-w-sm">
-            <button onclick="Profiles.add()" class="py-5 bg-blue-900 text-white rounded-3xl font-black uppercase text-[11px] tracking-widest shadow-xl active:scale-95 transition-transform">Créer un profil</button>
-            <button onclick="Profiles.skip()" class="py-3 text-slate-400 font-bold uppercase text-[9px] tracking-widest text-center">Mode Invité</button>
+            <button onclick="Profiles.add()" class="py-4 bg-blue-900 text-white rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl">Créer un profil</button>
+            <button onclick="Profiles.skip()" class="py-3 text-slate-400 font-bold uppercase text-[9px] tracking-widest text-center">Continuer en Invité</button>
         </div>
     </section>
 
     <main id="screen-menu" class="hidden min-h-screen p-4 max-w-5xl mx-auto overflow-y-auto">
-        <header class="flex justify-between items-center py-8 mb-4">
-            <button onclick="UI.toggleDrawer()" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-50 dark:border-slate-800 text-xl">☰</button>
+        <header class="flex justify-between items-center py-6 mb-4">
+            <button onclick="UI.toggleDrawer()" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xl border border-slate-50 dark:border-slate-800">☰</button>
             <div class="text-center">
-                <h1 id="user-welcome" class="text-xl font-black dark:text-white uppercase italic"></h1>
-                <div id="points-val" class="text-[9px] font-bold text-blue-500 uppercase mt-1 tracking-widest">💎 0 Points</div>
+                <h1 id="user-welcome" class="text-lg font-black dark:text-white uppercase italic"></h1>
+                <div id="points-val" class="text-[10px] font-bold text-blue-500 uppercase mt-1">💎 0 Pts</div>
             </div>
-            <div class="w-10"></div>
+            <button onclick="UI.show('screen-search')" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xl border border-slate-50 dark:border-slate-800">🔍</button>
         </header>
         <div id="module-container" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-4"></div>
     </main>
 
+    <section id="screen-search" class="hidden fixed inset-0 bg-white dark:bg-slate-950 z-[200] flex flex-col p-6 overflow-y-auto">
+        <header class="flex items-center gap-4 mb-8">
+            <button onclick="UI.show('screen-menu')" class="text-2xl font-bold">←</button>
+            <div class="flex-1 relative">
+                <input type="text" id="search-input" oninput="Search.query(this.value)" placeholder="Arabe, français, ou tag..." class="w-full p-5 rounded-3xl bg-slate-50 dark:bg-slate-800 outline-none border-none">
+                <button onclick="Search.clear()" class="absolute right-4 top-1/2 -translate-y-1/2 opacity-20">✕</button>
+            </div>
+        </header>
+        <div id="search-results" class="flex flex-col gap-4"></div>
+    </section>
+
     <section id="screen-course" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-40 flex flex-col overflow-y-auto">
-        <nav class="p-4 border-b flex justify-between items-center sticky top-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md z-50">
+        <nav class="p-4 border-b flex justify-between items-center sticky top-0 bg-white dark:bg-slate-900 z-50">
             <button onclick="UI.show('screen-menu')" class="font-black text-blue-900 dark:text-sky-400 text-xs uppercase">← Menu</button>
             <h2 id="course-title" class="text-[10px] font-black uppercase text-slate-400"></h2>
             <button id="btn-course-action" class="bg-blue-900 text-white px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase">Défi</button>
@@ -160,31 +119,35 @@
             <div class="w-10"></div>
         </nav>
         <div class="flex-1 p-4 flex flex-col items-center overflow-y-auto">
-            <div id="game-translation" class="w-full max-w-md p-8 bg-blue-50 dark:bg-slate-800/50 rounded-[3rem] text-center italic text-blue-900 dark:text-blue-100 mb-10 border border-blue-100 dark:border-slate-700"></div>
+            <div id="game-translation" class="w-full max-w-md p-8 bg-blue-50 dark:bg-slate-800/50 rounded-[3rem] text-center italic text-blue-900 dark:text-blue-100 mb-8 border border-blue-100 dark:border-slate-700"></div>
             <div id="game-phrase" class="w-full max-w-md flex flex-col gap-6 mb-12"></div>
             <div id="game-options" class="w-full max-w-md flex flex-wrap justify-center gap-3 mt-auto pb-12"></div>
         </div>
         <footer class="p-6 bg-white dark:bg-slate-900 border-t dark:border-slate-800 shadow-xl">
             <div id="game-feedback" class="hidden mb-4 p-5 rounded-[2rem] text-white font-black text-center shadow-lg transition-all"></div>
-            <button id="btn-check" onclick="Game.handleAction()" class="w-full py-6 bg-blue-900 dark:bg-sky-500 text-white dark:text-slate-900 rounded-[2.5rem] font-black uppercase tracking-[0.3em] shadow-xl disabled:opacity-20 active:scale-95">VÉRIFIER</button>
+            <button id="btn-check" onclick="Game.handleAction()" class="w-full py-6 bg-blue-900 text-white rounded-[2.5rem] font-black uppercase tracking-[0.3em] shadow-xl disabled:opacity-20 active:scale-95">VÉRIFIER</button>
         </footer>
     </section>
 
     <section id="screen-result" class="hidden fixed inset-0 bg-slate-950 z-[200] flex flex-col items-center justify-center p-8 text-white text-center">
         <div class="text-8xl mb-8 animate-bounce">🏆</div>
-        <h2 class="text-3xl font-black mb-10 uppercase tracking-tighter italic">Félicitations !</h2>
+        <h2 class="text-3xl font-black mb-10 uppercase tracking-tighter italic">Mabrouk !</h2>
         <div class="bg-white/10 px-12 py-16 rounded-[4rem] border border-white/20 mb-12 w-full max-w-xs shadow-2xl">
             <div class="text-7xl font-black italic" id="result-score-val">0</div>
             <p class="text-[10px] uppercase font-bold opacity-40 mt-3 tracking-widest">Points récoltés</p>
         </div>
-        <button onclick="UI.show('screen-menu')" class="w-full max-w-xs py-6 bg-sky-500 text-slate-900 rounded-full font-black uppercase tracking-widest shadow-xl">Retour au Menu</button>
+        <button onclick="UI.show('screen-menu')" class="w-full max-w-xs py-6 bg-sky-500 text-slate-900 rounded-full font-black uppercase tracking-widest shadow-xl">Continuer</button>
     </section>
 
     <script>
+        /**
+         * 1. DONNÉES ENRICHIES (TAGS & TRANSLITTÉRATION)
+         */
         const DATA = {
             modules: {
                 'm1': { 
                     id: 'm1', title: "Le Nom (Ism)", summary: "Fondations : les 3 types de mots et les 4 propriétés du Ism.",
+                    tags: ["ism", "nom", "grammaire", "base", "propriétés"],
                     course: `
                         <h2 class="font-black text-lg mb-4" onclick="UI.toggleAccordion(this)">I. Les 3 types de mots ▸</h2>
                         <div class="course-section space-y-4">
@@ -193,13 +156,84 @@
                             <div class="p-5 bg-red-50 dark:bg-slate-800 rounded-3xl border-l-8 border-red-400"><b>3. حَرْف (Harf) :</b> Particule (dans, vers...).</div>
                         </div>`,
                     exercises: [ 
-                        { phrase: ["رَبٌّ"], correct: ["رَفْعٌ"], opts: ["رَفْعٌ", "نَصْبٌ", "جَرٌّ"], translation: "Un Seigneur", rule: "La damma finale indique l'état Raf'." },
-                        { phrase: ["عَذَابٍ"], correct: ["جَرٌّ"], opts: ["رَفْعٌ", "جَرٌّ"], translation: "Un châtiment", rule: "La kasra finale indique l'état Jarr." }
+                        { 
+                            phrase: ["رَبٌّ"], correct: ["رَفْعٌ"], opts: ["رَفْعٌ", "نَصْبٌ", "جَرٌّ"], 
+                            translation: "Un Seigneur", 
+                            translit: "Rabbun",
+                            tags: ["sujet", "damma", "raf"],
+                            rule: "La damma finale (un) indique l'état Raf'." 
+                        },
+                        { 
+                            phrase: ["عَذَابٍ"], correct: ["جَرٌّ"], opts: ["رَفْعٌ", "جَرٌّ"], 
+                            translation: "Un châtiment", 
+                            translit: "Adhabin",
+                            tags: ["préposition", "kasra", "jarr"],
+                            rule: "La kasra finale (in) indique l'état Jarr." 
+                        }
                     ]
                 }
             }
         };
 
+        /**
+         * 2. RECHERCHE MULTI-CRITÈRES (TAGS, ARABE, TRANSLIT)
+         */
+        const Search = {
+            query(q) {
+                const resultsCont = document.getElementById('search-results');
+                if (!q || q.length < 2) { resultsCont.innerHTML = ''; return; }
+                
+                const val = q.toLowerCase().trim();
+                let matches = [];
+
+                Object.values(DATA.modules).forEach(m => {
+                    // 1. Chercher dans les modules (Titre et Tags)
+                    if (m.title.toLowerCase().includes(val) || m.tags.some(t => t.includes(val))) {
+                        matches.push({ type: 'Module', title: m.title, id: m.id, tags: m.tags });
+                    }
+
+                    // 2. Chercher dans les exercices (Arabe, Translit, Trad, Tags, Règle)
+                    m.exercises.forEach(ex => {
+                        const inArabic = ex.phrase.some(w => w.includes(val));
+                        const inTranslit = ex.translit && ex.translit.toLowerCase().includes(val);
+                        const inTrad = ex.translation.toLowerCase().includes(val);
+                        const inTags = ex.tags && ex.tags.some(t => t.includes(val));
+
+                        if (inArabic || inTranslit || inTrad || inTags) {
+                            matches.push({ 
+                                type: 'Règle', 
+                                title: ex.translation, 
+                                subtitle: `${ex.phrase.join(' ')} (${ex.translit || ''})`,
+                                id: m.id, 
+                                tags: ex.tags 
+                            });
+                        }
+                    });
+                });
+
+                resultsCont.innerHTML = matches.map(m => `
+                    <div onclick="UI.showCourse('${m.id}')" class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-lg border-l-8 border-blue-500 cursor-pointer active:scale-95 transition-all">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[8px] font-black text-blue-500 uppercase tracking-widest">${m.type}</span>
+                            <div class="flex flex-wrap gap-1 justify-end">
+                                ${(m.tags || []).map(t => `<span class="tag-badge">${t}</span>`).join('')}
+                            </div>
+                        </div>
+                        <p class="font-bold dark:text-white">${this.highlight(m.title, val)}</p>
+                        ${m.subtitle ? `<p class="text-[10px] text-slate-400 mt-1 italic">${this.highlight(m.subtitle, val)}</p>` : ''}
+                    </div>`).join('') || '<p class="text-center py-10 opacity-30 italic">Aucun résultat pour cette recherche...</p>';
+            },
+
+            highlight(text, q) {
+                const regex = new RegExp(`(${q})`, 'gi');
+                return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+            },
+            clear() { document.getElementById('search-input').value = ''; this.query(''); }
+        };
+
+        /**
+         * 3. PROFILS ENGINE
+         */
         const Profiles = {
             current: null,
             getAll() { return JSON.parse(localStorage.getItem('falah_profiles') || '[]'); },
@@ -223,13 +257,14 @@
                 if (id === 'guest') this.current = { id: 'guest', name: 'Invité', emoji: '🔓' };
                 else this.current = this.getAll().find(p => p.id === id);
                 localStorage.setItem('falah_last_profile', id);
+                document.getElementById('screen-profiles').classList.add('hidden');
                 UI.show('screen-menu');
             },
             renderList() {
                 const profiles = this.getAll();
                 document.getElementById('profiles-list').innerHTML = profiles.map(p => `
-                    <div onclick="Profiles.select('${p.id}')" class="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-lg text-center relative active:scale-95 transition-transform">
-                        <div class="text-3xl mb-2">${p.emoji}</div>
+                    <div onclick="Profiles.select('${p.id}')" class="bg-white dark:bg-slate-900 p-4 rounded-3xl shadow-lg text-center relative active:scale-95 transition-transform">
+                        <div class="text-3xl mb-1">${p.emoji}</div>
                         <p class="font-black text-[10px] truncate uppercase dark:text-white">${p.name}</p>
                     </div>`).join('');
             },
@@ -238,6 +273,9 @@
             saveData(d) { localStorage.setItem(`data_${this.current.id}`, JSON.stringify(d)); }
         };
 
+        /**
+         * 4. UI ENGINE
+         */
         const UI = {
             show(id) {
                 document.querySelectorAll('section, main').forEach(s => s.classList.add('hidden'));
@@ -251,7 +289,7 @@
                 const v = d.classList.toggle('open');
                 document.getElementById('drawer-overlay').style.display = v ? 'block' : 'none';
                 if(v) {
-                    document.getElementById('drawer-profile-info').innerHTML = `<div class="text-2xl">${Profiles.current.emoji}</div> <div><p class="font-black text-sm">${Profiles.current.name}</p><p class="text-[8px] uppercase font-bold text-blue-500">Apprenti Falah</p></div>`;
+                    document.getElementById('drawer-profile-info').innerHTML = `<span>${Profiles.current.emoji}</span> <span>${Profiles.current.name}</span>`;
                     document.getElementById('dark-mode-btn').innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
                 }
             },
@@ -269,7 +307,7 @@
                     <div class="bg-white dark:bg-slate-800 p-8 rounded-[3rem] shadow-sm flex flex-col border border-slate-50 dark:border-slate-700">
                         <h3 class="font-black text-lg mb-6 dark:text-white leading-tight">${m.title}</h3>
                         <div class="flex gap-3 mt-auto">
-                            <button onclick="UI.showCourse('${id}')" class="flex-1 py-4 bg-slate-50 dark:bg-slate-700 rounded-2xl font-bold text-[10px] uppercase">Cours</button>
+                            <button onclick="UI.showCourse('${id}')" class="flex-1 py-4 bg-slate-50 dark:bg-slate-700 rounded-2xl font-bold text-[10px] uppercase dark:text-white">Cours</button>
                             <button onclick="Game.start('${id}')" class="flex-1 py-4 bg-blue-900 text-white rounded-2xl font-black text-[10px] uppercase shadow-lg">Défi</button>
                         </div>
                     </div>`).join('');
@@ -284,6 +322,9 @@
             toggleAccordion(el) { el.nextElementSibling.classList.toggle('active'); }
         };
 
+        /**
+         * 5. GAME ENGINE (TACTILE)
+         */
         const Game = {
             modId: null, exercises: [], currentIdx: 0, userAnswers: [], score: 0, state: 'playing',
             draggedVal: null, ghost: null,
@@ -301,7 +342,7 @@
                 document.getElementById('game-phrase').innerHTML = ex.phrase.map((w, i) => `
                     <div class="flex items-center gap-3 w-full">
                         <div class="arabic flex-1 bg-white dark:bg-slate-800 p-4 rounded-3xl border shadow-sm text-center">${w}</div>
-                        <div id="slot-${i}" class="drop-zone flex-1">Placer</div>
+                        <div id="slot-${i}" class="drop-zone flex-1 uppercase text-[9px] font-black opacity-30">Placer</div>
                     </div>`).join('');
                 const optCont = document.getElementById('game-options');
                 optCont.innerHTML = '';
