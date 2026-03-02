@@ -13,13 +13,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        /* --- STYLE & NAVIGATION --- */
         .hidden { display: none !important; }
 
         :root {
-            --bg-main: #ffffff; --bg-card: #ffffff; --text-main: #1e293b; --text-muted: #64748b;
-            --primary-blue: #004d99; --accent-blue: #0066cc; --border-color: #e2e8f0;
-            --note-bg: #e6f7ff; --table-header: #004d99; --slot-bg: #f8fafc;
+            --bg-main: #ffffff; --bg-card: #ffffff; --text-main: #0f172a; --text-muted: #64748b;
+            --primary-blue: #004d99; --accent-blue: #0066cc; --border-color: #f1f5f9;
+            --note-bg: #f8fafc; --table-header: #004d99; --slot-bg: #f8fafc;
         }
 
         body.dark-mode {
@@ -28,34 +27,35 @@
             --note-bg: #1e293b; --table-header: #075985; --slot-bg: #0f172a;
         }
 
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); transition: all 0.3s ease; overflow-x: hidden; touch-action: none; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); transition: background 0.3s ease; overflow-x: hidden; touch-action: none; }
 
         /* --- VISUEL --- */
-        .arabic { font-family: 'Lateef', serif; direction: rtl; font-size: 2.8rem; font-weight: 700; }
+        .arabic { font-family: 'Lateef', serif; direction: rtl; font-size: 2.8rem; font-weight: 700; color: var(--text-main); }
         .arabic-table { font-family: 'Lateef', serif; font-size: 2rem; font-weight: 700; line-height: 1; }
         h1 { color: var(--primary-blue); font-weight: 900; }
 
         /* --- DRAG & DROP NATUREL --- */
-        .drop-zone { border: 2px dashed var(--text-muted); border-radius: 15px; height: 5.5rem; display: flex; align-items: center; justify-content: center; background: var(--bg-card); transition: 0.2s; text-transform: uppercase; color: var(--text-muted); font-weight: 700; font-size: 0.75rem; }
+        .drop-zone { border: 2px dashed var(--border-color); border-radius: 15px; height: 5.5rem; display: flex; align-items: center; justify-content: center; background: var(--slot-bg); transition: 0.2s; text-transform: uppercase; color: var(--text-muted); font-weight: 800; font-size: 0.7rem; }
         .drop-zone.active-target { border-color: var(--accent-blue); background-color: var(--note-bg); border-style: solid; transform: scale(1.02); }
-        .slot-filled { border: 3px solid var(--primary-blue); background: var(--note-bg); color: var(--primary-blue); font-family: 'Lateef'; font-size: 2.2rem; font-weight: 700; border-radius: 15px; }
+        .slot-filled { border: 3px solid var(--primary-blue); background: var(--bg-card); color: var(--primary-blue); font-family: 'Lateef'; font-size: 2.2rem; font-weight: 700; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .slot-correct { border: 4px solid #22c55e !important; background: #f0fdf4 !important; color: #166534 !important; }
         .slot-wrong { border: 4px solid #ef4444 !important; background: #fef2f2 !important; color: #991b1b !important; }
         .draggable-label { font-family: 'Lateef', serif; font-size: 2rem; font-weight: 700; background: var(--bg-card); border: 2px solid var(--primary-blue); border-radius: 20px; padding: 10px 24px; cursor: grab; user-select: none; display: inline-flex; align-items: center; justify-content: center; min-height: 4.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); color: var(--text-main); }
+        
         .drag-ghost { position: fixed; pointer-events: none; z-index: 9999; opacity: 0.95; transform: translate(-50%, -50%); background: var(--bg-card); border: 3px solid var(--primary-blue); border-radius: 20px; padding: 10px 24px; font-family: 'Lateef'; font-size: 2.2rem; box-shadow: 0 20px 40px rgba(0,0,0,0.3); color: var(--text-main); }
 
         /* --- TABLEAUX --- */
-        .table-container { width: 100%; overflow-x: auto; margin: 25px 0; border: 1px solid var(--primary-blue); border-radius: 12px; background: var(--bg-card); }
+        .table-container { width: 100%; overflow-x: auto; margin: 25px 0; border: 1px solid var(--border-color); border-radius: 12px; background: var(--bg-card); }
         table { width: 100%; border-collapse: collapse; min-width: 800px; }
         th { color: white; background: var(--table-header); padding: 15px 10px; border: 1px solid var(--border-color); font-size: 0.8rem; text-transform: uppercase; }
         td { padding: 12px 10px; border: 1px solid var(--border-color); text-align: center; font-size: 0.95rem; color: var(--text-main); }
 
-        /* --- UI COMPONENTS --- */
+        /* --- UI --- */
         #settings-drawer { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: var(--bg-card); z-index: 1000; transition: 0.4s; padding: 2rem; box-shadow: 10px 0 50px rgba(0,0,0,0.1); }
         #settings-drawer.open { left: 0; }
         #drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; z-index: 900; backdrop-filter: blur(2px); }
         .course-section { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.4s ease; }
-        .course-section.active { max-height: 10000px; opacity: 1; }
+        .course-section.active { max-height: 20000px; opacity: 1; }
         mark.search-highlight { background: #fef08a; color: #854d0e; padding: 0 2px; border-radius: 4px; font-weight: bold; }
 
         ::-webkit-scrollbar { display: none; }
@@ -67,7 +67,7 @@
     <div id="drawer-overlay" onclick="UI.toggleDrawer()"></div>
 
     <div id="update-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[2000] w-[90%] max-w-sm bg-blue-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between animate-bounce">
-        <div class="text-xs font-bold">Mise à jour disponible !</div>
+        <div class="text-xs font-bold">Mise à jour prête !</div>
         <button onclick="window.location.reload()" class="bg-white text-blue-900 px-3 py-1 rounded-lg text-[10px] font-black uppercase">Appliquer</button>
     </div>
     
@@ -78,7 +78,7 @@
         </div>
         <div class="space-y-6">
             <div class="flex items-center justify-between">
-                <span class="font-bold text-sm">Mode Jour</span>
+                <span class="font-bold text-sm">Mode Jour / Nuit</span>
                 <button onclick="UI.toggleDark()" id="dark-mode-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-xl shadow-sm">☀️</button>
             </div>
             <div class="flex items-center justify-between">
@@ -90,7 +90,7 @@
 
     <main id="screen-menu" class="min-h-screen p-4 max-w-5xl mx-auto overflow-y-auto pb-24">
         <header class="flex justify-between items-center py-6 mb-4 gap-4 border-b-4 border-blue-900/10">
-            <button onclick="UI.toggleDrawer()" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xl border">☰</button>
+            <button onclick="UI.toggleDrawer()" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xl border border-slate-100 dark:border-slate-700">☰</button>
             
             <svg width="45" height="55" viewBox="0 0 437 275" fill="none" class="shrink-0">
                 <path d="M131 0C120 1 113 15 115 25C117 35 125 40 135 40C145 40 152 32 153 23C150 30 142 32 133 28C123 22 126 6 131 0Z" fill="#B7A12E" />
@@ -99,11 +99,11 @@
             </svg>
 
             <div class="text-center flex-1">
-                <h1 id="user-welcome" class="text-lg font-black dark:text-white uppercase italic leading-none border-none">Falah Academy</h1>
+                <h1 class="text-lg font-black dark:text-white uppercase italic leading-none border-none">Falah Academy</h1>
                 <div id="points-val" class="text-[9px] font-bold text-blue-500 uppercase mt-2 tracking-widest">💎 0 Points récoltés</div>
             </div>
             
-            <button onclick="UI.show('screen-search')" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xl border">🔍</button>
+            <button onclick="UI.show('screen-search')" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xl border border-slate-100 dark:border-slate-700">🔍</button>
         </header>
         <div id="module-container" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-4"></div>
     </main>
@@ -134,12 +134,14 @@
             <div id="game-progress-dots" class="flex gap-1.5"></div>
             <button onclick="SmartTutor.toggle()" class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-xl shadow-lg">🤖</button>
         </nav>
+        
         <div class="flex-1 p-4 flex flex-col items-center overflow-y-auto">
             <div id="ai-chat" class="hidden w-full max-w-md p-4 mb-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl border border-indigo-100 text-xs italic leading-relaxed"></div>
             <div id="game-translation" class="w-full max-w-md p-8 bg-blue-50 dark:bg-slate-800/50 rounded-[3rem] text-center italic text-blue-900 dark:text-blue-100 mb-8 border shadow-inner"></div>
             <div id="game-phrase" class="w-full max-w-md flex flex-col gap-6 mb-12"></div>
             <div id="game-options" class="w-full max-w-md flex flex-wrap justify-center gap-3 mt-auto pb-24"></div>
         </div>
+
         <footer class="p-6 bg-white dark:bg-slate-900 border-t shadow-xl">
             <div id="game-feedback" class="hidden mb-4 p-5 rounded-[2rem] text-white font-black text-center shadow-lg transition-all"></div>
             <button id="btn-check" onclick="Game.handleAction()" class="w-full py-6 bg-blue-900 text-white rounded-[2.5rem] font-black uppercase tracking-widest shadow-xl disabled:opacity-20 active:scale-95 transition-transform">VÉRIFIER</button>
@@ -3960,20 +3962,20 @@
 
         const UI = {
             show(id) {
+                // Masquage total et forcé de tous les écrans
                 const screens = ['screen-menu', 'screen-search', 'screen-course', 'screen-game', 'screen-result'];
                 screens.forEach(s => {
                     const el = document.getElementById(s);
-                    if(el) { el.classList.add('hidden'); el.style.display = 'none'; }
+                    if(el) {
+                        el.classList.add('hidden');
+                        el.style.display = 'none';
+                    }
                 });
 
                 const target = document.getElementById(id);
                 if (target) {
                     target.classList.remove('hidden');
                     target.style.display = (id === 'screen-menu') ? 'block' : 'flex';
-                    if (id === 'screen-menu') {
-                        document.getElementById('points-val').innerText = `💎 ${AppState.points} Points récoltés`;
-                        this.renderModules();
-                    }
                 }
                 window.scrollTo(0,0);
                 applyDarkModeStyles();
@@ -3990,10 +3992,10 @@
             },
             renderModules() {
                 document.getElementById('module-container').innerHTML = Object.entries(DATA.modules).map(([id, m]) => `
-                    <div class="bg-white dark:bg-slate-800 p-8 rounded-[3rem] shadow-sm flex flex-col border">
+                    <div class="bg-white dark:bg-slate-800 p-8 rounded-[3rem] shadow-sm flex flex-col border border-slate-50 dark:border-slate-700">
                         <h3 class="font-black text-lg mb-6 dark:text-white leading-tight uppercase tracking-tighter">${m.title}</h3>
                         <div class="flex gap-3 mt-auto">
-                            <button onclick="UI.showCourse('${id}')" class="flex-1 py-4 bg-slate-50 dark:bg-slate-700 rounded-2xl font-bold text-[10px] uppercase">Cours</button>
+                            <button onclick="UI.showCourse('${id}')" class="flex-1 py-4 bg-slate-50 dark:bg-slate-700 rounded-2xl font-bold text-[10px] uppercase dark:text-white">Cours</button>
                             <button onclick="Game.start('${id}')" class="flex-1 py-4 bg-blue-900 text-white rounded-2xl font-black text-[10px] uppercase shadow-lg">Défi</button>
                         </div>
                     </div>`).join('');
@@ -4048,7 +4050,7 @@
                     this.moveGhost(x, y);
                     document.querySelectorAll('.drop-zone').forEach(z => z.style.borderColor = '');
                     const target = document.elementFromPoint(x, y);
-                    if (target && target.classList.contains('drop-zone')) target.style.borderColor = 'blue';
+                    if (target && target.classList.contains('drop-zone')) target.style.borderColor = '#0066cc';
                 };
                 const onEnd = (ev) => {
                     const x = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
@@ -4074,12 +4076,13 @@
                     this.state = 'checked';
                     const fb = document.getElementById('game-feedback'); fb.classList.remove('hidden');
                     fb.innerText = win ? "✨ EXCELLENT !" : "❌ RÉESSAYE !";
-                    fb.className = `mb-4 p-5 rounded-3xl font-black block shadow-lg ${win?'bg-green-600':'bg-red-600'}`;
+                    fb.className = `mb-4 p-5 rounded-3xl font-black block ${win?'bg-green-600':'bg-red-600'}`;
                     this.userAnswers.forEach((a, i) => document.getElementById(`slot-${i}`).classList.add(a === this.exercises[this.currentIdx].correct[i] ? 'slot-correct' : 'slot-wrong'));
                     if(win) { this.score++; confetti({ particleCount: 30, origin:{y:0.8}}); }
                     document.getElementById('btn-check').innerText = "CONTINUER";
                 } else {
-                    if(++this.currentIdx < this.exercises.length) this.loadExercise(); else { AppState.savePoints(this.score * 10); UI.show('screen-result'); document.getElementById('result-score-val').innerText = `+${this.score * 10}`; }
+                    if(++this.currentIdx < this.exercises.length) this.loadExercise(); 
+                    else { AppState.savePoints(this.score * 10); UI.show('screen-result'); document.getElementById('result-score-val').innerText = `+${this.score * 10}`; }
                 }
             }
         };
@@ -4090,12 +4093,12 @@
                 if (!q || q.length < 2) { res.innerHTML = ''; return; }
                 const val = q.toLowerCase().trim();
                 const matches = Object.values(DATA.modules).filter(m => m.title.toLowerCase().includes(val) || (m.tags && m.tags.some(t => t.includes(val))));
-                res.innerHTML = matches.map(m => `<div onclick="UI.showCourse('${m.id}', '${val}')" class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-lg border-l-8 border-blue-500 cursor-pointer font-bold dark:text-white">${m.title}</div>`).join('');
+                res.innerHTML = matches.map(m => `<div onclick="UI.showCourse('${m.id}', '${val}')" class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-lg border-l-8 border-blue-500 cursor-pointer font-bold dark:text-white"><span class="text-[8px] font-black text-blue-500 uppercase">Module</span><p>${this.highlight(m.title, val)}</p></div>`).join('');
             },
             highlight(text, q) { const regex = new RegExp(`(${q})`, 'gi'); return text.replace(regex, '<mark class="search-highlight">$1</mark>'); }
         };
 
-        const SmartTutor = { toggle() { document.getElementById('ai-chat').classList.toggle('hidden'); document.getElementById('ai-chat').innerText = "🤖 Astuce : Analyse les voyelles finales !"; } };
+        const SmartTutor = { toggle() { document.getElementById('ai-chat').classList.toggle('hidden'); document.getElementById('ai-chat').innerText = "🤖 Astuce : Analyse les voyelles finales pour trouver l'état du nom !"; } };
 
         function applyDarkModeStyles() {
             const isDark = document.body.classList.contains('dark-mode');
