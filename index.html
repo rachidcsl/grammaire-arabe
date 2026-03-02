@@ -87,9 +87,41 @@
             <button onclick="UI.toggleDrawer()" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xl border border-slate-100 dark:border-slate-700">☰</button>
             
             <svg width="45" height="55" viewBox="0 0 437 275" fill="none" class="shrink-0">
-                <path d="M131 0C120 1 113 15 115 25C117 35 125 40 135 40C145 40 152 32 153 23C150 30 142 32 133 28C123 22 126 6 131 0Z" fill="#B7A12E" />
-                <path d="M129.5 48 Q 105 78, 73 97 V189 H189 V97 Q 155 78, 129.5 48 Z" fill="#1F9E75" />
-                <text x="5" y="242" font-family="Arial Black" font-size="50" font-weight="900" fill="#B7A12E" textLength="427">FALAH-E-DARAINE</text>
+               <defs>
+                    <mask id="hole">
+                        <rect width="437" height="279" fill="white" />
+                        <path d="M85 189 V138 H176 V189 H85 Z" fill="black" />
+                    </mask>
+                </defs>
+                <path
+                    d="M131 0C120 1 113 15 115 25C117 35 125 40 135 40C145 40 152 32 153 23C150 30 142 32 133 28C123 22 126 6 131 0Z"
+                    fill="#B7A12E" />
+
+                <path d="M129.5 48 Q 105 78, 73 97 V189 H189 V97 Q 155 78, 129.5 48 Z" fill="#1F9E75"
+                    mask="url(#hole)" />
+                <path d="M5 189V172.5C10 148.5 21 123.5 27.5 114V189H5Z" fill="#1F9E75" />
+                <path d="M234.5 115C245 129 251 147.5 256 170.5V189H234.5V115Z" fill="#1F9E75" />
+
+                <rect x="39" y="167" width="23" height="22" fill="#1F9E75" />
+                <rect x="200" y="167" width="23" height="22" fill="#1F9E75" />
+
+                <g fill="#B7A12E" transform="translate(0, -5)">
+                    <path
+                        d="M95 158 Q 115 165, 131 170 Q 147 165, 167 158 L 162 162 Q 145 168, 131 173 Q 117 168, 100 162 Z" />
+                    <path
+                        d="M90 160 L 131 176 L 172 160 L 168 165 L 134 179 L 158 190 L 153 193 L 131 183 L 109 193 L 104 190 L 128 179 L 94 165 Z" />
+                </g>
+
+                <text x="430" y="185" font-family="Arial, sans-serif" font-size="44" fill="#B7A12E" text-anchor="end"
+                    font-weight="bold">
+                    <tspan>فلا</tspan>
+                    <tspan dy="11">ح</tspan>
+                    <tspan dy="-11"> دارين</tspan>
+                </text>
+                <text x="5" y="242" font-family="Arial Black, sans-serif" font-size="50" font-weight="900"
+                    fill="#B7A12E" textLength="427" lengthAdjust="spacingAndGlyphs">FALAH-E-DARAINE</text>
+                <text x="5" y="274" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#117456"
+                    textLength="427" lengthAdjust="spacing">La réussite dans les deux mondes</text>
             </svg>
 
             <div class="text-center flex-1">
