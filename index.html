@@ -13,8 +13,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        /* --- FORÇAGE NAVIGATION --- */
-        .hidden { display: none !important; visibility: hidden !important; pointer-events: none !important; }
+        /* --- STYLE & NAVIGATION --- */
+        .hidden { display: none !important; }
 
         :root {
             --bg-main: #ffffff; --bg-card: #ffffff; --text-main: #1e293b; --text-muted: #64748b;
@@ -41,10 +41,16 @@
         .slot-filled { border: 3px solid var(--primary-blue); background: var(--note-bg); color: var(--primary-blue); font-family: 'Lateef'; font-size: 2.2rem; font-weight: 700; border-radius: 15px; }
         .slot-correct { border: 4px solid #22c55e !important; background: #f0fdf4 !important; color: #166534 !important; }
         .slot-wrong { border: 4px solid #ef4444 !important; background: #fef2f2 !important; color: #991b1b !important; }
-        .draggable-label { font-family: 'Lateef', serif; font-size: 2rem; font-weight: 700; background: var(--bg-card); border: 2px solid var(--primary-blue); border-radius: 20px; padding: 10px 24px; cursor: grab; user-select: none; display: inline-flex; align-items: center; justify-content: center; min-height: 4.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .draggable-label { font-family: 'Lateef', serif; font-size: 2rem; font-weight: 700; background: var(--bg-card); border: 2px solid var(--primary-blue); border-radius: 20px; padding: 10px 24px; cursor: grab; user-select: none; display: inline-flex; align-items: center; justify-content: center; min-height: 4.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.05); color: var(--text-main); }
         .drag-ghost { position: fixed; pointer-events: none; z-index: 9999; opacity: 0.95; transform: translate(-50%, -50%); background: var(--bg-card); border: 3px solid var(--primary-blue); border-radius: 20px; padding: 10px 24px; font-family: 'Lateef'; font-size: 2.2rem; box-shadow: 0 20px 40px rgba(0,0,0,0.3); color: var(--text-main); }
 
-        /* --- UI --- */
+        /* --- TABLEAUX --- */
+        .table-container { width: 100%; overflow-x: auto; margin: 25px 0; border: 1px solid var(--primary-blue); border-radius: 12px; background: var(--bg-card); }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th { color: white; background: var(--table-header); padding: 15px 10px; border: 1px solid var(--border-color); font-size: 0.8rem; text-transform: uppercase; }
+        td { padding: 12px 10px; border: 1px solid var(--border-color); text-align: center; font-size: 0.95rem; color: var(--text-main); }
+
+        /* --- UI COMPONENTS --- */
         #settings-drawer { position: fixed; top: 0; left: -100%; width: 300px; height: 100%; background: var(--bg-card); z-index: 1000; transition: 0.4s; padding: 2rem; box-shadow: 10px 0 50px rgba(0,0,0,0.1); }
         #settings-drawer.open { left: 0; }
         #drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; z-index: 900; backdrop-filter: blur(2px); }
@@ -61,33 +67,28 @@
     <div id="drawer-overlay" onclick="UI.toggleDrawer()"></div>
 
     <div id="update-toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[2000] w-[90%] max-w-sm bg-blue-900 text-white p-4 rounded-2xl shadow-2xl flex items-center justify-between animate-bounce">
-        <div class="text-xs font-bold">Mise à jour prête !</div>
+        <div class="text-xs font-bold">Mise à jour disponible !</div>
         <button onclick="window.location.reload()" class="bg-white text-blue-900 px-3 py-1 rounded-lg text-[10px] font-black uppercase">Appliquer</button>
     </div>
     
     <aside id="settings-drawer" class="dark:bg-slate-900">
         <div class="flex justify-between items-center mb-10">
-            <h2 class="text-xl font-black uppercase italic">Menu</h2>
+            <h2 class="text-xl font-black uppercase italic tracking-tighter">Réglages</h2>
             <button onclick="UI.toggleDrawer()" class="text-2xl opacity-20">✕</button>
         </div>
-        <div id="drawer-profile-info" class="mb-10 p-4 bg-blue-50 dark:bg-slate-800 rounded-3xl flex items-center gap-3"></div>
         <div class="space-y-6">
-            <div class="flex items-center justify-between"><span class="font-bold text-sm">Mode Jour</span><button onclick="UI.toggleDark()" id="dark-mode-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-xl shadow-sm">☀️</button></div>
+            <div class="flex items-center justify-between">
+                <span class="font-bold text-sm">Mode Jour</span>
+                <button onclick="UI.toggleDark()" id="dark-mode-btn" class="p-2 bg-slate-100 dark:bg-slate-800 rounded-xl shadow-sm">☀️</button>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="font-bold text-sm">Assistant IA</span>
+                <div class="w-10 h-5 bg-green-500 rounded-full"></div>
+            </div>
         </div>
-        <button onclick="Profiles.reset()" class="w-full mt-24 py-4 text-slate-400 font-bold text-[10px] uppercase border border-slate-100 dark:border-slate-800 rounded-2xl">Déconnexion / Changer</button>
     </aside>
 
-    <section id="screen-profiles" class="fixed inset-0 bg-white dark:bg-slate-950 z-[500] flex flex-col items-center justify-center p-8">
-        <div class="text-7xl mb-8 text-blue-900 dark:text-blue-500">🌟</div>
-        <h2 class="text-3xl font-black mb-10 text-center dark:text-white uppercase tracking-tighter">Falah Academy</h2>
-        <div id="profiles-list" class="grid grid-cols-2 gap-4 w-full max-w-sm mb-8"></div>
-        <div class="w-full max-w-sm flex flex-col gap-3">
-            <button onclick="Profiles.add()" class="py-5 bg-blue-900 text-white rounded-3xl font-black uppercase text-[10px] tracking-widest shadow-xl">Créer un profil</button>
-            <button onclick="Profiles.skip()" class="py-3 text-slate-400 font-bold uppercase text-[9px] text-center underline">Continuer en Invité</button>
-        </div>
-    </section>
-
-    <main id="screen-menu" class="hidden min-h-screen p-4 max-w-5xl mx-auto overflow-y-auto pb-24">
+    <main id="screen-menu" class="min-h-screen p-4 max-w-5xl mx-auto overflow-y-auto pb-24">
         <header class="flex justify-between items-center py-6 mb-4 gap-4 border-b-4 border-blue-900/10">
             <button onclick="UI.toggleDrawer()" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xl border">☰</button>
             
@@ -98,8 +99,8 @@
             </svg>
 
             <div class="text-center flex-1">
-                <h1 id="user-welcome" class="text-lg font-black dark:text-white uppercase italic leading-none"></h1>
-                <div id="points-val" class="text-[9px] font-bold text-blue-500 uppercase mt-2 tracking-widest">💎 0 Points</div>
+                <h1 id="user-welcome" class="text-lg font-black dark:text-white uppercase italic leading-none border-none">Falah Academy</h1>
+                <div id="points-val" class="text-[9px] font-bold text-blue-500 uppercase mt-2 tracking-widest">💎 0 Points récoltés</div>
             </div>
             
             <button onclick="UI.show('screen-search')" class="p-3 bg-white dark:bg-slate-800 rounded-2xl shadow-sm text-xl border">🔍</button>
@@ -110,18 +111,21 @@
     <section id="screen-search" class="hidden fixed inset-0 bg-white dark:bg-slate-950 z-[200] flex flex-col p-6 overflow-y-auto">
         <header class="flex items-center gap-4 mb-8">
             <button onclick="UI.show('screen-menu')" class="text-2xl font-bold">←</button>
-            <input type="text" id="search-input" oninput="Search.query(this.value)" placeholder="Un mot, une règle..." class="flex-1 p-5 rounded-3xl bg-slate-50 dark:bg-slate-800 outline-none border">
+            <input type="text" id="search-input" oninput="Search.query(this.value)" placeholder="Arabe, français, tag..." class="flex-1 p-5 rounded-3xl bg-slate-50 dark:bg-slate-800 outline-none border">
         </header>
         <div id="search-results" class="flex flex-col gap-4"></div>
     </section>
 
     <section id="screen-course" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-40 flex flex-col overflow-y-auto">
         <nav class="p-4 border-b flex justify-between items-center sticky top-0 bg-white/95 dark:bg-slate-900/95 z-50">
-            <button onclick="UI.show('screen-menu')" class="font-black text-blue-900 dark:text-sky-400 text-xs uppercase">← Menu</button>
-            <h2 id="course-title" class="text-[10px] font-black uppercase text-slate-400"></h2>
-            <button id="btn-course-action" class="bg-blue-900 text-white px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase">Défi</button>
+            <button onclick="UI.show('screen-menu')" class="font-black text-blue-900 dark:text-sky-400 text-xs uppercase">← Retour</button>
+            <h2 id="course-title-header" class="text-[10px] font-black uppercase text-slate-400"></h2>
+            <button id="btn-course-action" class="bg-blue-900 text-white px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase shadow-lg">Défi</button>
         </nav>
-        <div class="p-6 md:p-12 max-w-6xl mx-auto w-full pb-32" id="course-body"></div>
+        <div class="p-6 md:p-12 max-w-6xl mx-auto w-full pb-32">
+            <h1 id="course-title-main" class="text-3xl font-black mb-10 pb-4 border-b-8 border-blue-50 dark:border-slate-800 text-center uppercase tracking-tighter"></h1>
+            <div id="course-body"></div>
+        </div>
     </section>
 
     <section id="screen-game" class="hidden fixed inset-0 bg-white dark:bg-slate-900 z-50 flex flex-col overflow-hidden">
@@ -130,21 +134,19 @@
             <div id="game-progress-dots" class="flex gap-1.5"></div>
             <button onclick="SmartTutor.toggle()" class="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-xl shadow-lg">🤖</button>
         </nav>
-        
         <div class="flex-1 p-4 flex flex-col items-center overflow-y-auto">
             <div id="ai-chat" class="hidden w-full max-w-md p-4 mb-4 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl border border-indigo-100 text-xs italic leading-relaxed"></div>
             <div id="game-translation" class="w-full max-w-md p-8 bg-blue-50 dark:bg-slate-800/50 rounded-[3rem] text-center italic text-blue-900 dark:text-blue-100 mb-8 border shadow-inner"></div>
             <div id="game-phrase" class="w-full max-w-md flex flex-col gap-6 mb-12"></div>
             <div id="game-options" class="w-full max-w-md flex flex-wrap justify-center gap-3 mt-auto pb-24"></div>
         </div>
-
         <footer class="p-6 bg-white dark:bg-slate-900 border-t shadow-xl">
             <div id="game-feedback" class="hidden mb-4 p-5 rounded-[2rem] text-white font-black text-center shadow-lg transition-all"></div>
             <button id="btn-check" onclick="Game.handleAction()" class="w-full py-6 bg-blue-900 text-white rounded-[2.5rem] font-black uppercase tracking-widest shadow-xl disabled:opacity-20 active:scale-95 transition-transform">VÉRIFIER</button>
         </footer>
     </section>
 
-    <section id="screen-result" class="hidden fixed inset-0 bg-slate-950 z-[300] flex flex-col items-center justify-center p-8 text-white text-center">
+    <section id="screen-result" class="hidden fixed inset-0 bg-slate-950 z-[200] flex flex-col items-center justify-center p-8 text-white text-center">
         <div class="text-8xl mb-8 animate-bounce">🏆</div>
         <h2 class="text-3xl font-black mb-10 uppercase italic">Félicitations !</h2>
         <div class="bg-blue-900 p-16 rounded-[4rem] mb-12 w-full max-w-xs shadow-2xl">
@@ -3951,78 +3953,25 @@
         
         };
 
-        /** * LOGIQUE PROFILS - FIXÉE POUR ÉVITER LE BLOCAGE
-         */
-        const Profiles = {
-            current: null,
-            init() {
-                const profiles = JSON.parse(localStorage.getItem('falah_profiles') || '[]');
-                const lastId = localStorage.getItem('falah_last_profile');
-                
-                if (lastId) {
-                    if (lastId === 'guest') { this.skip(); return; }
-                    const p = profiles.find(x => x.id === lastId);
-                    if (p) { this.select(p.id); return; }
-                }
-                
-                this.renderList();
-                UI.show('screen-profiles');
-            },
-            add() {
-                const name = prompt("Prénom :");
-                if (!name) return;
-                const profiles = JSON.parse(localStorage.getItem('falah_profiles') || '[]');
-                const id = 'p' + Date.now();
-                profiles.push({ id, name: name.trim(), emoji: '👤', points: 0 });
-                localStorage.setItem('falah_profiles', JSON.stringify(profiles));
-                this.renderList();
-            },
-            skip() {
-                this.current = { id: 'guest', name: 'Invité', emoji: '🔓', points: 0 };
-                localStorage.setItem('falah_last_profile', 'guest');
-                UI.show('screen-menu'); // Force l'ouverture
-            },
-            select(id) {
-                const profiles = JSON.parse(localStorage.getItem('falah_profiles') || '[]');
-                this.current = profiles.find(p => p.id === id);
-                localStorage.setItem('falah_last_profile', id);
-                UI.show('screen-menu'); // Force l'ouverture
-            },
-            renderList() {
-                const profiles = JSON.parse(localStorage.getItem('falah_profiles') || '[]');
-                const list = document.getElementById('profiles-list');
-                if (list) {
-                    list.innerHTML = profiles.map(p => `
-                        <div onclick="Profiles.select('${p.id}')" class="bg-white dark:bg-slate-900 p-5 rounded-3xl shadow-lg text-center relative border border-slate-100">
-                            <div class="text-3xl mb-1">👤</div>
-                            <p class="font-black dark:text-white text-[10px] uppercase truncate">${p.name}</p>
-                        </div>`).join('');
-                }
-            },
-            reset() { localStorage.removeItem('falah_last_profile'); location.reload(); }
+        const AppState = {
+            points: parseInt(localStorage.getItem('falah_points') || '0'),
+            savePoints(p) { this.points += p; localStorage.setItem('falah_points', this.points); }
         };
 
-        /**
-         * MOTEUR UI - NAVIGATION FORCÉE
-         */
         const UI = {
             show(id) {
-                // Masquage absolu par ID
-                const screens = ['screen-profiles', 'screen-menu', 'screen-search', 'screen-course', 'screen-game', 'screen-result'];
+                const screens = ['screen-menu', 'screen-search', 'screen-course', 'screen-game', 'screen-result'];
                 screens.forEach(s => {
                     const el = document.getElementById(s);
-                    if(el) {
-                        el.classList.add('hidden');
-                        el.style.display = 'none'; // Double sécurité
-                    }
+                    if(el) { el.classList.add('hidden'); el.style.display = 'none'; }
                 });
 
                 const target = document.getElementById(id);
                 if (target) {
                     target.classList.remove('hidden');
-                    target.style.display = (id === 'screen-menu' || id === 'screen-profiles') ? 'flex' : 'flex';
+                    target.style.display = (id === 'screen-menu') ? 'block' : 'flex';
                     if (id === 'screen-menu') {
-                        target.style.display = 'block'; // Menu est un block
+                        document.getElementById('points-val').innerText = `💎 ${AppState.points} Points récoltés`;
                         this.renderModules();
                     }
                 }
@@ -4033,9 +3982,6 @@
                 const d = document.getElementById('settings-drawer');
                 const v = d.classList.toggle('open');
                 document.getElementById('drawer-overlay').style.display = v ? 'block' : 'none';
-                if(v) {
-                    document.getElementById('drawer-profile-info').innerHTML = `<span>${Profiles.current.emoji}</span> <p class="font-black text-sm">${Profiles.current.name}</p>`;
-                }
             },
             toggleDark() {
                 const isDark = document.body.classList.toggle('dark-mode');
@@ -4043,12 +3989,9 @@
                 applyDarkModeStyles();
             },
             renderModules() {
-                const d = Profiles.current ? JSON.parse(localStorage.getItem(`data_${Profiles.current.id}`) || '{"points":0}') : {points:0};
-                document.getElementById('user-welcome').innerText = `Salam, ${Profiles.current.name}`;
-                document.getElementById('points-val').innerText = `💎 ${d.points} Points`;
                 document.getElementById('module-container').innerHTML = Object.entries(DATA.modules).map(([id, m]) => `
                     <div class="bg-white dark:bg-slate-800 p-8 rounded-[3rem] shadow-sm flex flex-col border">
-                        <h3 class="font-black text-lg mb-6 dark:text-white leading-tight">${m.title}</h3>
+                        <h3 class="font-black text-lg mb-6 dark:text-white leading-tight uppercase tracking-tighter">${m.title}</h3>
                         <div class="flex gap-3 mt-auto">
                             <button onclick="UI.showCourse('${id}')" class="flex-1 py-4 bg-slate-50 dark:bg-slate-700 rounded-2xl font-bold text-[10px] uppercase">Cours</button>
                             <button onclick="Game.start('${id}')" class="flex-1 py-4 bg-blue-900 text-white rounded-2xl font-black text-[10px] uppercase shadow-lg">Défi</button>
@@ -4057,13 +4000,15 @@
             },
             showCourse(id, q = null) {
                 const m = DATA.modules[id];
-                document.getElementById('course-title').innerText = m.title;
+                document.getElementById('course-title-header').innerText = m.title;
+                document.getElementById('course-title-main').innerText = m.title;
                 let c = m.course; if(q) c = Search.highlight(c, q);
                 document.getElementById('course-body').innerHTML = c;
                 document.getElementById('btn-course-action').onclick = () => Game.start(id);
                 this.show('screen-course');
+                document.querySelectorAll('#course-body h2').forEach(h => { const s = h.nextElementSibling; h.classList.add('collapsed'); s.classList.add('course-section'); h.onclick = () => { h.classList.toggle('open'); s.classList.toggle('active'); }; });
             },
-            toggleAccordion(el) { el.nextElementSibling.classList.toggle('active'); }
+            toggleAccordion(el) { el.classList.toggle('open'); el.nextElementSibling.classList.toggle('active'); }
         };
 
         const Game = {
@@ -4074,10 +4019,11 @@
                 const ex = this.exercises[this.currentIdx];
                 this.userAnswers = new Array(ex.phrase.length).fill(null);
                 this.state = 'playing';
+                document.getElementById('game-progress-dots').innerHTML = this.exercises.map((_, i) => `<div class="w-2 h-2 rounded-full ${i <= this.currentIdx ? 'bg-blue-900 dark:bg-sky-400' : 'bg-slate-200 dark:bg-slate-700'}"></div>`).join('');
                 document.getElementById('game-translation').innerText = ex.translation;
                 document.getElementById('game-phrase').innerHTML = ex.phrase.map((w, i) => `
                     <div class="flex items-center gap-3 w-full">
-                        <div class="arabic flex-1 bg-white dark:bg-slate-800 p-4 rounded-3xl border shadow-sm text-center" style="background-color: var(--bg-card); color: var(--text-main);">${w}</div>
+                        <div class="arabic flex-1 bg-white dark:bg-slate-800 p-8 rounded-[2rem] shadow-sm border text-center" style="background-color: var(--bg-card); color: var(--text-main);">${w}</div>
                         <div id="slot-${i}" class="drop-zone flex-1">Placer</div>
                     </div>`).join('');
                 const optCont = document.getElementById('game-options'); optCont.innerHTML = '';
@@ -4100,9 +4046,9 @@
                     const x = ev.touches ? ev.touches[0].clientX : ev.clientX;
                     const y = ev.touches ? ev.touches[0].clientY : ev.clientY;
                     this.moveGhost(x, y);
-                    document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('active-target'));
+                    document.querySelectorAll('.drop-zone').forEach(z => z.style.borderColor = '');
                     const target = document.elementFromPoint(x, y);
-                    if (target && target.classList.contains('drop-zone')) target.classList.add('active-target');
+                    if (target && target.classList.contains('drop-zone')) target.style.borderColor = 'blue';
                 };
                 const onEnd = (ev) => {
                     const x = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
@@ -4128,11 +4074,12 @@
                     this.state = 'checked';
                     const fb = document.getElementById('game-feedback'); fb.classList.remove('hidden');
                     fb.innerText = win ? "✨ EXCELLENT !" : "❌ RÉESSAYE !";
-                    fb.className = `mb-4 p-5 rounded-3xl font-black block ${win?'bg-green-600':'bg-red-600'}`;
+                    fb.className = `mb-4 p-5 rounded-3xl font-black block shadow-lg ${win?'bg-green-600':'bg-red-600'}`;
+                    this.userAnswers.forEach((a, i) => document.getElementById(`slot-${i}`).classList.add(a === this.exercises[this.currentIdx].correct[i] ? 'slot-correct' : 'slot-wrong'));
                     if(win) { this.score++; confetti({ particleCount: 30, origin:{y:0.8}}); }
                     document.getElementById('btn-check').innerText = "CONTINUER";
                 } else {
-                    if(++this.currentIdx < this.exercises.length) this.loadExercise(); else { UI.show('screen-result'); document.getElementById('result-score-val').innerText = `+${this.score * 10}`; }
+                    if(++this.currentIdx < this.exercises.length) this.loadExercise(); else { AppState.savePoints(this.score * 10); UI.show('screen-result'); document.getElementById('result-score-val').innerText = `+${this.score * 10}`; }
                 }
             }
         };
@@ -4142,7 +4089,7 @@
                 const res = document.getElementById('search-results');
                 if (!q || q.length < 2) { res.innerHTML = ''; return; }
                 const val = q.toLowerCase().trim();
-                const matches = Object.values(DATA.modules).filter(m => m.title.toLowerCase().includes(val));
+                const matches = Object.values(DATA.modules).filter(m => m.title.toLowerCase().includes(val) || (m.tags && m.tags.some(t => t.includes(val))));
                 res.innerHTML = matches.map(m => `<div onclick="UI.showCourse('${m.id}', '${val}')" class="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-lg border-l-8 border-blue-500 cursor-pointer font-bold dark:text-white">${m.title}</div>`).join('');
             },
             highlight(text, q) { const regex = new RegExp(`(${q})`, 'gi'); return text.replace(regex, '<mark class="search-highlight">$1</mark>'); }
@@ -4154,7 +4101,7 @@
             const isDark = document.body.classList.contains('dark-mode');
             document.querySelectorAll('[style]').forEach(el => {
                 let s = el.getAttribute('style');
-                if (isDark && s) s = s.replace(/#0066cc/g, 'var(--accent-blue)').replace(/#004d99/g, 'var(--primary-blue)').replace(/#e6f7ff/g, 'var(--note-bg)');
+                if (isDark && s) s = s.replace(/#0066cc/g, 'var(--accent-blue)').replace(/#004d99/g, 'var(--primary-blue)').replace(/#f5f5f5/g, 'var(--bg-card)').replace(/#e6f7ff/g, 'var(--note-bg)');
                 if(s) el.setAttribute('style', s);
             });
         }
@@ -4165,11 +4112,7 @@
                 navigator.serviceWorker.register('./sw.js').then(reg => {
                     reg.onupdatefound = () => {
                         const newWorker = reg.installing;
-                        newWorker.onstatechange = () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                document.getElementById('update-toast').classList.remove('hidden');
-                            }
-                        };
+                        newWorker.onstatechange = () => { if (newWorker.state === 'installed' && navigator.serviceWorker.controller) document.getElementById('update-toast').classList.remove('hidden'); };
                     };
                 });
             });
@@ -4177,7 +4120,7 @@
 
         document.addEventListener('DOMContentLoaded', () => { 
             if (localStorage.getItem('theme') !== 'light') document.body.classList.add('dark-mode'); 
-            Profiles.init(); 
+            UI.show('screen-menu'); 
         });
     </script>
 </body>
