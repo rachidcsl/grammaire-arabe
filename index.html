@@ -19,7 +19,7 @@
     <!-- Polices Google : Lateef (arabe) et Inter (latin/interface) -->
     <link href="https://fonts.googleapis.com/css2?family=Lateef:wght@400;700&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="js/modules/m1-game.js"></script>
-
+    <script src="js/utils.js"></script>
     <!-- Bibliothèque Canvas Confetti pour les effets visuels de célébration/confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -2354,11 +2354,11 @@
     <!-- SECTION 3: ÉCRAN JEU/EXERCICES - MODE INTERACTIF DRAG & DROP       -->
     <!-- ================================================================== -->
     <!-- Écran pour la pratique interactive avec système de glisser-déposer -->
-    <div id="screen-grammar" class="hidden min-h-screen p-4 flex flex-col items-center justify-center" style="background: var(--bg-main);">
-    <div class="w-full max-w-md bg-white p-8 rounded-[2.5rem] shadow-xl animate__animated animate__fadeIn">
+
+<div id="screen-grammar" class="hidden min-h-screen p-4 flex flex-col items-center justify-center" style="background: var(--bg-main);">
+    <div class="w-full max-w-md bg-white p-6 rounded-[2.5rem] shadow-xl">
         <div id="grammar-container"></div>
-        
-        <button onclick="location.reload()" class="mt-8 w-full py-4 text-gray-400 text-[10px] font-black uppercase tracking-widest border-2 border-gray-50 rounded-[1.2rem]">
+        <button onclick="location.reload()" class="mt-6 w-full py-3 text-gray-400 text-[10px] font-black uppercase tracking-widest">
             ⬅ Quitter l'exercice
         </button>
     </div>
@@ -7602,5 +7602,6 @@
 
 
 </html>
+
 
 
