@@ -2353,7 +2353,18 @@
     <!-- SECTION 3: ÉCRAN JEU/EXERCICES - MODE INTERACTIF DRAG & DROP       -->
     <!-- ================================================================== -->
     <!-- Écran pour la pratique interactive avec système de glisser-déposer -->
+    <div id="screen-grammar" class="hidden min-h-screen p-4 flex flex-col items-center justify-center" style="background: var(--bg-main);">
+    <div class="w-full max-w-md bg-white p-8 rounded-[2.5rem] shadow-xl animate__animated animate__fadeIn">
+        <div id="grammar-container"></div>
+        
+        <button onclick="location.reload()" class="mt-8 w-full py-4 text-gray-400 text-[10px] font-black uppercase tracking-widest border-2 border-gray-50 rounded-[1.2rem]">
+            ⬅ Quitter l'exercice
+        </button>
+    </div>
+</div>
 
+
+    
     <div id="screen-game" class="hidden min-h-screen flex flex-col">
         <!-- En-tête sticky avec progression -->
         <div class="border-b sticky top-0 z-40 shadow-sm">
@@ -6754,17 +6765,34 @@
          * @param {string} id - Identifiant du module
          */
         function startGame(id) {
-            currentModId = id;
-            currentIdx = 0;
-            score = 0;
-            userAnswers = [];
-            gameState = null;
-            loadedExerciseIdx = -1;
-            
-            document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden'));
-            document.getElementById('screen-game').classList.remove('hidden');
-            loadExercise();
+    currentModId = id;
+    currentIdx = 0;
+    score = 0;
+    userAnswers = [];
+    gameState = null;
+    loadedExerciseIdx = -1;
+    
+    // On cache tous les écrans
+    document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden'));
+
+    // ROUTAGE : Si c'est le module 1 (m1), on affiche l'écran du nouveau jeu
+    if (id === 'm1') {
+        const gameScreen = document.getElementById('screen-grammar');
+        gameScreen.classList.remove('hidden');
+        
+        // On lance le moteur de jeu spécifique au Module 1
+        if (window.launchModule1) {
+            window.launchModule1();
+        } else {
+            gameScreen.innerHTML = "<div class='p-8 text-center'>Chargement du module d'analyse...</div>";
         }
+    } else {
+        // Pour les autres modules, on garde ton ancien système
+        document.getElementById('screen-game').classList.remove('hidden');
+        loadExercise();
+    }
+}
+
 
         /**
          * Reprend une partie sauvegardée
@@ -7570,5 +7598,6 @@
 
     </script>
 </body>
+
 
 </html>
