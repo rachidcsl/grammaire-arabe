@@ -18,7 +18,7 @@ window.launchModule1 = function() {
         userSelections = {}; // Réinitialise les choix
 
         container.innerHTML = `
-            <div class="animate__animated animate__fadeIn">
+            <div class="animate__animated animate__fadeIn" style="background=(--bg-card)">
                 <p class="text-[10px] font-black text-blue-500 uppercase text-center mb-1 tracking-widest">Étape 1 : Découpage</p>
                 <h2 class="text-lg font-bold text-center mb-6" style="color: var(--text-main)">Isolez les segments si nécessaire</h2>
                 
