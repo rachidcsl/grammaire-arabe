@@ -20,7 +20,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Lateef:wght@400;700&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="js/modules/m1-game.js"></script>
     <script src="js/modules/m1-data.js"></script>
-    
+    <script src="js/modules/m2-data.js"></script>
+    <script src="js/modules/m2-game.js"></script>
+    <script src="js/modules/m3-data.js"></script>
+    <script src="js/modules/m3-game.js"></script> 
     <script src="js/utils.js"></script>
     <!-- Bibliothèque Canvas Confetti pour les effets visuels de célébration/confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -6768,33 +6771,32 @@
          * @param {string} id - Identifiant du module
          */
         function startGame(id) {
-    currentModId = id;
-    currentIdx = 0;
-    score = 0;
-    userAnswers = [];
-    gameState = null;
-    loadedExerciseIdx = -1;
-    
-    // On cache tous les écrans
-    document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden'));
+            currentModId = id;
+            currentIdx = 0;
+            score = 0;
+            userAnswers = [];
+            gameState = null;
+            loadedExerciseIdx = -1;
+            
+            // On cache tous les écrans
+            document.querySelectorAll('body > div').forEach(d => d.classList.add('hidden'));
 
-    // ROUTAGE : Si c'est le module 1 (m1), on affiche l'écran du nouveau jeu
-    if (id === 'm1') {
-        const gameScreen = document.getElementById('screen-grammar');
-        gameScreen.classList.remove('hidden');
-        
-        // On lance le moteur de jeu spécifique au Module 1
-        if (window.launchModule1) {
-            window.launchModule1();
-        } else {
-            gameScreen.innerHTML = "<div class='p-8 text-center'>Chargement du module d'analyse...</div>";
+            // ROUTAGE : Si c'est le module X, on affiche l'écran du nouveau jeu
+            if (id === 'm1') {
+                document.getElementById('screen-grammar').classList.remove('hidden');
+                window.launchModule1();
+            } else if (id === 'm2') {
+                document.getElementById('screen-grammar').classList.remove('hidden');
+                window.launchModule2(); // LANCEMENT DU MODULE 2               
+            } else if (id === 'm3') {
+                document.getElementById('screen-grammar').classList.remove('hidden');
+                window.launchModule3(); // LANCEMENT DU MODULE 3
+            } else {
+                // Pour les autres modules, on garde ton ancien système
+                document.getElementById('screen-game').classList.remove('hidden');
+                loadExercise();
+            }
         }
-    } else {
-        // Pour les autres modules, on garde ton ancien système
-        document.getElementById('screen-game').classList.remove('hidden');
-        loadExercise();
-    }
-}
 
 
         /**

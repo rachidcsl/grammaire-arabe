@@ -1,13 +1,17 @@
 /**
- * Moteur de Jeu - Module 1 (Calcul par mot réussi du premier coup)
+ * Moteur de Jeu - Module 1 : Étude du Ism
+ * Mise à jour : Tirage aléatoire des exercices à chaque lancement.
  */
 
 window.launchModule1 = function() {
     const container = document.getElementById('grammar-container');
     
+    // 1. Mélange des données pour rendre l'ordre aléatoire
+    const shuffledData = [...window.m1Data].sort(() => Math.random() - 0.5);
+    
     let currentIdx = 0;
-    let wordsWithErrors = 0; // Compte le nombre de mots où l'utilisateur a échoué au moins une fois
-    let currentWordHasError = false; // Flag pour savoir si le mot en cours a déjà subi une erreur
+    let wordsWithErrors = 0; // Compte les mots ratés (au moins une erreur)
+    let currentWordHasError = false; // Flag pour le mot en cours
     let userSelections = {};
 
     const labels = {
@@ -24,26 +28,34 @@ window.launchModule1 = function() {
     };
 
     function renderAnalysis() {
-        const item = window.m1Data[currentIdx];
+        const item = shuffledData[currentIdx];
         userSelections = {}; 
-        currentWordHasError = false; // Réinitialise le flag pour le nouveau mot
+        currentWordHasError = false;
+
+        // Affichage du pluriel brisé si présent (ex: ج : بِحَارٌ)
+        const pluralText = item.pluriel ? `<span class="text-2xl opacity-50" style="font-family: 'Lateef';"> (ج : ${item.pluriel})</span>` : '';
 
         container.innerHTML = `
-            <div class="animate__animated animate__fadeIn flex flex-col gap-6" dir="rtl">
+            <div class="animate__animated animate__fadeIn flex flex-col gap-4" dir="rtl">
                 <div class="flex justify-between items-center px-2" dir="ltr">
                     <span class="text-[10px] font-black text-blue-500 uppercase tracking-widest">
-                        Mot : ${currentIdx + 1} / ${window.m1Data.length}
+                        Mot : ${currentIdx + 1} / ${shuffledData.length}
                     </span>
                     <div class="h-1.5 w-20 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                        <div class="h-full bg-blue-500 transition-all duration-500" style="width: ${(currentIdx / window.m1Data.length) * 100}%"></div>
+                        <div class="h-full bg-blue-500 transition-all duration-500" style="width: ${(currentIdx / shuffledData.length) * 100}%"></div>
                     </div>
                 </div>
                 
-                <div class="text-7xl text-center py-6" style="font-family: 'Lateef'; color: var(--text-main); line-height: 1;">
-                    ${item.texte}
+                <div class="text-center">
+                    <div class="text-7xl" style="font-family: 'Lateef'; color: var(--text-main); line-height: 1.2;">
+                        ${item.texte}${pluralText}
+                    </div>
+                    <p class="text-lg italic opacity-70 mt-2" style="font-family: 'Inter'; color: var(--text-muted);" dir="ltr">
+                        ${item.traduction}
+                    </p>
                 </div>
                 
-                <div class="flex flex-col gap-5">
+                <div class="flex flex-col gap-5 mt-4">
                     <div>
                         <label class="prop-label">${labels.etat}</label>
                         <div class="grid grid-cols-3 gap-2">
@@ -58,7 +70,7 @@ window.launchModule1 = function() {
                     ${renderGroup(labels.definition, 'definition', [[labels.defini, 'defini'], [labels.indefini, 'indefini']])}
                 </div>
 
-                <button id="btn-verify" onclick="window.checkM1()" class="w-full py-4 mt-4 bg-blue-900 text-white rounded-[1.5rem] font-bold shadow-xl active:scale-95 transition-all text-2xl" style="font-family: 'Lateef';">
+                <button id="btn-verify" onclick="window.checkM1()" class="w-full py-4 mt-4 bg-blue-900 text-white rounded-[1.5rem] font-bold shadow-xl transition-all text-2xl" style="font-family: 'Lateef';">
                     ${labels.verifier}
                 </button>
             </div>
@@ -81,7 +93,7 @@ window.launchModule1 = function() {
     };
 
     window.checkM1 = function() {
-        const item = window.m1Data[currentIdx];
+        const item = shuffledData[currentIdx];
         const correct = item.reponse;
         let errorsInThisTry = 0;
 
@@ -101,24 +113,20 @@ window.launchModule1 = function() {
             confetti({ particleCount: 100, spread: 70, origin: { y: 0.7 } });
             currentIdx++;
 
-            if (currentIdx >= window.m1Data.length) {
-                // CALCUL DU SCORE FINAL : Total de mots - Nombre de mots ayant eu au moins une erreur
-                const finalScore = window.m1Data.length - wordsWithErrors;
-                
+            if (currentIdx >= shuffledData.length) {
+                const finalScore = shuffledData.length - wordsWithErrors;
                 if (typeof saveScoreToHistory === 'function') {
-                    saveScoreToHistory("Module 1 – Étude du Ism", finalScore, window.m1Data.length);
+                    saveScoreToHistory("Module 1 – Étude du Ism", finalScore, shuffledData.length);
                 }
                 setTimeout(renderEnd, 800);
             } else {
                 setTimeout(renderAnalysis, 1200);
             }
         } else {
-            // Si c'est la première erreur sur ce mot précis
             if (!currentWordHasError) {
-                wordsWithErrors++; // On comptabilise ce mot comme "échoué" pour le score final
-                currentWordHasError = true; // On marque le mot pour ne pas recompter les erreurs suivantes
+                wordsWithErrors++; 
+                currentWordHasError = true;
             }
-
             btn.classList.add('animate__animated', 'animate__headShake', 'bg-red-600');
             btn.innerText = `${labels.erreur} (${errorsInThisTry})`;
             setTimeout(() => {
@@ -129,17 +137,14 @@ window.launchModule1 = function() {
     };
 
     function renderEnd() {
-        const finalScore = window.m1Data.length - wordsWithErrors;
+        const finalScore = shuffledData.length - wordsWithErrors;
         container.innerHTML = `
             <div class="text-center p-6 animate__animated animate__bounceIn">
                 <div class="text-6xl mb-4">🏆</div>
-                <h2 class="text-3xl font-bold mb-4" style="color: var(--text-main); font-family: 'Lateef';">${labels.bravo}</h2>
-                <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-2xl mb-8">
-                    <p class="text-sm opacity-70 mb-1">Score final :</p>
-                    <p class="text-4xl font-black text-blue-600">${finalScore} / ${window.m1Data.length}</p>
-                    <p class="text-[10px] mt-2 uppercase tracking-widest ${wordsWithErrors > 0 ? 'text-red-500' : 'text-green-500'} font-bold">
-                        Mots avec erreurs : ${wordsWithErrors}
-                    </p>
+                <h2 class="text-3xl font-bold mb-4" style="color: var(--text-main); font-family: 'Lateef'; text-transform: uppercase;">أَحْسَنْتَ !</h2>
+                <div class="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-3xl mb-8">
+                    <p class="text-sm opacity-70 mb-1">Score final (Module 1) :</p>
+                    <p class="text-5xl font-black text-blue-600">${finalScore} / ${shuffledData.length}</p>
                 </div>
                 <button onclick="location.reload()" class="w-full py-4 bg-blue-900 text-white rounded-2xl font-bold">RETOUR AU MENU</button>
             </div>
