@@ -126,3 +126,53 @@ body.dark .btn-choice {
     display: flex;
     flex-direction: row-reverse;
 }
+
+/* --- Correction de Visibilité et Sizing --- */
+
+#grammar-container {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.btn-choice-ar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px; /* Hauteur pour les doigts */
+    background: var(--bg-main);
+    color: var(--text-main);
+    border: 2px solid rgba(0,0,0,0.1);
+    border-radius: 16px;
+    font-family: 'Lateef', serif;
+    font-size: 1.7rem; /* Taille pour lire les accents */
+    transition: all 0.2s;
+}
+
+.btn-choice-ar.selected {
+    background: #1e40af !important;
+    color: white !important;
+    border-color: #3b82f6;
+}
+
+.prop-label {
+    display: block;
+    font-family: 'Lateef', serif;
+    font-size: 1.2rem;
+    color: var(--text-main);
+    margin-bottom: 5px;
+    opacity: 0.8;
+}
+
+/* Grilles adaptatives */
+.grid-cols-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.grid-cols-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+/* Bouton Vérifier - Plus imposant */
+#btn-verify {
+    font-family: 'Lateef', serif;
+    font-size: 1.8rem;
+    height: 70px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+}

@@ -1,185 +1,150 @@
 /**
- * Moteur de Jeu - Module 1 : Propriétés de l'Ism
- * Gère le cycle de vie de l'exercice : Découpage -> Analyse -> Validation
+ * Moteur de Jeu - Module 1 (Calcul par mot réussi du premier coup)
  */
 
 window.launchModule1 = function() {
     const container = document.getElementById('grammar-container');
+    
     let currentIdx = 0;
+    let wordsWithErrors = 0; // Compte le nombre de mots où l'utilisateur a échoué au moins une fois
+    let currentWordHasError = false; // Flag pour savoir si le mot en cours a déjà subi une erreur
     let userSelections = {};
 
-    /**
-     * ÉTAPE 1 : LE DÉCOUPAGE (SLICING)
-     * Affiche le mot attaché avec des zones de coupe superposées
-     */
-    function renderStep1() {
-        const item = window.m1Data[currentIdx];
-        const blocks = window.getArabicBlocks(item.texte);
-        userSelections = {}; // Réinitialise les choix
-
-        container.innerHTML = `
-            <div class="animate__animated animate__fadeIn" style="background=(--bg-card)">
-                <p class="text-[10px] font-black text-blue-500 uppercase text-center mb-1 tracking-widest">Étape 1 : Découpage</p>
-                <h2 class="text-lg font-bold text-center mb-6" style="color: var(--text-main)">Isolez les segments si nécessaire</h2>
-                
-                <div class="flex justify-center">
-                    <div class="slicer-wrapper">
-                        <div class="arabic-word-base">${item.texte}</div>
-                        
-                        <div class="slicer-overlay">
-                            ${blocks.map((b, i) => `
-                                <div class="block-zone">
-                                    <div class="flex-1"></div>
-                                    ${i < blocks.length - 1 ? `
-                                        <div class="cutter-zone" onclick="this.classList.toggle('is-active')">
-                                            <div class="cutter-line"></div>
-                                        </div>
-                                    ` : ''}
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-8 p-4 rounded-2xl bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 text-xs text-center">
-                    Touchez entre les lettres pour marquer une séparation (ex: particules).
-                </div>
-
-                <button onclick="window.renderStep2()" class="w-full py-5 mt-6 bg-blue-900 text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-all">
-                    VALIDER LE DÉCOUPAGE
-                </button>
-            </div>
-        `;
-    }
-
-    /**
-     * ÉTAPE 2 : L'ANALYSE (TAGGING)
-     * Propose les 4 propriétés de l'Ism avec gestion de l'ambiguïté Nasb/Jarr
-     */
-    window.renderStep2 = function() {
-        const item = window.m1Data[currentIdx];
-        container.innerHTML = `
-            <div class="animate__animated animate__fadeIn text-right" dir="rtl">
-                <p class="text-[10px] font-black text-blue-500 uppercase text-center mb-1 tracking-widest" dir="ltr">Étape 2 : Analyse des propriétés</p>
-                <div class="text-5xl text-center py-8" style="font-family: 'Lateef'; color: var(--text-main)">${item.texte}</div>
-                
-                <div class="space-y-6">
-                    <div>
-                        <label class="prop-label">État (الإعراب)</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button class="btn-choice" data-key="etat" data-val="raf" onclick="window.selectM1Prop(this)">Raf'</button>
-                            <button class="btn-choice" data-key="etat" data-val="nasb" onclick="window.selectM1Prop(this)">Nasb</button>
-                            <button class="btn-choice" data-key="etat" data-val="jarr" onclick="window.selectM1Prop(this)">Jarr</button>
-                        </div>
-                    </div>
-
-                    ${renderPropGroup('Genre (الجنس)', 'genre', [['Masculin', 'masculin'], ['Féminin', 'feminin']])}
-                    
-                    ${renderPropGroup('Nombre (العدد)', 'nombre', [['Singulier', 'singulier'], ['Duel', 'duel'], ['Pluriel', 'pluriel']])}
-                    
-                    ${renderPropGroup('Type (التعريف)', 'definition', [['Défini', 'defini'], ['Indéfini', 'indefini']])}
-                </div>
-
-                <button onclick="window.checkM1Answer()" class="w-full py-5 mt-8 bg-green-600 text-white rounded-2xl font-bold shadow-lg active:scale-95 transition-all">
-                    VÉRIFIER LES RÉPONSES
-                </button>
-            </div>
-        `;
-    }
-
-    /**
-     * Génère dynamiquement les groupes de boutons de propriétés
-     */
-    function renderPropGroup(label, key, options) {
-        return `
-            <div>
-                <label class="prop-label">${label}</label>
-                <div class="grid grid-cols-${options.length} gap-2">
-                    ${options.map(opt => `
-                        <button class="btn-choice" data-key="${key}" data-val="${opt[1]}" onclick="window.selectM1Prop(this)">
-                            ${opt[0]}
-                        </button>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-
-    /**
-     * Gère la sélection visuelle des boutons
-     */
-    window.selectM1Prop = function(btn) {
-        const key = btn.dataset.key;
-        // On déselectionne les autres boutons du même groupe
-        btn.parentElement.querySelectorAll('.btn-choice').forEach(b => b.classList.remove('selected'));
-        // On sélectionne le bouton cliqué
-        btn.classList.add('selected');
-        // On enregistre le choix
-        userSelections[key] = btn.dataset.val;
+    const labels = {
+        etat: "الإِعْرَابُ",
+        raf: "رَفْعٌ", nasb: "نَصْبٌ", jarr: "جَرٌّ",
+        genre: "الجِنْسُ",
+        masculin: "مُذَكَّرٌ", feminin: "مُؤَنَّثٌ",
+        nombre: "العَدَدُ",
+        singulier: "مُفْرَدٌ", duel: "مُثَنَّى", pluriel: "جَمْعٌ",
+        definition: "التَّعْرِيفُ",
+        defini: "مَعْرِفَةٌ", indefini: "نَكِرَةٌ",
+        verifier: "تَحَقَّقْ مِنَ الإِجَابَةِ",
+        bravo: "أَحْسَنْتَ !", erreur: "خَطَأٌ"
     };
 
-    /**
-     * LOGIQUE DE VALIDATION
-     * Vérifie les réponses avec support de l'ambiguïté (Nasb/Jarr)
-     */
-    window.checkM1Answer = function() {
+    function renderAnalysis() {
+        const item = window.m1Data[currentIdx];
+        userSelections = {}; 
+        currentWordHasError = false; // Réinitialise le flag pour le nouveau mot
+
+        container.innerHTML = `
+            <div class="animate__animated animate__fadeIn flex flex-col gap-6" dir="rtl">
+                <div class="flex justify-between items-center px-2" dir="ltr">
+                    <span class="text-[10px] font-black text-blue-500 uppercase tracking-widest">
+                        Mot : ${currentIdx + 1} / ${window.m1Data.length}
+                    </span>
+                    <div class="h-1.5 w-20 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                        <div class="h-full bg-blue-500 transition-all duration-500" style="width: ${(currentIdx / window.m1Data.length) * 100}%"></div>
+                    </div>
+                </div>
+                
+                <div class="text-7xl text-center py-6" style="font-family: 'Lateef'; color: var(--text-main); line-height: 1;">
+                    ${item.texte}
+                </div>
+                
+                <div class="flex flex-col gap-5">
+                    <div>
+                        <label class="prop-label">${labels.etat}</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button class="btn-choice-ar" onclick="window.selectM1(this, 'etat', 'raf')">${labels.raf}</button>
+                            <button class="btn-choice-ar" onclick="window.selectM1(this, 'etat', 'nasb')">${labels.nasb}</button>
+                            <button class="btn-choice-ar" onclick="window.selectM1(this, 'etat', 'jarr')">${labels.jarr}</button>
+                        </div>
+                    </div>
+
+                    ${renderGroup(labels.genre, 'genre', [[labels.masculin, 'masculin'], [labels.feminin, 'feminin']])}
+                    ${renderGroup(labels.nombre, 'nombre', [[labels.singulier, 'singulier'], [labels.duel, 'duel'], [labels.pluriel, 'pluriel']])}
+                    ${renderGroup(labels.definition, 'definition', [[labels.defini, 'defini'], [labels.indefini, 'indefini']])}
+                </div>
+
+                <button id="btn-verify" onclick="window.checkM1()" class="w-full py-4 mt-4 bg-blue-900 text-white rounded-[1.5rem] font-bold shadow-xl active:scale-95 transition-all text-2xl" style="font-family: 'Lateef';">
+                    ${labels.verifier}
+                </button>
+            </div>
+        `;
+    }
+
+    function renderGroup(label, key, options) {
+        return `<div>
+            <label class="prop-label">${label}</label>
+            <div class="grid grid-cols-${options.length} gap-2">
+                ${options.map(o => `<button class="btn-choice-ar" onclick="window.selectM1(this, '${key}', '${o[1]}')">${o[0]}</button>`).join('')}
+            </div>
+        </div>`;
+    }
+
+    window.selectM1 = function(btn, key, val) {
+        btn.parentElement.querySelectorAll('.btn-choice-ar').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        userSelections[key] = val;
+    };
+
+    window.checkM1 = function() {
         const item = window.m1Data[currentIdx];
         const correct = item.reponse;
-        let errors = 0;
+        let errorsInThisTry = 0;
 
-        // On vérifie chaque propriété définie dans les données
-        Object.keys(correct).forEach(key => {
-            const userVal = userSelections[key];
-            const correctVal = correct[key];
-
+        ['etat', 'genre', 'nombre', 'definition'].forEach(k => {
+            const userVal = userSelections[k];
+            const correctVal = correct[k];
             if (Array.isArray(correctVal)) {
-                // Cas d'ambiguïté (ex: ["nasb", "jarr"]) : on vérifie si le choix est dans la liste
-                if (!userVal || !correctVal.includes(userVal)) {
-                    errors++;
-                }
-            } else {
-                // Cas simple
-                if (userVal !== correctVal) {
-                    errors++;
-                }
+                if (!userVal || !correctVal.includes(userVal)) errorsInThisTry++;
+            } else if (userVal !== correctVal) {
+                errorsInThisTry++;
             }
         });
 
-        if (errors === 0) {
-            // Succès : Célébration
-            confetti({
-                particleCount: 150,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#3b82f6', '#10b981', '#fbbf24']
-            });
+        const btn = document.getElementById('btn-verify');
 
+        if (errorsInThisTry === 0) {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.7 } });
             currentIdx++;
-            
-            // Si on a fini tous les mots, on boucle ou on affiche un message
+
             if (currentIdx >= window.m1Data.length) {
-                setTimeout(() => {
-                    container.innerHTML = `
-                        <div class="text-center p-8 animate__animated animate__bounceIn">
-                            <div class="text-6xl mb-4">🏆</div>
-                            <h2 class="text-2xl font-bold mb-2" style="color: var(--text-main)">Bravo !</h2>
-                            <p class="text-sm opacity-70 mb-6">Vous avez complété tous les exercices du Module 1.</p>
-                            <button onclick="location.reload()" class="w-full py-4 bg-blue-900 text-white rounded-2xl font-bold">
-                                RECOMMENCER
-                            </button>
-                        </div>
-                    `;
-                }, 1000);
+                // CALCUL DU SCORE FINAL : Total de mots - Nombre de mots ayant eu au moins une erreur
+                const finalScore = window.m1Data.length - wordsWithErrors;
+                
+                if (typeof saveScoreToHistory === 'function') {
+                    saveScoreToHistory("Module 1 – Étude du Ism", finalScore, window.m1Data.length);
+                }
+                setTimeout(renderEnd, 800);
             } else {
-                setTimeout(renderStep1, 1500);
+                setTimeout(renderAnalysis, 1200);
             }
         } else {
-            // Échec : Feedback
-            const feedbackMsg = errors === 1 ? "Il reste une erreur." : `Il y a ${errors} erreurs.`;
-            alert(feedbackMsg + " Analysez bien la terminaison du mot.");
+            // Si c'est la première erreur sur ce mot précis
+            if (!currentWordHasError) {
+                wordsWithErrors++; // On comptabilise ce mot comme "échoué" pour le score final
+                currentWordHasError = true; // On marque le mot pour ne pas recompter les erreurs suivantes
+            }
+
+            btn.classList.add('animate__animated', 'animate__headShake', 'bg-red-600');
+            btn.innerText = `${labels.erreur} (${errorsInThisTry})`;
+            setTimeout(() => {
+                btn.classList.remove('animate__animated', 'animate__headShake', 'bg-red-600');
+                btn.innerText = labels.verifier;
+            }, 1000);
         }
     };
 
-    // Lancement du jeu
-    renderStep1();
+    function renderEnd() {
+        const finalScore = window.m1Data.length - wordsWithErrors;
+        container.innerHTML = `
+            <div class="text-center p-6 animate__animated animate__bounceIn">
+                <div class="text-6xl mb-4">🏆</div>
+                <h2 class="text-3xl font-bold mb-4" style="color: var(--text-main); font-family: 'Lateef';">${labels.bravo}</h2>
+                <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-2xl mb-8">
+                    <p class="text-sm opacity-70 mb-1">Score final :</p>
+                    <p class="text-4xl font-black text-blue-600">${finalScore} / ${window.m1Data.length}</p>
+                    <p class="text-[10px] mt-2 uppercase tracking-widest ${wordsWithErrors > 0 ? 'text-red-500' : 'text-green-500'} font-bold">
+                        Mots avec erreurs : ${wordsWithErrors}
+                    </p>
+                </div>
+                <button onclick="location.reload()" class="w-full py-4 bg-blue-900 text-white rounded-2xl font-bold">RETOUR AU MENU</button>
+            </div>
+        `;
+    }
+
+    renderAnalysis();
 };
