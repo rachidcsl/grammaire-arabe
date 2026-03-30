@@ -2264,10 +2264,10 @@
     <!-- Écran principal avec banneau PWA, en-tête, logo, titre et modules  -->
 
     <div id="screen-menu" class="p-6 max-w-5xl mx-auto">
-        <!-- Banneau PWA Installation -->
-        <div id="pwa-install-banner" class="hidden mb-6 p-4 bg-blue-100 border-2 border-blue-200 rounded-2xl flex items-center justify-between shadow-sm relative">
+        <!-- Bannière PWA Android (avec bouton Installer) -->
+        <div id="pwa-install-banner-android" class="hidden mb-6 p-4 bg-blue-100 border-2 border-blue-200 rounded-2xl flex items-center justify-between shadow-sm relative">
             <div class="flex items-center gap-3">
-                <span class="text-2xl">📱</span>
+                <span class="text-2xl">🤖</span>
                 <div>
                     <p class="text-xs font-black text-blue-900 uppercase">Installer l'app ?</p>
                     <p class="text-[9px] text-blue-700">Accès rapide et sans connexion</p>
@@ -2279,7 +2279,19 @@
             </div>
         </div>
 
-        <!-- Bannière de fallback (si beforeinstallprompt ne se déclenche pas) -->
+        <!-- Bannière PWA iOS (instructions manuelles) -->
+        <div id="pwa-install-banner-ios" class="hidden mb-6 p-4 bg-purple-100 border-2 border-purple-200 rounded-2xl flex items-center justify-between shadow-sm relative">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl">🍎</span>
+                <div>
+                    <p class="text-xs font-black text-purple-900 uppercase">Ajouter à l'écran d'accueil</p>
+                    <p class="text-[9px] text-purple-700">1. Safari: Partage → Ajouter à l'écran d'accueil</p>
+                </div>
+            </div>
+            <button onclick="dismissInstallBanner()" class="text-purple-400 hover:text-purple-900 p-1 text-lg font-bold">&times;</button>
+        </div>
+
+        <!-- Bannière de fallback générique -->
         <div id="pwa-install-banner-fallback" class="hidden mb-6 p-4 bg-amber-100 border-2 border-amber-200 rounded-2xl flex items-center justify-between shadow-sm relative">
             <div class="flex items-center gap-3">
                 <span class="text-2xl">📱</span>
@@ -6457,6 +6469,20 @@
         let deferredPrompt = null;          // Invite d'installation PWA en attente
         let installBanner = null;           // Sera initialisé après le chargement du DOM
         
+        /**
+         * Détecte le système d'exploitation
+         * @returns {string} 'ios', 'android', ou 'other'
+         */
+        function detectOS() {
+            const ua = navigator.userAgent.toLowerCase();
+            if (/iphone|ipad|ipod/.test(ua)) return 'ios';
+            if (/android/.test(ua)) return 'android';
+            return 'other';
+        }
+        
+        const deviceOS = detectOS();
+        console.log('🖥️ Système détecté:', deviceOS);
+        
         // --- MISE À JOUR SERVICE WORKER ---
         let newWorker = null;               // Service worker avec nouvelle version
         let refreshing = false;             // Flag pour éviter les rafraîchissements multiples
@@ -7533,36 +7559,42 @@
         }
 
         /**
-         * Gère l'événement d'installation PWA
+         * Gère l'événement d'installation PWA (Android + Chrome uniquement)
          */
         window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('✓ beforeinstallprompt déclenché');
+            console.log('✓ beforeinstallprompt déclenché (Android)');
             e.preventDefault();
             deferredPrompt = e;
             
-            // Initialiser installBanner si pas déjà fait
-            if (!installBanner) {
-                installBanner = document.getElementById('pwa-install-banner');
-            }
-            
-            if (installBanner && checkInstallEligibility()) {
-                console.log('✓ Affichage de la bannière PWA');
-                installBanner.classList.remove('hidden');
-                installBanner.classList.add('flex');
+            // Choisir la bannière en fonction du système
+            if (deviceOS === 'android') {
+                const androidBanner = document.getElementById('pwa-install-banner-android');
+                if (androidBanner && checkInstallEligibility()) {
+                    console.log('✓ Affichage de la bannière Android avec bouton Installer');
+                    androidBanner.classList.remove('hidden');
+                    androidBanner.classList.add('flex');
+                }
             }
         });
 
-        // Log si l'événement ne se déclenche pas
+        // Afficher la bannière iOS si c'est un iPhone/iPad et qu'on n'a pas de beforeinstallprompt
         window.addEventListener('load', () => {
-            if (!deferredPrompt) {
-                console.warn('⚠️ beforeinstallprompt ne s\'est pas déclenché');
+            if (deviceOS === 'ios') {
+                const iosBanner = document.getElementById('pwa-install-banner-ios');
+                if (iosBanner && checkInstallEligibility()) {
+                    console.log('✓ Affichage de la bannière iOS (instructions manuelles)');
+                    iosBanner.classList.remove('hidden');
+                    iosBanner.classList.add('flex');
+                }
+            } else if (deviceOS === 'android' && !deferredPrompt) {
+                console.warn('⚠️ beforeinstallprompt n\'s\'est pas déclenché sur Android');
                 console.warn('Raisons possibles:');
                 console.warn('- L\'app est déjà installée');
                 console.warn('- Vous avez refusé l\'installation trop de fois (cooldown de 3-7 jours)');
                 console.warn('- Le manifest.json ou le service worker n\'est pas valide');
                 console.warn('- Vous n\'êtes pas en HTTPS');
                 
-                // Afficher la bannière de fallback si elle existe
+                // Afficher la bannière de fallback sur Android
                 const fallbackBanner = document.getElementById('pwa-install-banner-fallback');
                 if (fallbackBanner) {
                     fallbackBanner.classList.remove('hidden');
@@ -7572,17 +7604,20 @@
         });
 
         /**
-         * Masque les bannières d'installation
+         * Masque toutes les bannières d'installation
          */
         function dismissInstallBanner() {
-            if (!installBanner) {
-                installBanner = document.getElementById('pwa-install-banner');
-            }
+            const androidBanner = document.getElementById('pwa-install-banner-android');
+            const iosBanner = document.getElementById('pwa-install-banner-ios');
             const fallbackBanner = document.getElementById('pwa-install-banner-fallback');
             
-            if (installBanner) {
-                installBanner.classList.add('hidden');
-                installBanner.classList.remove('flex');
+            if (androidBanner) {
+                androidBanner.classList.add('hidden');
+                androidBanner.classList.remove('flex');
+            }
+            if (iosBanner) {
+                iosBanner.classList.add('hidden');
+                iosBanner.classList.remove('flex');
             }
             if (fallbackBanner) {
                 fallbackBanner.classList.add('hidden');
@@ -7591,26 +7626,25 @@
         }
 
         /**
-         * Gère le clic sur le bouton d'installation
+         * Gère le clic sur le bouton d'installation (Android uniquement)
          */
         document.getElementById('btn-install-app').addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                if (!installBanner) {
-                    installBanner = document.getElementById('pwa-install-banner');
-                }
+                const androidBanner = document.getElementById('pwa-install-banner-android');
+                
                 if (outcome === 'accepted') {
-                    console.log('✓ App installée avec succès');
-                    if (installBanner) installBanner.classList.add('hidden');
+                    console.log('✓ App installée avec succès sur Android');
+                    if (androidBanner) androidBanner.classList.add('hidden');
                 } else {
                     console.log('⚠️ Installation refusée');
                     dismissInstallBanner();
                 }
                 deferredPrompt = null;
             } else {
-                // Si deferredPrompt n'existe pas, montrer des instructions
-                alert('Pour installer l\'app:\n\n1. Chrome > Menu (⋮)\n2. "Installer l\'app Grammaire Arabe"\n\nOu:\n2. En haut à droite, cliquez l\'icône smartphone + avec lettre "i"');
+                // Si deferredPrompt n'existe pas
+                alert('Pour installer l\'app sur Android:\n\n1. Chrome > Menu (⋮)\n2. "Installer l\'app Grammaire Arabe"\n\nOu:\n2. En haut à droite, cliquez l\'icône smartphone + avec lettre "i"');
                 console.log('⚠️ deferredPrompt n\'existe pas, affichage des instructions');
             }
         });
