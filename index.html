@@ -2279,6 +2279,18 @@
             </div>
         </div>
 
+        <!-- Bannière de fallback (si beforeinstallprompt ne se déclenche pas) -->
+        <div id="pwa-install-banner-fallback" class="hidden mb-6 p-4 bg-amber-100 border-2 border-amber-200 rounded-2xl flex items-center justify-between shadow-sm relative">
+            <div class="flex items-center gap-3">
+                <span class="text-2xl">📱</span>
+                <div>
+                    <p class="text-xs font-black text-amber-900 uppercase">Installer l'app ?</p>
+                    <p class="text-[9px] text-amber-700">Depuis les options du navigateur (menu ⋮)</p>
+                </div>
+            </div>
+            <button onclick="dismissInstallBanner()" class="text-amber-400 hover:text-amber-900 p-1 text-lg font-bold">&times;</button>
+        </div>
+
         <!-- En-tête avec logo, titre et boutons de contrôle -->
         <header class="flex justify-between items-center border-b-4 border-blue-900/10 mb-10 gap-4 p-4">
             <svg width="70" height="80" viewBox="0 0 437 275" fill="none" xmlns="http://www.w3.org/2000/svg" class="shrink-0">
@@ -7524,6 +7536,7 @@
          * Gère l'événement d'installation PWA
          */
         window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('✓ beforeinstallprompt déclenché');
             e.preventDefault();
             deferredPrompt = e;
             
@@ -7533,21 +7546,46 @@
             }
             
             if (installBanner && checkInstallEligibility()) {
+                console.log('✓ Affichage de la bannière PWA');
                 installBanner.classList.remove('hidden');
                 installBanner.classList.add('flex');
             }
         });
 
+        // Log si l'événement ne se déclenche pas
+        window.addEventListener('load', () => {
+            if (!deferredPrompt) {
+                console.warn('⚠️ beforeinstallprompt ne s\'est pas déclenché');
+                console.warn('Raisons possibles:');
+                console.warn('- L\'app est déjà installée');
+                console.warn('- Vous avez refusé l\'installation trop de fois (cooldown de 3-7 jours)');
+                console.warn('- Le manifest.json ou le service worker n\'est pas valide');
+                console.warn('- Vous n\'êtes pas en HTTPS');
+                
+                // Afficher la bannière de fallback si elle existe
+                const fallbackBanner = document.getElementById('pwa-install-banner-fallback');
+                if (fallbackBanner) {
+                    fallbackBanner.classList.remove('hidden');
+                    console.log('✓ Affichage de la bannière de fallback');
+                }
+            }
+        });
+
         /**
-         * Masque la bannière d'installation
+         * Masque les bannières d'installation
          */
         function dismissInstallBanner() {
             if (!installBanner) {
                 installBanner = document.getElementById('pwa-install-banner');
             }
+            const fallbackBanner = document.getElementById('pwa-install-banner-fallback');
+            
             if (installBanner) {
                 installBanner.classList.add('hidden');
                 installBanner.classList.remove('flex');
+            }
+            if (fallbackBanner) {
+                fallbackBanner.classList.add('hidden');
             }
             localStorage.setItem('pwa_install_dismissed', Date.now().toString());
         }
@@ -7563,11 +7601,17 @@
                     installBanner = document.getElementById('pwa-install-banner');
                 }
                 if (outcome === 'accepted') {
+                    console.log('✓ App installée avec succès');
                     if (installBanner) installBanner.classList.add('hidden');
                 } else {
+                    console.log('⚠️ Installation refusée');
                     dismissInstallBanner();
                 }
                 deferredPrompt = null;
+            } else {
+                // Si deferredPrompt n'existe pas, montrer des instructions
+                alert('Pour installer l\'app:\n\n1. Chrome > Menu (⋮)\n2. "Installer l\'app Grammaire Arabe"\n\nOu:\n2. En haut à droite, cliquez l\'icône smartphone + avec lettre "i"');
+                console.log('⚠️ deferredPrompt n\'existe pas, affichage des instructions');
             }
         });
 
@@ -7592,10 +7636,13 @@
          */
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').then(reg => {
+                console.log('✓ Service Worker enregistré avec succès');
+                
                 // Vérifie les mises à jour en attente au démarrage
                 if (reg.waiting) {
                     newWorker = reg.waiting;
                     document.getElementById('update-toast').classList.remove('hidden');
+                    console.log('✓ Mise à jour en attente trouvée');
                 }
 
                 // Écoute l'arrivée d'une nouvelle mise à jour
@@ -7604,9 +7651,12 @@
                     newWorker.addEventListener('statechange', () => {
                         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                             document.getElementById('update-toast').classList.remove('hidden');
+                            console.log('✓ Nouvelle mise à jour disponible');
                         }
                     });
                 });
+            }).catch(err => {
+                console.error('❌ Erreur lors de l\'enregistrement du Service Worker:', err);
             });
 
             // Écoute le remplacement du contrôleur du Service Worker
