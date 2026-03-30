@@ -7554,9 +7554,18 @@
          */
         function checkInstallEligibility() {
             const lastDismissed = localStorage.getItem('pwa_install_dismissed');
+            
             if (lastDismissed) {
-                const daysSince = (Date.now() - parseInt(lastDismissed)) / (1000 * 60 * 60 * 24);
-                if (daysSince < 7) return false;
+                const dismissedTime = parseInt(lastDismissed);
+                const daysSince = (Date.now() - dismissedTime) / (1000 * 60 * 60 * 24);
+                console.log(`📅 Cooldown: ${daysSince.toFixed(2)} jours depuis le refus`);
+                
+                if (daysSince < 7) {
+                    console.log(`⏳ Cooldown actif: réapparaîtra dans ${(7 - daysSince).toFixed(1)} jours`);
+                    return false;
+                } else {
+                    console.log(`✅ Cooldown expiré`);
+                }
             }
             return true;
         }
@@ -7572,10 +7581,17 @@
             // Choisir la bannière en fonction du système
             if (deviceOS === 'android') {
                 const androidBanner = document.getElementById('pwa-install-banner-android');
-                if (androidBanner && checkInstallEligibility()) {
+                const isEligible = checkInstallEligibility();
+                
+                console.log(`📱 Vérification bannière Android: eligible=${isEligible}, banner=${!!androidBanner}`);
+                
+                if (androidBanner && isEligible) {
                     console.log('✓ Affichage de la bannière Android avec bouton Installer');
                     androidBanner.classList.remove('hidden');
                     androidBanner.classList.add('flex');
+                } else if (androidBanner && !isEligible) {
+                    console.log('⏳ Bannière en cooldown - masquée');
+                    androidBanner.classList.add('hidden');
                 }
             }
         });
@@ -7631,42 +7647,80 @@
         /**
          * Gère le clic sur le bouton d'installation (Android uniquement)
          */
-        document.getElementById('btn-install-app').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                const androidBanner = document.getElementById('pwa-install-banner-android');
-                
-                if (outcome === 'accepted') {
-                    console.log('✓ App installée avec succès sur Android');
-                    if (androidBanner) androidBanner.classList.add('hidden');
-                } else {
-                    console.log('⚠️ Installation refusée');
-                    dismissInstallBanner();
-                }
-                deferredPrompt = null;
+        function attachInstallButton() {
+            const btn = document.getElementById('btn-install-app');
+            if (!btn) {
+                console.warn('⚠️ btn-install-app non trouvé');
+                return;
             }
-        });
+
+            btn.addEventListener('click', async () => {
+                console.log('🖱️ Clic sur bouton d\'installation Android');
+                if (deferredPrompt) {
+                    console.log('✓ deferredPrompt trouvé, déclenchement de l\'installation');
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    const androidBanner = document.getElementById('pwa-install-banner-android');
+                    
+                    if (outcome === 'accepted') {
+                        console.log('✓ App installée avec succès sur Android');
+                        if (androidBanner) androidBanner.classList.add('hidden');
+                    } else {
+                        console.log('⚠️ Installation refusée - cooldown 7 jours');
+                        dismissInstallBanner();
+                    }
+                    deferredPrompt = null;
+                } else {
+                    console.warn('⚠️ deferredPrompt est null/undefined');
+                }
+            });
+        }
 
         /**
          * Gère le clic sur le bouton d'installation (Fallback)
          */
-        document.getElementById('btn-install-app-fallback').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                const fallbackBanner = document.getElementById('pwa-install-banner-fallback');
-                
-                if (outcome === 'accepted') {
-                    console.log('✓ App installée avec succès');
-                    if (fallbackBanner) fallbackBanner.classList.add('hidden');
-                } else {
-                    console.log('⚠️ Installation refusée');
-                    dismissInstallBanner();
-                }
-                deferredPrompt = null;
+        function attachInstallButtonFallback() {
+            const btn = document.getElementById('btn-install-app-fallback');
+            if (!btn) {
+                console.warn('⚠️ btn-install-app-fallback non trouvé');
+                return;
             }
-        });
+
+            btn.addEventListener('click', async () => {
+                console.log('🖱️ Clic sur bouton d\'installation Fallback');
+                if (deferredPrompt) {
+                    console.log('✓ deferredPrompt trouvé, déclenchement de l\'installation');
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    const fallbackBanner = document.getElementById('pwa-install-banner-fallback');
+                    
+                    if (outcome === 'accepted') {
+                        console.log('✓ App installée avec succès');
+                        if (fallbackBanner) fallbackBanner.classList.add('hidden');
+                    } else {
+                        console.log('⚠️ Installation refusée - cooldown 7 jours');
+                        dismissInstallBanner();
+                    }
+                    deferredPrompt = null;
+                } else {
+                    console.warn('⚠️ deferredPrompt est null/undefined');
+                }
+            });
+        }
+
+        // Attacher les listeners quand le DOM est prêt
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('📄 DOM chargé - attachement des listeners d\'installation');
+                attachInstallButton();
+                attachInstallButtonFallback();
+            });
+        } else {
+            // DOM déjà chargé
+            console.log('📄 DOM déjà chargé - attachement immédiat des listeners');
+            attachInstallButton();
+            attachInstallButtonFallback();
+        }
 
 
         // ============================================================================
